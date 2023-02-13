@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Repositories\Tenant\TeamMember;
+
+use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\Support\Str;
+use App\Models\Tenant\TeamMember;
+use Illuminate\Support\Facades\DB;
+use App\Models\Tenant\TasksReports;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
+use App\Http\Requests\Tenant\TeamMember\TeamMemberFormRequest;
+
+class TeamMemberRepository implements TeamMemberInterface
+{
+    public function getAllTeamMembers($perPage): LengthAwarePaginator
+    {
+        $teamMembers = TeamMember::paginate($perPage);
+        return $teamMembers;
+    }
+
+    public function getTeamMembersAnalysis(): Collection
+    {
+        $teamMember = TeamMember::all();
+        return $teamMember;
+    }
+
+    public function getSearchedTeamMembers($searchString, $perPage): LengthAwarePaginator
+    {
+        $teamMembers = TeamMember::where('name', 'like', '%' . $searchString . '%')->paginate($perPage);
+        return $teamMembers;
+    }
+
+    public function add(TeamMemberFormRequest $request): TeamMember
+    {
+        return DB::transaction(function () use ($request) {
+            $teamMember = TeamMember::create([
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'mobile_phone' => $request->mobile_phone,
+                'job' => $request->job,
+                'additional_information' => $request->additional_information,
+                'color' => $request->color,
+                'account_active' => '0'
+            ]);
+            return $teamMember;
+        });
+    }
+
+    public function update(TeamMember $teamMember, TeamMemberFormRequest $request) : TeamMember
+    {
+        return DB::transaction(function () use ($teamMember,$request) {
+
+            $teamMember->fill($request->all());
+            $teamMember->save();
+
+           User::where('id',$teamMember->user_id)->update([
+                "username" => $request->username,
+                "email" => $request->email
+            ]);
+            
+
+            return $teamMember;
+        });
+
+    }
+
+    public function destroy(TeamMember $teamMember) : TeamMember
+    {
+        return DB::transaction(function () use($teamMember) {
+
+            if($teamMember->user_id != null)
+            {
+                User::where('id', $teamMember->user_id)->delete();
+            }
+            
+            $teamMember->delete();
+
+            return $teamMember;
+        });
+    }
+
+    public function createLogin(TeamMember $teamMember): User
+    {
+        return DB::transaction(function () use ($teamMember){
+           $password = Str::random(8);
+           $hashed_password = Hash::make($password);
+
+           $userCreate = User::create([
+                'name' => $teamMember->name,
+                'username' => $teamMember->username,
+                'email' => $teamMember->email,
+                'password' => $hashed_password,
+           ]);
+
+           $updateTeamMember = TeamMember::where('id',$teamMember->id)->update([
+              'user_id' => $userCreate->id,
+              'account_active' => '1'
+           ]);
+
+           $userCreate["user"] = ['password_without_hashed' => $password];
+
+           return $userCreate;
+        });
+    }
+
+}
