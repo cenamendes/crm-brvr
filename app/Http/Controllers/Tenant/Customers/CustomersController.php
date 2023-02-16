@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 use App\Models\Tenant\Customers;
 use App\Models\Tenant\TeamMember;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Tenant\CustomerContacts\CustomerContactsFormRequest;
-use App\Interfaces\Tenant\Customers\CustomersInterface;
-use App\Http\Requests\Tenant\Customers\CustomersFormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Tenant\ContactsCustomers;
 use App\Models\Tenant\CustomerLocations;
-use Illuminate\Http\RedirectResponse;
+use App\Events\TeamMember\TeamMemberEvent;
+use App\Interfaces\Tenant\Customers\CustomersInterface;
+use App\Http\Requests\Tenant\Customers\CustomersFormRequest;
+use App\Http\Requests\Tenant\CustomerContacts\CustomerContactsFormRequest;
 
 class CustomersController extends Controller
 {
@@ -87,6 +89,13 @@ class CustomersController extends Controller
     public function store(CustomersFormRequest $request) : RedirectResponse
     {
         $this->customersRepository->add($request);
+        if(Auth::user()->type_user == '2')
+        {
+            $customer = Customers::where('user_id',Auth::user()->id)->first();
+            return to_route('tenant.customers.edit',$customer->id)
+            ->with('message', __('Customer updated with success!'))
+            ->with('status', 'sucess');
+        }
         return to_route('tenant.customers.index')
             ->with('message', __('Customer created with success!'))
             ->with('status', 'sucess');
@@ -103,6 +112,13 @@ class CustomersController extends Controller
     {
         $this->customersRepository->update($customer,$request);
         
+        if(Auth::user()->type_user == '2')
+        {
+            $customer = Customers::where('user_id',Auth::user()->id)->first();
+            return to_route('tenant.customers.edit',$customer->id)
+            ->with('message', __('Customer updated with success!'))
+            ->with('status', 'sucess');
+        }
         return to_route('tenant.customers.index')
             ->with('message', __('Customer updated with success!'))
             ->with('status', 'sucess');
@@ -118,9 +134,43 @@ class CustomersController extends Controller
     {
         $this->customersRepository->destroy($customer);
 
+        if(Auth::user()->type_user == '2')
+        {
+            $customer = Customers::where('user_id',Auth::user()->id)->first();
+            return to_route('tenant.customers.edit',$customer->id)
+            ->with('message', __('Customer updated with success!'))
+            ->with('status', 'sucess');
+        }
+
         return to_route('tenant.customers.index')
             ->with('message', __('Customer deleted with success!'))
             ->with('status', 'sucess');
+    }
+
+     /**
+     * Create login for the Team Member
+     *
+     * @param TeamMember $teamMember
+     * @return RedirectResponse
+     */
+    public function createloginCustomer(string $customer): RedirectResponse
+    {
+        $resultOfLogin = $this->customersRepository->createLogin($customer);
+        
+        event(new TeamMemberEvent($resultOfLogin));
+
+        if(Auth::user()->type_user == '2')
+        {
+            $customer = Customers::where('user_id',Auth::user()->id)->first();
+            return to_route('tenant.customers.edit',$customer->id)
+            ->with('message', __('Customer updated with success!'))
+            ->with('status', 'sucess');
+        }
+        
+        return to_route('tenant.customers.index')
+               ->with('message', __('Team member login was created with success! password: ', ['attribute' => $resultOfLogin->user["password_without_hashed"] ]))
+               ->with('status','sucess');
+        
     }
 
 }
