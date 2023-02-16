@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant\CustomerLocations;
 use Illuminate\View\View;
 use App\Models\Tenant\Customers;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Tenant\CustomerLocations;
 use App\Interfaces\Tenant\CustomerLocation\CustomerLocationsInterface;
@@ -41,9 +42,18 @@ class CustomerLocationsController extends Controller
      */
     public function create(): View
     {
+        if (Auth::user()->type_user == '2')
+        {
+            $customerList = Customers::where('user_id',Auth::user()->id)->first();
+        }
+        else {
+            $customerList = Customers::all();
+        }
+
+        
         return view('tenant.customerlocations.create', [
             'themeAction' => 'form_element',
-            'customerList' => Customers::all(),
+            'customerList' => $customerList,
         ]);
     }
 
@@ -55,10 +65,18 @@ class CustomerLocationsController extends Controller
      */
     public function edit(CustomerLocations $customerLocation): View
     {
+        if (Auth::user()->type_user == '2')
+        {
+            $customerList = Customers::where('user_id',Auth::user()->id)->first();
+        }
+        else {
+            $customerList = Customers::all();
+        }
+
         return view('tenant.customerlocations.edit', [
             'customerLocation' => $customerLocation,
             'themeAction' => 'form_element',
-            'customerList' => Customers::all(),
+            'customerList' => $customerList,
         ]);
     }
 
@@ -71,6 +89,14 @@ class CustomerLocationsController extends Controller
     public function store(CustomerLocationsFormRequest $request): RedirectResponse
     {
         $this->customersLocationRepository->add($request);
+
+        if (Auth::user()->type_user == '2')
+        {
+            $idCustomer = Customers::where('user_id',Auth::user()->id)->first();
+            return to_route('tenant.customers.edit',$idCustomer->id)
+            ->with('message', __('Customer location created with success!'))
+            ->with('status', 'sucess');
+        }
 
         return to_route('tenant.customer-locations.index')
             ->with('message', __('Customer location created with success!'))
@@ -88,6 +114,14 @@ class CustomerLocationsController extends Controller
     {
         $this->customersLocationRepository->update($customerLocation,$request);
 
+        if (Auth::user()->type_user == '2')
+        {
+            $idCustomer = Customers::where('user_id',Auth::user()->id)->first();
+            return to_route('tenant.customers.edit',$idCustomer->id)
+            ->with('message', __('Customer location updated with success!'))
+            ->with('status', 'sucess');
+        }
+
         return to_route('tenant.customer-locations.index')
             ->with('message', __('Customer location updated with success!'))
             ->with('status', 'sucess');
@@ -102,6 +136,14 @@ class CustomerLocationsController extends Controller
     public function destroy(CustomerLocations $customerLocation): RedirectResponse
     {
         $this->customersLocationRepository->destroy($customerLocation);
+
+        if (Auth::user()->type_user == '2')
+        {
+            $idCustomer = Customers::where('user_id',Auth::user()->id)->first();
+            return to_route('tenant.customers.edit',$idCustomer->id)
+            ->with('message', __('Customer location deleted with success!'))
+            ->with('status', 'sucess');
+        }
         
         return to_route('tenant.customer-locations.index')
             ->with('message', __('Customer location deleted with success!'))
