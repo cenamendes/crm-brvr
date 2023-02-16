@@ -246,8 +246,7 @@ class AddCustomerlocations extends Component
                 ->paginate($this->perPage);
         }
 
-    
-               
+         
         return view('tenant.livewire.customerlocations.add', [
             'customerServices' => $this->customerServices,
             'customerList' => $this->customerList,
