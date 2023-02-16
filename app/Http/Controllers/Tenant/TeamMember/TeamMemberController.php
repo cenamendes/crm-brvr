@@ -118,7 +118,7 @@ class TeamMemberController extends Controller
      * @param TeamMember $teamMember
      * @return RedirectResponse
      */
-    public function show(TeamMember $teamMember): RedirectResponse
+    public function createlogin(string $teamMember): RedirectResponse
     {
         $resultOfLogin = $this->teamMemberRepository->createLogin($teamMember);
         
