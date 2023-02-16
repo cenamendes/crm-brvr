@@ -31,7 +31,13 @@ class ProfileController extends Controller
      */
     public function index(): View
     {
-        $teamMember = $this->profileRepository->getMemberInformation(Auth::user()->id);
+        if (Auth::user()->type_user != '2')
+        {
+            $teamMember = $this->profileRepository->getMemberInformation(Auth::user()->id);
+        }
+        else{
+            $teamMember = [];
+        }
         
         return view('tenant.profile.index', [
             'themeAction' => 'form_pickers',
@@ -79,7 +85,20 @@ class ProfileController extends Controller
     */
     public function UserInfo(UserFormRequest $request): RedirectResponse
     {
+        if(isset($request->uploadFile))
+        {
+            Storage::disk('local')->delete($request->uploadFile);
     
+            if(!Storage::exists(tenant('id') . '/app/public/profile'))
+            {
+                File::makeDirectory(storage_path('app/public/profile'), 0755, true, true);
+            }
+
+            $patch = $request->uploadFile->storeAs(tenant('id') . '/app/public/profile', $request->uploadFile->getClientOriginalName());
+            //$patch
+            $request->merge(["photo" => $request->uploadFile->getClientOriginalName()]);
+        }
+        
         if($request->password == $request->repeatPassword){
             $this->profileRepository->updateUserInformation($request);
         }
