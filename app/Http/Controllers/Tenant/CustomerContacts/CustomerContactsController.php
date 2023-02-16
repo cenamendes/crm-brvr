@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Tenant\CustomerContacts;
 
+use App\Models\User;
+use Illuminate\View\View;
+use App\Models\Tenant\Customers;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Tenant\CustomerContacts;
 use App\Models\Tenant\CustomerLocations;
-use App\Models\Tenant\Customers;
-use App\Http\Requests\Tenant\CustomerContacts\CustomerContactsFormRequest;
 use App\Interfaces\Tenant\CustomerContacts\CustomerContactsInterface;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use App\Http\Requests\Tenant\CustomerContacts\CustomerContactsFormRequest;
 
 class CustomerContactsController extends Controller
 {
@@ -65,8 +67,16 @@ class CustomerContactsController extends Controller
     public function store(CustomerContactsFormRequest $request): RedirectResponse
     {
         $this->customersContactsRepository->addCustomerContact($request);
-        return to_route('tenant.customers.edit', $request->customer_id)
+
+        if(Auth::user()->type_user == '2')
+        {
+            return to_route('tenant.customers.edit', $request->customer_id)
             ->with('message', __('Customer Contact created with success!'))
+            ->with('status', 'sucess');
+        }
+
+            return to_route('tenant.customers.index')
+            ->with('message', __('Customer Contact deleted with success!'))
             ->with('status', 'sucess');
     }
 
@@ -81,8 +91,15 @@ class CustomerContactsController extends Controller
     {
         $this->customersContactsRepository->updateCustomerContact($contact, $request);
 
-        return to_route('tenant.customers.edit', $request->customer_id)
+        if(Auth::user()->type_user == '2')
+        {
+            return to_route('tenant.customers.edit', $request->customer_id)
             ->with('message', __('Customer Contact updated with success!'))
+            ->with('status', 'sucess');
+        }
+
+            return to_route('tenant.customers.index')
+            ->with('message', __('Customer Contact deleted with success!'))
             ->with('status', 'sucess');
     }
 
@@ -96,6 +113,15 @@ class CustomerContactsController extends Controller
     {
         $this->customersContactsRepository->deleteCustomerContact($contactCustomer);
 
+        $customerId = User::where('id',Auth::user()->id)->first();
+        $customer = Customers::where('user_id', $customerId->id)->first();
+
+        if(Auth::user()->type_user == '2')
+        {
+            return to_route('tenant.customers.edit', $customer->id)
+            ->with('message', __('Customer Contact updated with success!'))
+            ->with('status', 'sucess');
+        }
         return to_route('tenant.customers.index')
             ->with('message', __('Customer Contact deleted with success!'))
             ->with('status', 'sucess');
