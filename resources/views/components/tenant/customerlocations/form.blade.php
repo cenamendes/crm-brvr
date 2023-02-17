@@ -30,7 +30,6 @@
                                         <div class="col">
                                             <label>{{ __('Customer Name') }}</label>
                                             @php
-                                           
                                             if(isset($customerLocation) && $customerLocation->main == 1) {
                                             echo '<input type="hidden" name="customer_id" id="customer_id">';
                                             echo '<select name="selectedCustomer" class="form-control" id="selectedCustomer" 
@@ -41,13 +40,20 @@
                                                      }
                                                     @endphp
                                                     <option value="">{{ __('Select Customer') }}</option>
-                                                    
+                                                    @if (Auth::user()->type_user == '2')
+                                                      <option value="{{ $customerList->id }}" @isset($customerLocation->customer_id) @if($customerList->id ==
+                                                        $customerLocation->customer_id)
+                                                        selected @endif @endisset>{{ $customerList->name }}</option>
+                                                    @else
+                                                     
+
                                                     @forelse ($customerList as $item)
                                                     <option value="{{ $item->id }}" @isset($customerLocation->customer_id) @if($item->id ==
                                                         $customerLocation->customer_id)
                                                         selected @endif @endisset>{{ $item->name }}</option>
                                                     @empty
                                                     @endforelse
+                                                    @endif
                                                 </select>
                                         </div>
                                     </section>
@@ -139,10 +145,12 @@
             <div class="card-footer justify-content-between">
                 <div class="row">
                     <div class="col text-right">
-                        <a href="{{ route('tenant.customer-locations.index') }}" class="btn btn-secondary mr-2">{{
-                            __('Back') }}
-                            <span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>
-                        </a>
+                        @if(Auth::user()->type_user != 2)
+                            <a href="{{ route('tenant.customer-locations.index') }}" class="btn btn-secondary mr-2">{{
+                                __('Back') }}
+                                <span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>
+                            </a>
+                        @endif
                         <button type="submit" style="border:none;background:none;">
                             <a type="submit" class="btn btn-primary"  role="button">
                                 {{ $buttonAction }}

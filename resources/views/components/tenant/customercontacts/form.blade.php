@@ -74,10 +74,12 @@
     <div class="card-footer justify-content-between">
         <div class="row">
             <div class="col text-right">
-                <a href="{{ route('tenant.customers.index') }}" class="btn btn-secondary mr-2">{{
-                    __('Back') }}
-                    <span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>
-                </a>
+                @if(Auth::user()->type_user != 2)
+                    <a href="{{ route('tenant.customers.index') }}" class="btn btn-secondary mr-2">{{
+                        __('Back') }}
+                        <span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>
+                    </a>
+                @endif
                 <button type="submit" style="border:none;background:none;">
                     <a type="submit" class="btn btn-primary"  role="button">
                         {{ $buttonAction }}

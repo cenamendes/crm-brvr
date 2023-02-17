@@ -3,6 +3,7 @@
 namespace App\Repositories\Tenant\Profile;
 
 use App\Models\User;
+use App\Models\Tenant\Customers;
 use App\Models\Tenant\TeamMember;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -29,15 +30,17 @@ class ProfileRepository implements ProfileInterface
                 
                 if($user_login != null)
                 {
-                   $memberInformation = TeamMember::create([
-                        "name" => $user_login->name,
-                        "email" => $user_login->email,
-                        "mobile_phone" => '',
-                        "job" => '',
-                        "user_id" => $user,
-                        "color" => '',
-                        "account_active" => "1"
-                    ]);
+                    $memberInformation = TeamMember::create([
+                            "name" => $user_login->name,
+                            "username" => $user_login->username,
+                            "email" => $user_login->email,
+                            "mobile_phone" => '',
+                            "job" => '',
+                            "user_id" => $user,
+                            "color" => '',
+                            "account_active" => "1"
+                        ]);
+                  
                 }
                 
             }
@@ -89,18 +92,39 @@ class ProfileRepository implements ProfileInterface
             $updateUser = User::where('id', $userForm->user_id)->first();
 
 
+
             if($updateUser->username == $userForm->username)
             {
-                $arrayToUpdate = ["password" => $hashedPassword];
+               
+                if($userForm->photo != null)
+                {
+                    $arrayToUpdate = ["photo" => $userForm->photo,"password" => $hashedPassword]; 
+                }
+                else 
+                {
+                    $arrayToUpdate = ["password" => $hashedPassword];
+                    
+                }
             }
             else
             {
+                             
                 $arrayToUpdate = ["username" => $userForm->username, "password" => $hashedPassword]; 
+                              
                 
-                $updateTeamMember = TeamMember::where('user_id',$userForm->user_id)->update([
-                    "username" => $userForm->username
-                 ]);
+                 if(Auth::user()->type_user == 2)
+                 {
+                    Customers::where('user_id',Auth::user()->id)->update([
+                        "username" => $userForm->username
+                     ]);
+                 }
+                 else {
+                    $updateTeamMember = TeamMember::where('user_id',$userForm->user_id)->update([
+                        "username" => $userForm->username
+                     ]);
+                 }
             }
+
 
              $updateUserInfo = User::where('id',$userForm->user_id)->update(
                 $arrayToUpdate

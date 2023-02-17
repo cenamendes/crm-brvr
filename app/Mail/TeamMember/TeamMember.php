@@ -42,7 +42,8 @@ class TeamMember extends Mailable
         return new Envelope(
             subject: $subject,
             //session('email')
-            from: new Address(env('MAIL_USERNAME'), session('sender_name')),
+            //env('MAIL_USERNAME')
+            from: new Address(session('email'), session('sender_name')),
         );
     }
 

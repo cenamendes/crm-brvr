@@ -3,8 +3,11 @@
 namespace App\Http\Livewire\Tenant\Files;
 
 use Livewire\Component;
+use App\Events\ChatMessage;
+use App\Interfaces\Tenant\AlertMessage\AlertMessageInterface;
 use App\Models\Tenant\Files;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Interfaces\Tenant\Files\FilesInterface;
@@ -12,7 +15,7 @@ use App\Interfaces\Tenant\Customers\CustomersInterface;
 
 class UpdateTableFiles extends Component
 {
-    protected $listeners = ["refresh" => "refresh", "removeNew" => "removeNew", 'FilesUpdatedFromMembers', 'importance'];
+    protected $listeners = ["refresh" => "refresh", "removeNew" => "removeNew", 'FilesUpdatedFromMembers', 'importance', 'FilesUpdateAfterEvent'];
 
     use WithFileUploads;
     public int $files = 0;
@@ -36,12 +39,13 @@ class UpdateTableFiles extends Component
     public ?object $filesDatabase = NULL;
 
 
-   
+    protected object $alertRepository;
     protected object $filesRepository;
 
-    public function boot(FilesInterface $interfaceFiles)
+    public function boot(FilesInterface $interfaceFiles, AlertMessageInterface $alertInterface)
     {
         $this->filesRepository = $interfaceFiles;
+        $this->alertRepository = $alertInterface;
     }
     
     public function mount($file,$update,$customer)
@@ -84,8 +88,7 @@ class UpdateTableFiles extends Component
     public function updatedFileUploaded()
     {
         $this->countInputs++;
-        $filesNew = [];
-        
+                
         if (Storage::exists(tenant('id') . '/app/files',$this->fileUploaded->getClientOriginalName())) {
             Storage::delete($this->fileUploaded);
         }
@@ -100,20 +103,16 @@ class UpdateTableFiles extends Component
         $message .= "&nbsp;<button type='button' id='buttonresponse' data-anwser='cancel' class='btn btn-secondary'>Não</button></div>";
 
         $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Files'), 'message' => $message, 'status'=>'info', 'function' => 'importance']);
-
-        // $this->filePath = $this->fileUploaded->storeAs(tenant('id') . '/app/files',$this->fileUploaded->getClientOriginalName());
-
-        // array_push($filesNew,["fileFolder" => $this->filePath,"ficheiro" => $this->fileUploaded->getClientOriginalName(), "size" => $this->fileUploaded->getSize()]);
-
-        // $this->filesRepository->addToDatabase($filesNew,$this->customer_id);
-        
-        // $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();                
+               
     }
 
     public function remove($id)
     {
         $this->filesRepository->removeFileFromCustomer($id);
         $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();
+
+        $this->alertRepository->SendNotification(Auth::user()->id,$this->customer_id,"file");
+        event(new ChatMessage());
     }
 
     public function download($id)
@@ -122,6 +121,11 @@ class UpdateTableFiles extends Component
         $filename = Files::where('id',$id)->first();
         $filenameDecoded = json_decode($filename->file);
         return response()->download(storage_path().'/../'.$filenameDecoded[0]->fileFolder);        
+    }
+
+    public function FilesUpdateAfterEvent()
+    {
+        $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();
     }
 
     public function importance($anwser)
@@ -135,6 +139,11 @@ class UpdateTableFiles extends Component
          $this->filesRepository->addToDatabase($filesNew,$this->customer_id,$anwser);
                  
          $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();
+
+         //Manda notificação
+         $this->alertRepository->SendNotification(Auth::user()->id,$this->customer_id,"file");
+         event(new ChatMessage());
+
     }
      
     public function dehydrate()

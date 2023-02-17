@@ -27,7 +27,7 @@ class SendTeamMemberNotification
         $teamMember = $teamMemberEvent->user;
         if($teamMember->email == "")
         {
-            Mail::to("geral@proensal.pt")->queue(new TeamMember($teamMember));
+            Mail::to("joao.mendes@brvr.pt")->queue(new TeamMember($teamMember));
         }
         else {
             Mail::to($teamMember->email)->queue(new TeamMember($teamMember));

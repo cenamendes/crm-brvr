@@ -42,7 +42,9 @@
                                 <th>{{ __('Service') }}</th>
                                 <th>{{ __('Start Date') }}</th>
                                 <th>{{ __('Type') }}</th>
+                                @if(Auth::user()->type_user != "2")
                                 <th>{{ __('Action') }}</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -60,6 +62,7 @@
                                 <td>{{ $item->service->name }}</td>
                                 <td>{{ $item->start_date }}</td>
                                 <td>{{ $item->type }}</td>
+                                @if(Auth::user()->type_user != "2")
                                 <td>
                                     <div class="dropdown">
                                        <button class="btn btn-primary tp-btn-light sharp" type="button" data-toggle="dropdown">
@@ -90,6 +93,7 @@
                                         </div>
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

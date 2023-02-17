@@ -6,6 +6,7 @@
     :idCustomer="$customer->id"
     :name="$customer->name"
     :shortName="$customer->short_name"
+    :username="$customer->username"
     :vat="$customer->vat"
     :email="$customer->email"
     :contact="$customer->contact"

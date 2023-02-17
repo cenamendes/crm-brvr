@@ -3,34 +3,82 @@
 namespace App\Repositories\Tenant\TasksReports;
 
 use App\Models\Tenant\Tasks;
+use App\Models\Tenant\Customers;
+use App\Models\Tenant\TeamMember;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tenant\TaskServices;
 use App\Models\Tenant\TasksReports;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\Tenant\TasksReports\TasksReportsInterface;
+
 
 class TasksReportsRepository implements TasksReportsInterface
 {
     public function getTasksReports($perPage): LengthAwarePaginator
     {
-        $tasksReports = TasksReports::with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->paginate($perPage);
+        if(Auth::user()->type_user == 2)
+        {
+            $customer = Customers::where('user_id',Auth::user()->id)->first();
+            $tasksReports = TasksReports::where('customer_id',$customer->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->paginate($perPage);
+        }
+        else if(Auth::user()->type_user == 1)
+        {
+            $teammember = TeamMember::where('user_id',Auth::user()->id)->first();
+            $tasksReports = TasksReports::where('tech_id',$teammember->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->paginate($perPage);
+        }
+        else {
+            $tasksReports = TasksReports::with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->paginate($perPage);
+        }
 
         return $tasksReports;
     }
 
     public function getTaskReport($searchString,$perPage): LengthAwarePaginator
     {
-        $taskReport = TasksReports::whereHas('servicesToDo', function ($query) use($searchString) {
-            $query->WhereHas('service', function ($queryy) use($searchString) {
-                $queryy->where('name', 'like', '%' . $searchString . '%');
-            });
-        })
-        ->orWhereHas('taskCustomer', function ($queryyy) use($searchString) {
-            $queryyy->Where('short_name', 'like', '%' . $searchString . '%');
-        })
-        ->with('tech')
-        ->with('getHoursTask')
-        ->paginate($perPage);
+        if(Auth::user()->type_user == 2)
+        {
+            $customer = Customers::where('user_id',Auth::user()->id)->first();
+            $taskReport = TasksReports::where('customer_id',$customer->id)->whereHas('servicesToDo', function ($query) use($searchString) {
+                $query->WhereHas('service', function ($queryy) use($searchString) {
+                    $queryy->where('name', 'like', '%' . $searchString . '%');
+                });
+            })
+            ->orWhereHas('taskCustomer', function ($queryyy) use($searchString) {
+                $queryyy->Where('short_name', 'like', '%' . $searchString . '%');
+            })
+            ->with('tech')
+            ->with('getHoursTask')
+            ->paginate($perPage);
+        }
+        else if(Auth::user()->type_user == 1)
+        {
+            $teammember = TeamMember::where('user_id',Auth::user()->id)->first();
+            $taskReport = TasksReports::where('tech_id',$teammember->id)->whereHas('servicesToDo', function ($query) use($searchString) {
+                $query->WhereHas('service', function ($queryy) use($searchString) {
+                    $queryy->where('name', 'like', '%' . $searchString . '%');
+                });
+            })
+            ->orWhereHas('taskCustomer', function ($queryyy) use($searchString) {
+                $queryyy->Where('short_name', 'like', '%' . $searchString . '%');
+            })
+            ->with('tech')
+            ->with('getHoursTask')
+            ->paginate($perPage);
+        }
+        else {
+            $taskReport = TasksReports::whereHas('servicesToDo', function ($query) use($searchString) {
+                $query->WhereHas('service', function ($queryy) use($searchString) {
+                    $queryy->where('name', 'like', '%' . $searchString . '%');
+                });
+            })
+            ->orWhereHas('taskCustomer', function ($queryyy) use($searchString) {
+                $queryyy->Where('short_name', 'like', '%' . $searchString . '%');
+            })
+            ->with('tech')
+            ->with('getHoursTask')
+            ->paginate($perPage);
+        }
 
         return $taskReport;
     }

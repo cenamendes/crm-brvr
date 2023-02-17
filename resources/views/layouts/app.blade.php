@@ -9,6 +9,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+       
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -31,30 +32,6 @@
         </div>
 
         @stack('custom-scripts')
-
-        {{-- <script>
-        window.addEventListener('swalModalQuestion',function(e){
-            if(e.detail.confirm) {
-                swal.fire({
-                    title: e.detail.title,
-                    html: e.detail.message,
-                    type: e.detail.status,
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: e.detail.confirmButtonText,
-                    cancelButtonText: e.detail.cancellButtonText})
-                .then((result) => {
-                    if(result.value) {
-                        console.log(e.function);
-                        Livewire.emit(e.function);
-                    } else {
-                        console.log("cancel");
-                    }
-                });
-            } else {
-                swal(e.detail.title, e.detail.message, e.detail.status);
-            }
-        });
-        </script> --}}
+       
     </body>
 </html>

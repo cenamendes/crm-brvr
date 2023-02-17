@@ -34,7 +34,10 @@
                                         <div class="profile-details">
                                             <div class="profile-name px-3 pt-2">
                                                 <h4 class="text-primary mb-0">{{Auth::user()->name}}</h4>
-                                                <p>{{$teamMember->job}}</p>
+                                                @if(Auth::user()->type_user != "2")
+                                                    <p>{{$teamMember->job}}</p>
+                                                @endif
+
                                             </div>
                                             <div class="profile-email px-2 pt-2">
                                                 <h4 class="text-muted mb-0">{{Auth::user()->email}}</h4>
@@ -54,14 +57,18 @@
                                         <div class="custom-tab-1">
                                             <ul class="nav nav-tabs">
                                                 <li class="nav-item">
-                                                    <a href="#about-me" data-toggle="tab" class="nav-link active">{{__("About me")}}</a>
+                                                    @if (Auth::user()->type_user != '2')
+                                                        <a href="#about-me" data-toggle="tab" class="nav-link active">{{__("About me")}}</a>
+                                                    @endif
+                                                    
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="#profile-settings" data-toggle="tab" class="nav-link">{{__("Setting")}}</a>
+                                                    <a href="#profile-settings" data-toggle="tab" class="nav-link  @if (Auth::user()->type_user == '2') active @endif">{{__("Setting")}}</a>
                                                 </li>
                                             </ul>
                                             <div class="tab-content">
-                                                <div id="about-me" class="tab-pane fade active show">
+                                                @if (Auth::user()->type_user != '2')
+                                                <div id="about-me" class="tab-pane fade @if(Auth::user()->type_user != '2') active show @endif">
                                                     <div class="profile-personal-info pt-3">
                                                         <h4 class="text-primary mb-4">{{__("Personal Information")}}</h4>
                                                         <form action="{{ route('tenant.profile.store') }}" method="post" enctype="multipart/form-data">
@@ -126,7 +133,8 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div id="profile-settings" class="tab-pane fade">
+                                                @endif
+                                                <div id="profile-settings" class="tab-pane fade @if(Auth::user()->type_user == '2') active show @endif">
                                                     <div class="pt-3">
                                                         <div class="settings-form">
                                                             <h4 class="text-primary">{{__("Account Setting")}}</h4>
@@ -137,7 +145,7 @@
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-6">
                                                                         <label>{{ __("Username") }}</label>
-                                                                        <input type="text" name="username" placeholder="utilizador" class="form-control" value="{{$teamMember->username}}">
+                                                                        <input type="text" name="username" placeholder="utilizador" class="form-control" value="{{Auth::user()->username}}">
                                                                     </div>
                                                                     <div class="form-group col-md-6">
                                                                         <label>{{ __("Password") }}</label>
@@ -151,6 +159,20 @@
                                                                         <input type="password" name="repeatPassword" placeholder="{{__("Repeat Password")}}" class="form-control">
                                                                     </div>
                                                                 </div>
+                                                                @if (Auth::user()->type_user == 2)
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-6">
+                                                                            <label>{{ __("Profile Image")}}</label>
+                                                                            <div class="custom-file">
+                                                                                <input type="file" name="uploadFile" id="uploadFile" class="custom-file-input">
+                                                                                <label class="custom-file-label">{{__("Choose file")}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-md-6">
+                                                                            <img src="" id="imagePreview" width="200">
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
                                                                 <button type="submit" style="border:none;background:none;">
                                                                     <a type="submit" class="btn btn-primary"  role="button">
                                                                         {{ __("Update Informations")}}

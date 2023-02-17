@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Tenant\CustomerNotification;
 
+use App\Models\Tenant\Customers;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Tenant\CustomerNotifications;
 use App\Interfaces\Tenant\CustomerNotification\CustomerNotificationInterface;
 
@@ -11,7 +13,15 @@ class CustomerNotificationRepository implements CustomerNotificationInterface
     public function getNotificationTimes(): Array
     {
         $notificationInfo = [];
-        $servicesNotifications = CustomerNotifications::where('treated',1)->with('service')->with('customer')->with('customerLocation')->get();
+        if(Auth::user()->type_user == 2)
+        {
+            $customer = Customers::where('user_id',Auth::user()->id)->first();
+            $servicesNotifications = CustomerNotifications::where('treated',1)->where('customer_id',$customer->id)->with('service')->with('customer')->with('customerLocation')->get();
+        }
+        else 
+        {
+            $servicesNotifications = CustomerNotifications::where('treated',1)->with('service')->with('customer')->with('customerLocation')->get();   
+        }
 
         foreach($servicesNotifications as $count => $notification)
         {

@@ -45,7 +45,9 @@
                         <th>{{ __('Total Hours')}}</th>
                         <th>{{ __('Date') }}</th>
                         <th>{{ __('Status') }}</th>
+                        @if (Auth::user()->type_user != '2')
                         <th>{{ __('Action') }}</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -114,6 +116,7 @@
                                 <span class="badge badge-xs light badge-info">{{ __('Finished') }}</span>
                             @endif
                             </td>
+                            @if (Auth::user()->type_user != '2')
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-primary tp-btn-light sharp" type="button" data-toggle="dropdown">
@@ -142,6 +145,7 @@
                                     </div>
                                 </div>
                             </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

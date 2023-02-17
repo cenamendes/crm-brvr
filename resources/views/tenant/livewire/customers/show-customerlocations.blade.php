@@ -12,6 +12,11 @@
                         </div>
                     </div>
                     <div id="dataTables_wrapper" class="dataTables_wrapper">
+                        @if (Auth::user()->type_user == '2')
+                        <div class="col-3 text-left p-0" style="margin-bottom:20px;">
+                            <a href="{{ route('tenant.customer-locations.create') }}" class="btn btn-primary">{{ __('Create Location') }}</a>
+                        </div>
+                        @endif
                         <div class="dataTables_length" id="dataTables_length">
                             <label>{{ __('Show') }}
                                 <select name="perPage" aria-controls="select" wire:model="perPage">

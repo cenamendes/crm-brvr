@@ -13,7 +13,9 @@
         <script src="{{ '/assets/resources/' . $script }}"></script>
 	@endforeach
 @endif
+{{-- <script src="{{ '/assets/resources/js/teste.js' }}" type="module"></script> --}}
 <script>
+
     window.addEventListener('swal',function(e){
         if(e.detail.confirm) {
             var page = e.detail.page;

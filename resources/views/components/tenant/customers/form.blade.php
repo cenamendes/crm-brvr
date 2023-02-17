@@ -54,12 +54,19 @@
                                     </section>
                                 </div>
                                 <div class="form-group row">
-                                    <section class="col-12">
+                                    <section class="col-6">
                                         <label>{{ __('Customer Address') }}</label>
                                         <input type="text" name="address" id="address" class="form-control"
                                             @isset($address)value="{{ $address }}" @endisset
                                             @if(null !== old('address'))value="{{ old('address') }}"@endisset
                                             placeholder="{{ __('Customer Address') }}">
+                                    </section>
+                                    <section class="col-6">
+                                        <label>{{ __('Username') }}</label>
+                                        <input type="text" name="username" id="username" class="form-control"
+                                            @isset($username)value="{{ $username }}" @endisset
+                                            @if(null !== old('username'))value="{{ old('username') }}"@endisset
+                                            placeholder="{{ __('Username') }}">
                                     </section>
                                 </div>
                                 <div class="form-group row">
@@ -76,7 +83,10 @@
                                 <div class="form-group row">
                                     <section class="col">
                                         <label>{{ __('Account manager') }}</label>
-                                        <select name="account_manager" id="account_manager" class="form-control">
+                                        @if(Auth::user()->type_user == "2")  
+                                            <input type='hidden' name="account_manager" id="account_manager" value="{{$accountmanager}}">
+                                        @endif
+                                        <select name="account_manager" id="account_manager" class="form-control"  @if(Auth::user()->type_user == "2") disabled @endif>
                                             <option value="">{{ __('Select account manager') }}</option>
 
                                             {{-- @if (isset($accountmanager) && $accountmanager != '') --}}
@@ -108,10 +118,12 @@
     <div class="card-footer justify-content-between">
         <div class="row">
             <div class="col text-right">
-                <a href="{{ route('tenant.customers.index') }}" class="btn btn-secondary mr-2">{{
-                    __('Back') }}
-                    <span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>
-                </a>
+                @if(Auth::user()->type_user != "2")
+                    <a href="{{ route('tenant.customers.index') }}" class="btn btn-secondary mr-2">{{
+                        __('Back') }}
+                        <span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>
+                    </a>
+                @endif
                 <button type="submit" style="border:none;background:none;">
                     <a type="submit" class="btn btn-primary"  role="button">
                         {{ $buttonAction }}

@@ -8,16 +8,8 @@
                     </div>
                 </div>
                 <ul class="navbar-nav header-right">
-                    <li class="nav-item d-none">
-                        <div class="input-group search-area d-xl-inline-flex d-none">
-                            <input type="text" class="form-control" placeholder="{{ __('Search here...') }}">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><a href="javascript:void(0)"><i
-                                            class="flaticon-381-search-2"></i></a></span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown notification_dropdown d-none">
+                    @livewire('tenant.alert-messages.alert-messages')
+                    {{-- <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link  ai-icon" href="javascript:void(0)" role="button"
                             data-toggle="dropdown">
                             <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
@@ -101,11 +93,10 @@
                                     </li>
                                 </ul>
                             </div>
-                            <a class="all-notification" href="javascript:void(0)">See all notifications <i
-                                    class="ti-arrow-right"></i></a>
+                            <a class="all-notification" href="javascript:void(0)">Marcar tudo como lida</a>
                         </div>
-                    </li>
-                    <li class="nav-item dropdown notification_dropdown d-none">
+                    </li> --}}
+                    {{-- <li class="nav-item dropdown notification_dropdown d-none">
                         <a class="nav-link bell bell-link" href="javascript:void(0)">
                             <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -115,7 +106,7 @@
                             </svg>
                             <div class="pulse-css"></div>
                         </a>
-                    </li>
+                    </li> --}}
                    
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
@@ -127,6 +118,9 @@
                             @endif
                             <div class="header-info">
                                 <span class="text-black"><strong>{{Auth::user()->name}}</strong></span>
+                                @if(Auth::user()->type_user == "2")
+                                    <p class="fs-12 mb-0">{{__("Customer")}}</p>
+                                @endif
                                 @isset(Auth::user()->users->job)
                                     <p class="fs-12 mb-0">{{Auth::user()->users->job}}</p>
                                 @endisset
@@ -175,3 +169,17 @@
         </nav>
     </div>
 </div>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script>
+  
+    var pusher = new Pusher('9fc590949fcf83c98e55', {
+        cluster: 'eu',
+    });
+    
+    var channel = pusher.subscribe('chat');
+    channel.bind('App\\Events\\ChatMessage', function(data) {
+        Livewire.emit("chatUpdate");
+        Livewire.emit("AlertMessages");
+        Livewire.emit("FilesUpdateAfterEvent");
+    });
+</script>

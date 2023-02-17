@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use App\Events\ChatMessage as EventsChatMessage;
+use App\Interfaces\Tenant\AlertMessage\AlertMessageInterface;
 use App\Interfaces\Tenant\ChatMessage\ChatInterface;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
 
@@ -23,11 +24,14 @@ class Chat extends Component
 
     protected object $chatRepository;
 
+    protected object $alertRepository;
+
     public string $usermsg = '';
 
-    public function boot(ChatInterface $interfaceChat)
+    public function boot(ChatInterface $interfaceChat,AlertMessageInterface $interfaceAlert)
     {
         $this->chatRepository = $interfaceChat;
+        $this->alertRepository = $interfaceAlert;
     }
 
     public function mount($customer): void
@@ -56,10 +60,14 @@ class Chat extends Component
 
     public function SendMessage()
     {
-        $this->chatRepository->messageSend($this->usermsg,Auth::user()->id,$this->customer_id);
-        $this->usermsg = '';
-        $this->chat = $this->chatRepository->getMessages($this->customer_id);
-        event(new ChatMessage());
+        if($this->usermsg != "")
+        {
+            $this->chatRepository->messageSend($this->usermsg,Auth::user()->id,$this->customer_id);
+            $this->usermsg = '';
+            $this->chat = $this->chatRepository->getMessages($this->customer_id);
+            $this->alertRepository->SendNotification(Auth::user()->id,$this->customer_id,"message");
+            event(new ChatMessage());
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Tenant\Team\TeamController;
+use App\Http\Controllers\Tenant\Files\FilesController;
 use App\Http\Controllers\Tenant\Setup\ZonesController;
 use App\Http\Controllers\Tenant\Tasks\TasksController;
 use App\Http\Controllers\Tenant\Setup\BrandsController;
@@ -10,8 +11,8 @@ use App\Http\Controllers\Tenant\Setup\ServicesController;
 use App\Http\Controllers\Tenant\Profile\ProfileController;
 use App\Http\Controllers\Tenant\Auth\NewPasswordController;
 use App\Http\Controllers\Tenant\Auth\VerifyEmailController;
-use App\Http\Controllers\Tenant\Setup\CustomTypesController;
 //use App\Http\Controllers\Tenant\User\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Tenant\Setup\CustomTypesController;
 use App\Http\Controllers\Tenant\Tasks\TasksReportsController;
 use App\Http\Controllers\Tenant\Auth\RegisteredUserController;
 use App\Http\Controllers\Tenant\Customers\CustomersController;
@@ -20,8 +21,10 @@ use App\Http\Controllers\Tenant\TeamMember\TeamMemberController;
 use App\Http\Controllers\Tenant\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Tenant\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Tenant\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Tenant\FilesCustomer\FilesCustomerController;
 use App\Http\Controllers\Tenant\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Tenant\Analysis\AnalysisTasksReportsController;
+use App\Http\Controllers\Tenant\CustomerMember\CustomerMemberController;
 use App\Http\Controllers\Tenant\CustomerContacts\CustomerContactsController;
 use App\Http\Controllers\Tenant\CustomerServices\CustomerServicesController;
 use App\Http\Controllers\Tenant\CustomerLocations\CustomerLocationsController;
@@ -138,11 +141,13 @@ Route::middleware(['auth', 'cmsSettings'])->group(function () {
         'as' => 'tenant'
     ]);
 
+    Route::get('loginCustomer/{customer}',[CustomersController::class,'createloginCustomer'])->name('tenant.loginCustomer.loginCustomer');
+
     Route::resource('customers', CustomersController::class, [
         'as' => 'tenant'
     ]);
 
-    //Route::get('login/{team-member}', [TeamMemberController::class,'createlogin'])->name('tenant.login.createlogin');
+    Route::get('login/{member}', [TeamMemberController::class,'createlogin'])->name('tenant.login.logadas');
 
     Route::resource('team-member', TeamMemberController::class, [
         'as' => 'tenant'
@@ -158,7 +163,17 @@ Route::middleware(['auth', 'cmsSettings'])->group(function () {
         'as' => 'tenant'
     ]);
 
+    Route::resource('customer-member', CustomerMemberController::class, [
+        'as' => 'tenant'
+    ]);
 
+    Route::resource('files', FilesController::class, [
+        'as' => 'tenant'
+    ]);
+
+    Route::resource('files-customer', FilesCustomerController::class, [
+        'as' => 'tenant'
+    ]);
 
     Route::resource('customer-contacts', CustomerContactsController::class);
 

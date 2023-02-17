@@ -35,7 +35,6 @@
         </div>
     @endif --}}
     @if(isset($fileUpdate))
-    {{-- <div class="table-responsive" id="updateTable"> --}}
         <table id="dataTables-data" class="table table-responsive-lg mb-0 table-striped">
             <thead>
                 <tr>

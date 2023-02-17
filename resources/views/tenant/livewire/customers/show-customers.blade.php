@@ -39,13 +39,13 @@
                 </th>
                 <th>{{ __('NIF') }}</th>
                 <th>{{ __('Name') }}</th>
+                <th>{{ __('Team Member Associated')}}</th>
                 <th>{{ __('Contact') }}</th>
                 <th>{{ __('District') }}</th>
                 <th>{{ __('Action') }}</th>
             </tr>
         </thead>
         <tbody>
-           
             @foreach ($customers as $customer)
                 <tr>
                     <td>
@@ -57,6 +57,7 @@
                     </td>
                     <td>{{ $customer->vat }}</td>
                     <td>{{ $customer->name }}</td>
+                    <td>{{ $customer->teamMember->name}}</td>
                     <td>{{ $customer->contact }}</td>
                     <td>{{ $customer->customerDistrict->name }}</td>
                     <td>
@@ -74,6 +75,9 @@
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
+                                @if($customer->account_active == 0)
+                                 <a class="dropdown-item" href="{{ route('tenant.loginCustomer.loginCustomer', $customer->id) }}">{{ __('Create Login')}}</a>
+                                @endif
                                 <a class="dropdown-item"
                                     href="{{ route('tenant.customers.edit', $customer->id) }}">{{ __('Edit Customer') }}</a>
                                     <button class="dropdown-item btn-sweet-alert" data-type="form"

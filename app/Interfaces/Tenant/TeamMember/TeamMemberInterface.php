@@ -23,6 +23,6 @@ interface TeamMemberInterface
 
     public function destroy(TeamMember $teammember);
 
-    public function createLogin(TeamMember $teamMember): User;
+    public function createLogin(string $teamMember): User;
 
 }

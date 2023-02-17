@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Tenant\TeamMember;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tenant\TasksReports;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -18,7 +19,13 @@ class TeamMemberRepository implements TeamMemberInterface
 {
     public function getAllTeamMembers($perPage): LengthAwarePaginator
     {
-        $teamMembers = TeamMember::paginate($perPage);
+        if(Auth::user()->type_user == 1)
+        {
+            $teamMembers = TeamMember::where('user_id',Auth::user()->id)->paginate($perPage);
+        }
+        else {
+            $teamMembers = TeamMember::paginate($perPage);
+        }
         return $teamMembers;
     }
 
@@ -84,16 +91,19 @@ class TeamMemberRepository implements TeamMemberInterface
         });
     }
 
-    public function createLogin(TeamMember $teamMember): User
+    public function createLogin($teamMember): User
     {
         return DB::transaction(function () use ($teamMember){
            $password = Str::random(8);
            $hashed_password = Hash::make($password);
 
+           $teamMember = TeamMember::where('id',$teamMember)->first();
+           
            $userCreate = User::create([
                 'name' => $teamMember->name,
                 'username' => $teamMember->username,
                 'email' => $teamMember->email,
+                'type_user' => '1',
                 'password' => $hashed_password,
            ]);
 

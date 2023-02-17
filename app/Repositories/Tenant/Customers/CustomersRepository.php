@@ -2,23 +2,28 @@
 
 namespace App\Repositories\Tenant\Customers;
 
+use App\Models\User;
+use Illuminate\Support\Str;
+use App\Models\Tenant\Files;
 use App\Models\Tenant\Customers;
 use App\Models\Tenant\TeamMember;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Tenant\CustomerServices;
 use App\Models\Tenant\ContactsCustomers;
 use App\Models\Tenant\CustomerLocations;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
 use App\Http\Requests\Tenant\Customers\CustomersFormRequest;
 use App\Http\Requests\Tenant\CustomerContacts\CustomerContactsFormRequest;
-use Illuminate\Database\Eloquent\Collection;
 
 class CustomersRepository implements CustomersInterface
 {
     public function getAllCustomers($perPage): LengthAwarePaginator
     {
-        $customers = Customers::with('customerDistrict')->paginate($perPage);
+        $customers = Customers::with('customerDistrict')->with('teamMember')->paginate($perPage);
         return $customers;
     }
 
@@ -46,6 +51,7 @@ class CustomersRepository implements CustomersInterface
             $Customer = Customers::create([
                 'name' => $request->name,
                 'short_name' => $request->short_name,
+                'username' => $request->username,
                 'vat' => $request->vat,
                 'contact' => $request->contact,
                 'email' => $request->email,
@@ -55,6 +61,7 @@ class CustomersRepository implements CustomersInterface
                 'zipcode' => $request->zipcode,
                 'zone' => '1',
                 'account_manager' => $request->account_manager,
+                'account_active' => '0'
             ]);
 
             $memberInfo = TeamMember::where('id',$request->account_manager)->first();
@@ -121,6 +128,15 @@ class CustomersRepository implements CustomersInterface
             CustomerLocations::where('customer_id',$customer->id)->where('main','1')->update(
                 array_pop($arrayCustomerLocation)
             );
+
+            if(Auth::user()->type_user == 2)
+            {
+                User::where('id',Auth::user()->id)->update([
+                    "name" => $request->name,
+                    "username" => $request->username,
+                    "email" => $request->email
+                ]);
+            }
             return $customer;
 
         });
@@ -137,6 +153,49 @@ class CustomersRepository implements CustomersInterface
         });
 
     }
+
+    public function createLogin($customer): User
+    {
+        return DB::transaction(function () use ($customer){
+           $password = Str::random(8);
+           $hashed_password = Hash::make($password);
+
+           $customerSelected = Customers::where('id',$customer)->first();
+           
+           $userCreate = User::create([
+                'name' => $customerSelected->name,
+                'username' => $customerSelected->username,
+                'email' => $customerSelected->email,
+                'type_user' => '2',
+                'password' => $hashed_password,
+           ]);
+
+           $updateTeamMember = Customers::where('id',$customerSelected->id)->update([
+              'user_id' => $userCreate->id,
+              'account_active' => '1'
+           ]);
+
+           $userCreate["user"] = ['password_without_hashed' => $password];
+
+           return $userCreate;
+        });
+    }
+
+    public function getCustomersOfMember($id,$perPage): LengthAwarePaginator
+    {
+        if(Auth::user()->type_user == 0)
+        {
+            $customers = Customers::paginate($perPage);
+        }
+        else 
+        {
+            $teamMember = TeamMember::where('user_id',$id)->first();
+            $customers = Customers::where('account_manager',$teamMember->id)->paginate($perPage);
+        }
+       
+        return $customers;
+    }
+
 
 
 }

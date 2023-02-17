@@ -3,16 +3,19 @@
 namespace App\Http\Livewire\Tenant\FilesCustomer;
 
 use Livewire\Component;
+use App\Events\ChatMessage;
 use App\Models\Tenant\Files;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Interfaces\Tenant\Files\FilesInterface;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
+use App\Interfaces\Tenant\AlertMessage\AlertMessageInterface;
 
 class UpdateTableFiles extends Component
 {
-    protected $listeners = ["refresh" => "refresh", "removeNew" => "removeNew", 'FilesUpdatedFromMembers', 'importance'];
+    protected $listeners = ["refresh" => "refresh", "removeNew" => "removeNew", 'FilesUpdatedFromMembers', 'importance','FilesUpdateAfterEvent'];
 
     use WithFileUploads;
     public int $files = 0;
@@ -38,10 +41,12 @@ class UpdateTableFiles extends Component
 
    
     protected object $filesRepository;
+    protected object $alertRepository;
 
-    public function boot(FilesInterface $interfaceFiles)
+    public function boot(FilesInterface $interfaceFiles, AlertMessageInterface $alertInterface)
     {
         $this->filesRepository = $interfaceFiles;
+        $this->alertRepository = $alertInterface;
     }
     
     public function mount($file,$update,$customer)
@@ -106,13 +111,25 @@ class UpdateTableFiles extends Component
 
          $this->filesRepository->addToDatabase($filesNew,$this->customer_id,"customer");
         
-         $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();                
+         $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();    
+         
+          //Manda notificação
+          $this->alertRepository->SendNotification(Auth::user()->id,$this->customer_id,"file");
+          event(new ChatMessage());
+    }
+
+    public function FilesUpdateAfterEvent()
+    {
+        $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();
     }
 
     public function remove($id)
     {
         $this->filesRepository->removeFileFromCustomer($id);
         $this->filesDatabase = Files::where('customer_id',$this->customer_id)->get();
+
+        $this->alertRepository->SendNotification(Auth::user()->id,$this->customer_id,"file");
+        event(new ChatMessage());
     }
 
     public function download($id)

@@ -9,9 +9,11 @@
     </div>
     <div class="card-header" wire:key="tenanttasksshow">
         <h4 class="card-title">{{ __('Tasks') }}</h4>
-        <div class="col-3 text-right pr-0">
-            <a href="{{ route('tenant.tasks.create') }}" class="btn btn-primary">{{ __('Add Task') }}</a>
-        </div>
+        @if(Auth::user()->type_user !="2")
+            <div class="col-3 text-right pr-0">
+                <a href="{{ route('tenant.tasks.create') }}" class="btn btn-primary">{{ __('Add Task') }}</a>
+            </div>
+        @endif
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -50,7 +52,9 @@
                         <th>{{ __('Service') }}</th>
                         <th>{{ __('Date') }}</th>
                         <th>{{ __('County') }}</th>
-                        <th>{{ __('Action') }}</th>
+                        @if(Auth::user()->type_user !="2")
+                            <th>{{ __('Action') }}</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -82,6 +86,7 @@
                             </td>
                             <td>{{ $item->taskLocation->locationCounty->name }}
                             </td>
+                            @if(Auth::user()->type_user !="2")
                             <td>
                                 {{-- <div class="dropdown ml-auto text-right"> --}}
                                     {{-- <div class="btn-link" data-toggle="dropdown">
@@ -130,6 +135,7 @@
                                     </div>
                                 {{-- </div> --}}
                             </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

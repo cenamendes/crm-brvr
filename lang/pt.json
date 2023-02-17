@@ -549,7 +549,20 @@
     "These credentials do not match our records.": "Estas credenciais não se encontram registadas.",
     "That username already exists.": "Esse utilizador já está registado",
     "Team member login was created with success! password: ": "Login do membro de equipa criado com sucesso! password: :attribute",
-    "That username already exists": "Esse utilizador já se encontra registado."
+    "That username already exists": "Esse utilizador já se encontra registado.",
+
+    "Associate Customer to Member": "Associar Cliente",
+    "Associate Customer": "Associar Cliente",
+    "Team Member Associated": "Membro Associado",
+
+    "The username field is required": "O campo de utilizador é obrigatório",
+    "My Information": "Minha Informação",
+    "Edit Information": "Editar Informação",
+    "Create Location": "Criar Localização",
+    "Manage Files": "Gerir Ficheiros",
+    "Select a Customer to check his info": "Selecione um cliente para verificar a sua informação",
+    "Send a File": "Envie Ficheiro",
+    "My Files": "Meus Ficheiros"
 
 
 

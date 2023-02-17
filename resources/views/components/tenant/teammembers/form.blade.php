@@ -10,6 +10,7 @@
                         @csrf
                         @if ($update)
                             @method('PUT')
+                           
                         @endif
                         <div class="row">
                             <div class="col">
