@@ -11,7 +11,7 @@
     </div>
 
     @if(isset($fileUpdate))
-    <div class="mt-4" style="max-height:400px; border:1px solid #FE634E; overflow:scroll; overflow-x: hidden;">
+    <div class="mt-4" style="max-height:400px; border:1px solid #326c91 ; overflow:scroll; overflow-x: hidden;">
         <table id="dataTables-data" class="table table-responsive-lg mb-0 table-striped" style="min-width:0px!important;">
             <thead>
                 <tr>
