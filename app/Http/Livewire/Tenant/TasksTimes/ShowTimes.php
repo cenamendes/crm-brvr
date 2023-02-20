@@ -170,7 +170,7 @@ class ShowTimes extends Component
                 'status'=>'info',
                 'showCancelButton'=>false,
                 'showConfirmButton'=>false,
-                'confirmButtonColor'=> '#FE634E',
+                'confirmButtonColor'=> '#326c91 ',
                 'confirmButtonText' => __("Add"),
                 'cancelButtonText' => __("Cancel"),
                 'function' => "timesInsert"
