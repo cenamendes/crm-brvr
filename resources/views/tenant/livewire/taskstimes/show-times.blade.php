@@ -72,7 +72,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                   {{$item->service->description}}
+                                   {{$item->service->name}}
                                 </td>
                                 <td>
                                     <i class="fa fa-calendar" aria-hidden="true"></i> {{ $item->date_begin }}<br>
