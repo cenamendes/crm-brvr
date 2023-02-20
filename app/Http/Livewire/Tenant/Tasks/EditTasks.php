@@ -341,7 +341,7 @@ class EditTasks extends Component
         {
             return $this->askUserLooseChanges();
         }
-        $this->dispatchBrowserEvent('loading');
+        //$this->dispatchBrowserEvent('loading');
         return redirect()->route('tenant.tasks.index');
     }
 
@@ -371,7 +371,7 @@ class EditTasks extends Component
      */
     public function resetChanges(): Redirector
     {
-        $this->dispatchBrowserEvent('loading');
+        //$this->dispatchBrowserEvent('loading');
         return redirect()->route('tenant.tasks.index')
             ->with('message', __('Task updated canceled, all changes where lost!'))
             ->with('status', 'info');
