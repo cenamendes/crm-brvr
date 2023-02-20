@@ -201,7 +201,7 @@ class EditTasksReports extends Component
             $this->dispatchBrowserEvent('reportMessage');
         }
         else {
-            $this->dispatchBrowserEvent('loading');
+            //$this->dispatchBrowserEvent('loading');
             return redirect()->route('tenant.tasks-reports.index')
                 ->with('message', __('Task Report updated with success!'))
                 ->with('status', 'info');
@@ -223,7 +223,7 @@ class EditTasksReports extends Component
             $this->askUserLooseChanges();
             return NULL;
         }
-        $this->dispatchBrowserEvent('loading');
+        //$this->dispatchBrowserEvent('loading');
         return redirect()->route('tenant.tasks-reports.index');
     }
 
@@ -253,7 +253,7 @@ class EditTasksReports extends Component
      */
     public function resetChanges(): Redirector
     {
-        $this->dispatchBrowserEvent('loading');
+        //$this->dispatchBrowserEvent('loading');
         return redirect()->route('tenant.tasks-reports.index')
             ->with('message', __('Task report updat canceled, all changes where lost!'))
             ->with('status', 'info');
