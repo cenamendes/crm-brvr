@@ -36,11 +36,11 @@ class TaskDispatched extends Mailable
      */
     public function envelope()
     {
-
+          //env('MAIL_USERNAME')
         $subject = 'Tarefa #' . $this->task->reference . ' agendada com sucesso.';
         return new Envelope(
             subject: $subject,
-            from: new Address(env('MAIL_USERNAME'), session('sender_name')),
+            from: new Address(session('email'), session('sender_name')),
         );
     }
 
