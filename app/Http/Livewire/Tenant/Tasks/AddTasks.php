@@ -242,7 +242,7 @@ class AddTasks extends Component
             $this->dispatchBrowserEvent('swal', ['title' => __('Services'), 'message' => $errorMessage, 'status'=>'error']);
             return;
         }
-        $this->dispatchBrowserEvent('loading');
+        //$this->dispatchBrowserEvent('loading');
 
         $latest = Tasks::latest()->first();
 
