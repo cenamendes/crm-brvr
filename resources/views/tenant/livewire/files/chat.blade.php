@@ -55,7 +55,7 @@
         <div id="menu">
             <p class="welcome">Olá, {{Auth::user()->name}}<b></b></p>
         </div>
-        <div id="chatbox" style="max-height:400px; border:1px solid #FE634E; overflow:scroll; overflow-x: hidden;">
+        <div id="chatbox" style="max-height:400px; border:1px solid #326c91 ; overflow:scroll; overflow-x: hidden;">
           <div>
             @if ($chat->isEmpty())
             <div class="container">
@@ -73,8 +73,8 @@
                     @else
                       <img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" width="20" alt="" class="right">
                     @endif
-                    {{-- <p style="color:#fe4128;text-align:right;">{{$name->name}}</p> --}}
-                    <div class="row"><div class="col-xl-6 text-left pl-0"><span class="time-left">{{$ch->created_at}}</span></div><div class="col-xl-6 pr-0"><p style="color:#fe4128;text-align:right;">{{$name->name}}</p></div></div>
+                    {{-- <p style="color:#326c91 ;text-align:right;">{{$name->name}}</p> --}}
+                    <div class="row"><div class="col-xl-6 text-left pl-0"><span class="time-left">{{$ch->created_at}}</span></div><div class="col-xl-6 pr-0"><p style="color:#326c91 ;text-align:right;">{{$name->name}}</p></div></div>
                     <p style="text-align:right;width:95%;line-height:1.2;margin-bottom:0;">{{$ch->message}}</p>
                     {{-- <span class="time-left">{{$ch->created_at}}</span> --}}
                 </div>
@@ -88,7 +88,7 @@
                     @else
                     <img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" width="20" alt="">
                     @endif
-                    <div class="row"><div class="col-xl-6 pl-0"><p style="color:#fe4128;">{{$name->name}}</p></div><div class="col-xl-6 text-right pr-0"><span class="time-right">{{$ch->created_at}}</span></div></div>
+                    <div class="row"><div class="col-xl-6 pl-0"><p style="color:#326c91 ;">{{$name->name}}</p></div><div class="col-xl-6 text-right pr-0"><span class="time-right">{{$ch->created_at}}</span></div></div>
                     <p style="line-height:1.2;margin-bottom:0;">{{$ch->message}}</p>
                     {{-- <span class="time-right">{{$ch->created_at}}</span> --}}
                   </div>
