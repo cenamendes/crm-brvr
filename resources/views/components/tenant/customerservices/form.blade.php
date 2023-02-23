@@ -51,24 +51,24 @@
                                         </div>
                                         @if(isset($customer) && $customer != '')
                                         <div class="form-group row">
-                                            <section class="col-9">
+                                            <section class="col-xl-9 col-xs-12">
                                                 <label>{{ __('Customer Name') }}</label>
                                                 <input type="text" name="name" id="name" class="form-control"
                                                     value="{{ $customer->name }}" readonly>
                                             </section>
-                                            <section class="col-3">
+                                            <section class="col-xl-3 col-xs-12">
                                                 <label>{{ __('VAT') }}</label>
                                                 <input type="text" name="vat" id="vat" class="form-control"
                                                     value="{{ $customer->vat }}" readonly>
                                             </section>
                                         </div>
                                         <div class="form-group row">
-                                            <section class="col-3">
+                                            <section class="col-xl-3 col-xs-12">
                                                 <label>{{ __('Phone number') }}</label>
                                                 <input type="text" name="phone" id="phone" class="form-control"
                                                     value="{{ $customer->contact }}" readonly>
                                             </section>
-                                            <section class="col-9">
+                                            <section class="col-xl-9 col-xs-12">
                                                 <label>{{ __('Primary e-mail address') }}</label>
                                                 <input type="text" name="email" id="email" class="form-control"
                                                     value="{{ $customer->email }}" readonly>
@@ -82,17 +82,17 @@
                                             </section>
                                         </div>
                                         <div class="form-group row">
-                                            <section class="col-2">
+                                            <section class="col-xl-2 col-xs-12">
                                                 <label>{{ __('Zip Code') }}</label>
                                                 <input type="text" name="zipcode" id="zipcode" class="form-control"
                                                     value="{{ $customer->zipcode }}" readonly>
                                             </section>
-                                            <section class="col-5">
+                                            <section class="col-xl-5 col-xs-12">
                                                 <label>{{ __('District') }}</label>
                                                 <input type="text" name="district" id="district" class="form-control"
                                                     value="{{ $customer->customerDistrict->name }}" readonly>
                                             </section>
-                                            <section class="col-5">
+                                            <section class="col-xl-5 col-xs-12">
                                                 <label>{{ __('County') }}</label>
                                                 <input type="text" name="zipcode" id="zipcode" class="form-control"
                                                     value="{{ $customer->customerCounty->name }}" readonly>
