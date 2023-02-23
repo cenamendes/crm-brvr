@@ -21138,7 +21138,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     color: #fff !important; }
 
 .fc-basic-view .fc-body .fc-row {
-  min-height: 1rem; }
+  min-height: 6rem; }
 
 .fc-scroller.fc-day-grid-container {
   height: 490px !important; }
