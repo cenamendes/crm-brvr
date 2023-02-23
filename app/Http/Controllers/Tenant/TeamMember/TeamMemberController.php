@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant\TeamMember;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Tenant\TeamMember;
 use Illuminate\Contracts\View\View;
