@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group row">
-                                    <section class="col-9">
+                                    <section class="col-xl-9 col-xs-12">
                                         <input style="display:none" type="text" name="idCustomer" id="idCustomer" class="form-control"
                                         @isset($idCustomer) value="{{ $idCustomer }}" @endisset
                                         @if(null !== old('idCustomer'))value="{{ old('idCustomer') }}"@endisset
@@ -22,7 +22,7 @@
                                             @if(null !== old('name'))value="{{ old('name') }}"@endisset
                                             placeholder="{{ __('Customer Name') }}">
                                     </section>
-                                    <section class="col-3">
+                                    <section class="col-xl-3 col-xs-12">
                                         <label>{{ __('VAT') }}</label>
                                         <input type="text" name="vat" id="vat" class="form-control"
                                             @isset($vat)value="{{ $vat }}" @endisset
@@ -31,21 +31,21 @@
                                     </section>
                                 </div>
                                 <div class="form-group row">
-                                    <section class="col-3">
+                                    <section class="col-xl-3 col-xs-12">
                                         <label>{{ __('Short Name') }}</label>
                                         <input type="text" name="short_name" id="short_name" class="form-control"
                                             @isset($shortName)value="{{ $shortName }}" @endisset
                                             @if(null !== old('short_name'))value="{{ old('short_name') }}"@endisset
                                             placeholder="{{ __('Short Name') }}">
                                     </section>
-                                    <section class="col-3">
+                                    <section class="col-xl-3 col-xs-12">
                                         <label>{{ __('Phone number') }}</label>
                                         <input type="text" name="contact" id="contact" class="form-control"
                                             @isset($contact)value="{{ $contact }}" @endisset
                                             @if(null !== old('contact'))value="{{ old('contact') }}"@endisset
                                             placeholder="{{ __('Phone number') }}">
                                     </section>
-                                    <section class="col-6">
+                                    <section class="col-xl-6 col-xs-12">
                                         <label>{{ __('Primary e-mail address') }}</label>
                                         <input type="text" name="email" id="email" class="form-control"
                                             @isset($email)value="{{ $email }}" @endisset
@@ -54,14 +54,14 @@
                                     </section>
                                 </div>
                                 <div class="form-group row">
-                                    <section class="col-6">
+                                    <section class="col-xl-6 col-xs-12">
                                         <label>{{ __('Customer Address') }}</label>
                                         <input type="text" name="address" id="address" class="form-control"
                                             @isset($address)value="{{ $address }}" @endisset
                                             @if(null !== old('address'))value="{{ old('address') }}"@endisset
                                             placeholder="{{ __('Customer Address') }}">
                                     </section>
-                                    <section class="col-6">
+                                    <section class="col-xl-6 col-xs-12">
                                         <label>{{ __('Username') }}</label>
                                         <input type="text" name="username" id="username" class="form-control"
                                             @isset($username)value="{{ $username }}" @endisset
@@ -70,7 +70,7 @@
                                     </section>
                                 </div>
                                 <div class="form-group row">
-                                    <section class="col-2">
+                                    <section class="col-xl-2 col-xs-12">
                                         <label>{{ __('Zip Code') }}</label>
                                         <input type="text" name="zipcode" id="zipcode" class="form-control"
                                             @isset($zipcode)value="{{ $zipcode }}" @endisset
