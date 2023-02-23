@@ -11,12 +11,12 @@
         <div class="card-header" style="padding:1!important;" wire:key="tenanttasksshow">
             <h4 class="card-title">{{ __('Tasks Times') }}</h4>
            
-            <div class="col-3 text-right pr-0">
+            <div class="col-xl-3 col-xs-3 text-right pr-0">
                 <div class="row">
-                <div class="col-4">
-                    <label class="font-weight-bold">{{ __('Hours in Task')}}:</label>{{ global_hours_sum($tasksTimes) }}
+                <div class="col-xl-4 col-xs-4">
+                    <label class="font-weight-bold">{{ __('Hours in Task')}}:</label><br>{{ global_hours_sum($tasksTimes) }}
                 </div>
-                <div class="col-8">
+                <div class="col-xl-8 col-xs-8">
                     <a href="javascript:void(0)" id="taskAddTime" class="btn btn-primary" wire:click="addTime">{{ __('Add Time') }}</a>
                 </div>
             </div>
