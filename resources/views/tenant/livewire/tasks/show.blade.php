@@ -10,7 +10,7 @@
     <div class="card-header" wire:key="tenanttasksshow">
         <h4 class="card-title">{{ __('Tasks') }}</h4>
         @if(Auth::user()->type_user !="2")
-            <div class="col-3 text-right pr-0">
+            <div class="col-xl-3 col-xs-6 text-right pr-0">
                 <a href="{{ route('tenant.tasks.create') }}" class="btn btn-primary">{{ __('Add Task') }}</a>
             </div>
         @endif
