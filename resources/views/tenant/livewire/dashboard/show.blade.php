@@ -42,7 +42,7 @@
           <div class="card">
             <div class="card-body">
     
-              <div id="calendarr" class="app-fullcalendarr" wire:ignore></div>
+              <div id="calendarr" class="app-fullcalendarr fc fc-unthemed fc-ltr" wire:ignore></div>
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
             <div class="card-header">
               <h4 class="card-title">{{ __("Notifications")}}</h4>
             </div>
-            <div class="card-body" style="display:flex;justify-content:center;">
+            <div class="card-body" style="display:flex;overflow:auto;">
               <table id="dataTables-data" class="table table-responsive-lg mb-0 table-striped">
                 <thead>
                   <tr>
