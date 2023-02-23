@@ -1,112 +1,220 @@
 <div>
 <style>
-        /* Chat containers */
-.cont {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
-  border-radius: 30px;
-  padding: 10px;
-  margin: 10px 0;
-}
+    
+	.chat-online {
+		color: #34ce57
+	}
 
-/* Darker chat container */
-.darker {
-  border-color: #ccc;
-  background-color: #ddd;
-}
+	.chat-offline {
+		color: #e4606d
+	}
 
-/* Clear floats */
-.cont::after {
-  content: "";
-  clear: both;
-  display: table;
-}
+	.chat-messages {
+		display: flex;
+		flex-direction: column;
+		max-height: 800px;
+		overflow-y: scroll
+	}
 
-/* Style images */
-.cont img {
-  float: left;
-  max-width: 60px;
-  width: 100%;
-  margin-right: 20px;
-  border-radius: 20px;
-}
+	.chat-message-left,
+	.chat-message-right {
+		display: flex;
+		flex-shrink: 0
+	}
 
-/* Style the right image */
-.cont img.right {
-  float: right;
-  margin-left: 20px;
-  margin-right:0;
-}
+	.chat-message-left {
+		margin-right: auto
+	}
 
-/* Style time text */
-.time-right {
-  float: right;
-  color: #aaa;
-}
+	.chat-message-right {
+		flex-direction: row-reverse;
+		margin-left: auto
+	}
+	.py-3 {
+		padding-top: 1rem!important;
+		padding-bottom: 1rem!important;
+	}
+	.px-4 {
+		padding-right: 1.5rem!important;
+		padding-left: 1.5rem!important;
+	}
+	.flex-grow-0 {
+		flex-grow: 0!important;
+	}
+	.border-top {
+		border-top: 1px solid #dee2e6!important;
+	}
 
-/* Style time text */
-.time-left {
-  float: left;
-  color: #999;
-}
+	.attach_btn{
+		border-radius: 15px 0 0 15px !important;
+		background-color: rgba(0,0,0,0.3) !important;
+				border:0 !important;
+				color: white !important;
+				cursor: pointer;
+	}
+	.send_btn{
+		border-radius: 0 15px 15px 0 !important;
+		background-color: rgba(0,0,0,0.3) !important;
+				border:0 !important;
+				color: white !important;
+				cursor: pointer;
+	}
+
+	.img_cont{
+			position: relative;
+			height: 70px;
+			width: 70px;
+	}
+	.user_img{
+			height: 70px;
+			width: 70px;
+			border:1.5px solid #f5f6fa;
+		
+	}
+	.user_info{
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: 15px;
+	}
+
+	.user_info span{
+		font-size: 20px;
+		color: white;
+	}
+	.user_info p{
+	font-size: 10px;
+	color: rgba(255,255,255,0.6);
+	}
+
+	.msg_head{
+		position: relative;
+	}
+
+	.online_icon{
+		position: absolute;
+		height: 15px;
+		width:15px;
+		background-color: #4cd137;
+		border-radius: 50%;
+		bottom: 0.2em;
+		right: 0.4em;
+		border:1.5px solid white;
+	}
+	.offline{
+		background-color: #c23616 !important;
+	}
+
 </style>
 
     <div id="wrapper">
-        <div id="menu">
-            <p class="welcome">Olá, {{Auth::user()->name}}<b></b></p>
-        </div>
-        <div id="chatbox" style="max-height:400px; border:1px solid #326c91 ; overflow:scroll; overflow-x: hidden;">
-          <div>
-            @if ($chat->isEmpty())
-            <div class="container">
-                <h4 class="text-center">Escreva uma mensagem para começar conversação</h4>
-            </div>
-            @endif
-            @foreach ($chat as $ch )
-            @php
-                $name = \App\Models\User::where('id',$ch->user_id)->first();
-            @endphp
-            @if($ch->user_id == Auth::user()->id)
-                <div class="container cont darker" style="width:50%;margin-right:0;margin-left:auto;margin-top:0;">
-                    @if(Auth::user()->photo != null)
-                      <img src="{!! global_tenancy_asset('/profile/'.Auth::user()->photo.'') !!}" width="20" alt="" class="right">
-                    @else
-                      <img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" width="20" alt="" class="right">
-                    @endif
-                    {{-- <p style="color:#326c91 ;text-align:right;">{{$name->name}}</p> --}}
-                    <div class="row"><div class="col-xl-6 text-left pl-0"><span class="time-left">{{$ch->created_at}}</span></div><div class="col-xl-6 pr-0"><p style="color:#326c91 ;text-align:right;">{{$name->name}}</p></div></div>
-                    <p style="text-align:right;width:95%;line-height:1.2;margin-bottom:0;">{{$ch->message}}</p>
-                    {{-- <span class="time-left">{{$ch->created_at}}</span> --}}
-                </div>
-            @else
-                <div class="container cont" style="width:50%;margin-top:0;">
-                    @php
-                        $photo = \App\Models\User::where('id',$ch->user_id)->first();
-                    @endphp
-                    @if($photo->photo != null)
-                    <img src="{!! global_tenancy_asset('/profile/'.$photo->photo.'') !!}" width="20" alt="">
-                    @else
-                    <img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" width="20" alt="">
-                    @endif
-                    <div class="row"><div class="col-xl-6 pl-0"><p style="color:#326c91 ;">{{$name->name}}</p></div><div class="col-xl-6 text-right pr-0"><span class="time-right">{{$ch->created_at}}</span></div></div>
-                    <p style="line-height:1.2;margin-bottom:0;">{{$ch->message}}</p>
-                    {{-- <span class="time-right">{{$ch->created_at}}</span> --}}
-                  </div>
-            @endif
-                   
-                
-               
-            @endforeach
-          </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-xl-10">
-                <input class="form-control" style="border:1px solid black; color:black;border-radius:5px;" name="usermsg" type="text" id="usermsg" wire:model="usermsg" />
-            </div>
-           <div class="col-xl-2 text-center" style="display:grid;">
-                <button type="button" style="border-radius:5px;" class="btn btn-primary" name="submitmsg" id="submitmsg" wire:click="SendMessage">Envia &nbsp;<i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-           </div>
-        </div>
+		 <div class="card">
+			<div class="card-header msg_head" style="background-color:#326c91;">
+				<div class="d-flex bd-highlight">
+					<div class="img_cont">
+						@if(Auth::user()->type_user != 2)
+							@php
+								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
+								$user = \App\Models\User::where('id',$customerr->user_id)->first();
+							@endphp
+							<img src="{!! global_tenancy_asset('/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+						@else
+							@php
+								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
+								$user_id = \App\Models\Tenant\TeamMember::where('id',$customerr->account_manager)->first();
+								$user = \App\Models\User::where('id',$user_id->user_id)->first();
+							@endphp
+							<img src="{!! global_tenancy_asset('/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+						@endif
+						
+					</div>
+					<div class="user_info">
+						@if(Auth::user()->type_user != 2)
+							@php
+								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
+								$user_id = \App\Models\User::where('id',$customerr->user_id)->first();
+							@endphp
+							<span>{{$user_id->name}}</span>
+						@else
+							@php
+								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
+								$user_id = \App\Models\Tenant\TeamMember::where('id',$customerr->account_manager)->first();
+								$user = \App\Models\User::where('id',$user_id->user_id)->first();
+							@endphp
+							<span>{{$user->name}}</span>
+						@endif
+						
+					</div>
+				</div>
+			</div>
+			<div class="chat-messages p-4" id="chatbox" style=" overflow:scroll;max-height:400px;overflow-x:auto;">
+
+				@if ($chat->isEmpty())
+					<div class="container">
+						<h4 class="text-center">Escreva uma mensagem para começar conversação</h4>
+					</div>
+				@endif
+
+				@foreach ($chat as $ch)
+				@php
+					$name = \App\Models\User::where('id',$ch->user_id)->first();
+				@endphp
+
+					@if($ch->user_id == Auth::user()->id)
+						<div class="chat-message-right mb-4">
+							<div>
+								@if(Auth::user()->photo != null)
+									<img src="{!! global_tenancy_asset('/profile/'.Auth::user()->photo.'') !!}" class="rounded-circle mr-1" width="40" height="40">
+								@else
+									<img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+								@endif
+								
+							</div>
+							<div class="flex-shrink-1 rounded py-2 px-3 mr-3" style="background-color:#326c91;color:white;">
+								<div class="font-weight-bold mb-1">Você</div>
+								{{$ch->message}}
+								<div class="text-muted small text-nowrap mt-2" style="color:white!important;">{{get_day_name($ch->created_at->toDateTimeString())}}</div>
+							</div>
+						</div>
+					@else
+						<div class="chat-message-left pb-4">
+							<div>
+								@php
+                        			$photo = \App\Models\User::where('id',$ch->user_id)->first();
+                    			@endphp
+								@if($photo->photo != null)
+									<div style="position:relative;">
+										<img src="{!! global_tenancy_asset('/profile/'.$photo->photo.'') !!}" style="position:relative;" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+									</div>
+								@else
+									<img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+								@endif
+								
+							</div>
+							<div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+								<div class="font-weight-bold mb-1">{{$name->name}}</div>
+								{{$ch->message}}
+								<div class="text-muted small text-nowrap mt-2">{{get_day_name($ch->created_at->toDateTimeString())}}</div>
+							</div>
+						</div>
+					@endif
+				@endforeach
+			</div>
+		 </div>
+
+		<div class="flex-grow-0 py-3 border-top">
+			<div class="input-group">
+				<div class="input-group-append d-none">
+					<span class="input-group-text attach_btn" style="background-color:#326c91!important;" id="spanClick"></span>
+				</div>
+				<input class="form-control type_msg" name="usermsg" type="text" id="usermsg" wire:model="usermsg" placeholder="Escreva sua mensagem..."/>
+				<div class="input-group-append">
+					<span class="input-group-text send_btn" name="submitmsg" id="submitmsg" wire:click="SendMessage" style="background-color:#326c91!important;"><i class="fa fa-paper-plane"></i></span>
+				</div>
+			</div>
+		</div>
+
+           
+
     </div>
 
 
@@ -151,7 +259,8 @@ jQuery(document).ready(function(){
     });
 
 });
-  
+
+
 
 </script>
 @if (Auth::user()->type_user == 2)
