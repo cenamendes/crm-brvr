@@ -2,21 +2,27 @@
 
 namespace App\Http\Livewire\Tenant\Files;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Events\ChatMessage;
+use App\Events\LoginStatus;
 use App\Models\Tenant\Files;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use App\Events\ChatMessageAdmin;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use App\Events\ChatMessage as EventsChatMessage;
-use App\Interfaces\Tenant\AlertMessage\AlertMessageInterface;
 use App\Interfaces\Tenant\ChatMessage\ChatInterface;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
+use App\Interfaces\Tenant\AlertMessage\AlertMessageInterface;
 
 class Chat extends Component
 {
     
-    protected $listeners = ["FilesOfThisCustomer" => "FilesOfThisCustomer","chatUpdate","teste"];
+    protected $listeners = ["FilesOfThisCustomer" => "FilesOfThisCustomer","chatUpdate","teste","loginStatus"];
+
+    use WithFileUploads;
 
     public int $customer_id = 0;
 
@@ -27,6 +33,8 @@ class Chat extends Component
     protected object $alertRepository;
 
     public string $usermsg = '';
+
+    public $fileUploaded;
 
     public function boot(ChatInterface $interfaceChat,AlertMessageInterface $interfaceAlert)
     {
@@ -70,6 +78,12 @@ class Chat extends Component
         }
     }
 
+    public function updatedFileUploaded()
+    {
+        $this->dispatchBrowserEvent("fileCome");
+        //teria que mandar para a input
+    }
+
     /**
      * List informations of customer location
      *
@@ -79,7 +93,8 @@ class Chat extends Component
     {
                
         return view('tenant.livewire.files.chat', [
-         "chat" => $this->chat
+            "chat" => $this->chat,
+            "customer" => $this->customer_id
         ]);
     }
 }
