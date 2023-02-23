@@ -25,8 +25,10 @@ class AlertMessageRepository implements AlertMessageInterface
 
    public function getNotifications($receiver_user): Collection
     {
-         $notifications = Notifications::where('receiver_user_id',$receiver_user)->where('read',0)->with('senderUser')->with('receivedUser')->get();
-         return $notifications;
+      
+      $notifications = Notifications::where('receiver_user_id',$receiver_user)->where('read',0)->with('senderUser')->with('receivedUser')->get();
+       
+      return $notifications;
     }
 
     public function updateReadState($id_receiver): int
