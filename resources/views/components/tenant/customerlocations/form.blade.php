@@ -58,35 +58,35 @@
                                         </div>
                                     </section>
                                     <section class="form-group row">
-                                        <div class="col-10">
+                                        <div class="col-xl-10 col-xs-12">
                                             <label>{{ __('Location Name') }}</label>
                                             <input type="text" name="description" id="description" class="form-control"
                                                 @if(null !==old('description'))value="{{ old('description') }}"
                                                 @endisset placeholder="{{ __('Location Name') }}"
                                                 wire:model.defer="description">
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-xl-2 col-xs-12">
                                             <label>{{ __('Main Location') }}</label>
                                             <input type="checkbox" name="main" id="main" style="pointer-events: none;" @isset($customerLocation->main) @if($customerLocation->main ==
                                             1) checked readonly value="1" @else value="0" @endif @endisset>
                                         </div>
                                     </section>
                                     <section class="form-group row">
-                                        <div class="col-3">
+                                        <div class="col-xl-3 col-xs-12">
                                             <label>{{ __('Location Phone number') }}</label>
                                             <input type="text" name="contact" id="contact" class="form-control" @if(null
                                                 !==old('contact'))value="{{ old('contact') }}" @endisset
                                                 placeholder="{{ __('Location Phone number') }}"
                                                 wire:model.defer="contact">
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-xl-6 col-xs-12">
                                             <label>{{ __('Manager name') }}</label>
                                             <input type="text" name="manager_name" id="manager_name"
                                                 class="form-control" @if(null
                                                 !==old('manager_name'))value="{{ old('manager_name') }}" @endisset
                                                 placeholder="{{ __('Manager name') }}" wire:model.defer="manager_name">
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-xl-3 col-xs-12">
                                             <label>{{ __('Manager Phone number') }}</label>
                                             <input type="text" name="manager_contact" id="manager_contact"
                                                 class="form-control" @if(null
@@ -104,7 +104,7 @@
                                         </div>
                                     </section>
                                     <section class="form-group row">
-                                        <div class="col-2">
+                                        <div class="col-xl-2 col-xs-12">
                                             <label>{{ __('Location Zip Code') }}</label>
                                             <input type="text" name="zipcode" id="zipcode" class="form-control" @if(null
                                                 !==old('zipcode'))value="{{ old('zipcode') }}" @endisset
