@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group row">
-                                    <section class="col-7">
+                                    <section class="col-xl-7 col-xs-12">
                                         
                                         <input style="display:none" type="text" name="idTeamMember" id="idTeamMember" class="form-control"
                                             @isset($idTeamMember) value="{{ $idTeamMember }}" @endisset
@@ -27,7 +27,7 @@
                                             @if(null !== old('name'))value="{{ old('name') }}"@endisset
                                             placeholder="{{ __('Name') }}">
                                     </section>
-                                    <section class="col-5">
+                                    <section class="col-xl-5 col-xs-12">
                                         <label>{{ __('Mobile Phone') }}</label>
                                         <input type="text" name="mobile_phone" id="mobile_phone" class="form-control"
                                             @isset($mphone)value="{{ $mphone }}" @endisset
@@ -36,14 +36,14 @@
                                     </section>
                                 </div>
                                 <div class="form-group row">
-                                    <section class="col-7">
+                                    <section class="col-xl-7 col-xs-12">
                                         <label>{{ __('E-mail address') }}</label>
                                         <input type="text" name="email" id="email" class="form-control"
                                             @isset($email)value="{{ $email }}" @endisset
                                             @if(null !== old('email'))value="{{ old('email') }}"@endisset
                                             placeholder="{{ __('E-mail address') }}">
                                     </section>
-                                    <section class="col-5">
+                                    <section class="col-xl-5 col-xs-12">
                                         <label>{{ __('Username') }}</label>
                                         <input type="text" name="username" id="username" class="form-control"
                                             @isset($username)value="{{ $username }}" @endisset
@@ -52,13 +52,13 @@
                                     </section>
                                 </div>
                                 <div class="form-group row">
-                                    <section class="col-7">
+                                    <section class="col-xl-7 col-xs-12">
                                         <label>{{ __('Additional Information') }}</label>
 <textarea name="additional_information" id="additional_information" class="form-control" placeholder="{{ __('Additional Information') }}" rows="10">
 @isset($addinfo){{ $addinfo }} @elseif (null !== old('additional_information')) {{ old('additional_information') }} @endisset
 </textarea>
                                     </section>
-                                    <section class="col-5">
+                                    <section class="col-xl-5 col-xs-12">
                                         <label>{{ __('Job') }}</label>
                                         <input type="text" name="job" id="job" class="form-control"
                                             @isset($job)value="{{ $job }}" @endisset
@@ -67,7 +67,7 @@
                                     </section>
                                 </div>
                                 <div class="form-group row">
-                                    <section class="col-6">
+                                    <section class="col-xl-6 col-xs-12">
                                         <label>{{ __('Color of the team member') }}</label>
                                         <div class="asColorPicker-wrap">
                                             <input type="text" class="as_colorpicker form-control asColorPicker-input" name="color" id="color"
