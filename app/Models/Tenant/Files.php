@@ -17,7 +17,7 @@ class Files extends Model
     protected static function booted()
     {
         self::addGlobalScope('ordered', function (Builder $queryBuilder) {
-            $queryBuilder->orderBy('user_id');
+            $queryBuilder->orderBy('created_at');
         });
     }
 
