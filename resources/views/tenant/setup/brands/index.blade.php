@@ -2,7 +2,7 @@
     {{-- Content --}}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-9">
+            <div class="col-xl-9 col-xs-6">
                 <div class="page-titles">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">{{ __('Setup') }}</a></li>
@@ -11,7 +11,7 @@
                     </ol>
                 </div>
             </div>
-            <div class="col-3 text-right">
+            <div class="col-xl-3 col-xs-6 text-right">
                 <a href="{{ route('tenant.setup.brands.create') }}" class="btn btn-primary">{{ __('Create Brand') }}</a>
             </div>
         </div>
