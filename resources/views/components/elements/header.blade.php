@@ -181,5 +181,9 @@
         Livewire.emit("chatUpdate");
         Livewire.emit("AlertMessages");
         Livewire.emit("FilesUpdateAfterEvent");
+        
     });
+
+  
+    
 </script>
