@@ -14,7 +14,7 @@
                             @method('PUT')
                         @endif
                         <div class="row">
-                            <div class="col-8 mb-3">
+                            <div class="col-xl-8 col-xs-12 mb-3">
                                 <div class="form-group row">
                                     <label>{{ __('Brand Name') }}</label>
                                     <input type="text" name="name" id="name" class="form-control"
@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-xl-4 col-xs-12">
                                 <img src="" id="imagePreview" width="200">
                                 @if(isset($image))
                                     <input type="hidden" name="image" id="image" value="{{ $image }}">
