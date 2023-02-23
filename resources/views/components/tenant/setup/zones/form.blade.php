@@ -13,7 +13,7 @@
                             @method('PUT')
                         @endif --}}
                         <div class="row">
-                            <div class="col-8 mb-3">
+                            <div class="col-xl-8 col-xs-12 mb-3">
                                 <div class="form-group row">
                                     <label>{{ __('Zone Name') }}</label>
                                     <input type="text" name="name" id="name" wire:model.defer="name" class="form-control"
