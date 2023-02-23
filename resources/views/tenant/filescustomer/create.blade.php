@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">{{ __('Customer Locations') }}</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">{{ __('Files') }}</a></li>
                 <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ __('Create') }}</a></li>
             </ol>
         </div>
