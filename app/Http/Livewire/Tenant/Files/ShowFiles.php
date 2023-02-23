@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tenant\Files;
 
 use Livewire\Component;
+use App\Events\ChatMessage;
 use App\Models\Tenant\Files;
 use Livewire\WithPagination;
 use Illuminate\Contracts\View\View;
