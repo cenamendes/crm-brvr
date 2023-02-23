@@ -17,6 +17,8 @@
                 <tr>
                     <th>{{__("File")}}</th>
                     <th>{{__("Size")}}</th>
+                    <th>{{__("Creation Date")}}</th>
+                    <th>{{__("Send By")}}</th>
                     <th>{{__("Action")}}</th>
                 </tr>
             </thead>
@@ -27,6 +29,13 @@
                     <tr data-id="{{$i}}">
                         <td>{{$file->ficheiro}}</td>
                         <td>{{$file->size}}&nbsp;KB</td>
+                        <td>{{$fileDat->created_at}}</td>
+                        <td>
+                            @php
+                                $user = \App\Models\User::where('id',$fileDat->user_id)->first();
+                            @endphp
+                            {{$user->name}}
+                        </td>
                         <td>
                             <div class="dropdown ml-auto text-left">
                             <button class="btn btn-primary tp-btn-light sharp" type="button" data-toggle="dropdown">
@@ -60,5 +69,6 @@
     {{-- </div> --}}
     @endif
        
+    
 
 </div>
