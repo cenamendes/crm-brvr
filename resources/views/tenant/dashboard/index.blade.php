@@ -37,6 +37,25 @@
                 <!-- row -->
                 
                 @livewire('tenant.dashboard.show')
+
+                <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Informação Tarefa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                       
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 
               {{-- </div> --}}
         </div>
@@ -53,8 +72,6 @@
       restartCalendar();
           
   });
-
-
 
     jQuery('body').on('click','.fc-next-button',function(){
    
@@ -131,6 +148,14 @@
 
 
   }
+
+    jQuery("body").on("click",".fc-content",function(){
+    
+      jQuery(".modal-body").empty();
+      jQuery('#modalInfo').modal('show');
+      jQuery(".modal-body").append("Cliente: "+jQuery(this).find('.fc-title').text()+ "<br>Hora Marcada: "+jQuery(this).find('.fc-time').text()); 
+    });
+
   
     window.addEventListener('calendar',function(e){
       console.log(e);
