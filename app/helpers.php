@@ -44,6 +44,20 @@ if (! function_exists('getCustomerConfig')) {
 
         return global_hours_format($sumTime);
     }
+
+    function get_day_name($timestamp) {
+
+        $date = $timestamp;
+
+        if(date('y-m-d',strtotime($timestamp)) == date('y-m-d',strtotime("now"))) {
+          $date = 'Hoje, '.date("H:i",strtotime($date));
+        } 
+        else if(date('y-m-d',strtotime($timestamp)) == date('y-m-d',strtotime("-1 day"))) {
+          $date = 'Ontem, '.date("H:i",strtotime($date));
+        }
+
+        return $date;
+    }
 }
 
 
