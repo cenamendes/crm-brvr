@@ -18,19 +18,12 @@
                 <div>
                     <div class="list-group mb-4" id="list-tab" role="tablist">
                         @foreach ($customers as $item)
-                            <a class="list-group-item list-group-item-action" data-toggle="list" role="tab" aria-selected="false" id="customer{{$item->id}}" data-id="{{ $item->id }}" href="javascript:void(0)">{{ $item->name }}</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" role="tab" aria-selected="false" id="customer{{$item->id}}" data-id="{{ $item->id }}" href="javascript:void(0)">
+                                {{ $item->name }}
+                            </a>
                         @endforeach
                     </div>
                     
-                    {{-- <table id="dataTables-data"> --}}
-                        {{-- <tbody> --}}
-                            {{-- @foreach ($customers as $item) --}}
-                                {{-- <tr> --}}
-                                    {{-- <td><a id="customer" data-id="{{ $item->id }}" href="javascript:void(0)">{{ $item->name }}</a></td> --}}
-                                {{-- </tr> --}}
-                            {{-- @endforeach --}}
-                        {{-- </tbody>
-                    </table>                  --}}
                 </div>
             </div>
             </div>
