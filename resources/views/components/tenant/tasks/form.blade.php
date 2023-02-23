@@ -54,17 +54,17 @@
                                         </div>
                                         @if($taskToUpdate->id)
                                         <div class="form-group row">
-                                            <section class="col-3">
+                                            <section class="col-xl-3 col-xs-12">
                                                 <label>{{ __('VAT') }}</label>
                                                 <input type="text" name="vat" id="vat" class="form-control"
                                                     value="{{ $taskToUpdate->customer->vat }}" readonly>
                                             </section>
-                                            <section class="col-3">
+                                            <section class="col-xl-3 col-xs-12">
                                                 <label>{{ __('Phone number') }}</label>
                                                 <input type="text" name="phone" id="phone" class="form-control"
                                                     value="{{ $taskToUpdate->customer->contact }}" readonly>
                                             </section>
-                                            <section class="col-6">
+                                            <section class="col-xl-6 col-xs-12">
                                                 <label>{{ __('Primary e-mail address') }}</label>
                                                 <input type="text" name="email" id="email" class="form-control"
                                                     value="{{ $taskToUpdate->customer->email }}" readonly>
@@ -78,7 +78,7 @@
                                             </section>
                                         </div>
                                         <div class="form-group row">
-                                            <section class="col-2">
+                                            <section class="col-xl-2 col-xs-12">
                                                 <label>{{ __('Zip Code') }}</label>
                                                 <input type="text" name="zipcode" id="zipcode" class="form-control"
                                                     value="{{ $taskToUpdate->customer->zipcode }}" readonly>
