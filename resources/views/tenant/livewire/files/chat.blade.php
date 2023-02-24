@@ -183,7 +183,7 @@
                     			@endphp
 								@if($photo->photo != null)
 									<div style="position:relative;">
-										<img src="{!! global_tenancy_asset('/profile/'.$photo->photo.'') !!}" style="position:relative;" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+										<img src="{!! global_tenancy_asset('/profile/'.$photo->photo.'') !!}" style="position:relative;" class="rounded-circle mr-1" width="40" height="40">
 									</div>
 								@else
 									<img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
