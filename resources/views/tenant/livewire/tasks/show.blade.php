@@ -16,7 +16,13 @@
         @endif
     </div>
     <div class="card-body">
-        <div class="table-responsive">
+        <!-- Inicio do Filtro -->
+
+       
+
+        <!-- Fim do Filtro  -->
+        <div class="row">
+          <div class="table-responsive">
             <div id="dataTables_wrapper" class="dataTables_wrapper">
                 <div class="dataTables_length" id="dataTables_length">
                     <label>{{ __('Show') }}
@@ -142,6 +148,7 @@
             </table>
             {{ $tasksList->links() }}
         </div>
+      </div>
     </div>
 </div>
 @push('custom-scripts')
