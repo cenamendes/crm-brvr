@@ -47,7 +47,7 @@
                                     <tr>
                                         <td class="content-cell" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 35px;">
                                             <p style="text-align:center;padding-bottom:6px;">
-                                                <img src="{{ global_tenancy_asset('/images/logo/' . $logotipo) }}" alt="{{ $company_name }}">
+                                                <img src="{{ global_tenancy_asset('/app/public/images/logo/' . $logotipo) }}" alt="{{ $company_name }}">
                                             </p>
                                             <h1 style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #2F3133; font-size: 19px; font-weight: bold; margin-top: 0; text-align: left;">
                                                 {{ $subject }}
