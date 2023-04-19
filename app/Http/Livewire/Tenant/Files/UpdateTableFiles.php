@@ -102,8 +102,7 @@ class UpdateTableFiles extends Component
         $message .= "<br><div class='row mt-4' style='justify-content:center;'><button type='button' id='buttonresponse' data-anwser='ok' class='btn btn-primary'>Sim</button>";
         $message .= "&nbsp;<button type='button' id='buttonresponse' data-anwser='cancel' class='btn btn-secondary'>Não</button></div>";
 
-        $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Files'), 'message' => $message, 'status'=>'info', 'function' => 'importance']);
-               
+        $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Files'), 'message' => $message, 'status'=>'info', 'function' => 'importance']);  
     }
 
     public function remove($id)

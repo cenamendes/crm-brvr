@@ -57,7 +57,7 @@
 			@if(empty(session('logotipo')))
 				<img class="logo-abbr" src="." alt="">
 			@else
-                <img class="logo" src="{{ global_tenancy_asset('/images/logo/' . session('logotipo')) }}" alt="{{ session('company_name') }}" title="{{ session('company_name') }}" style="max-width: 80%;">
+                <img class="logo" src="{{ global_tenancy_asset('/app/public/images/logo/' . session('logotipo')) }}" alt="{{ session('company_name') }}" title="{{ session('company_name') }}" style="max-width: 80%;">
 			@endif
             </a>
             <div class="nav-control">

@@ -114,7 +114,7 @@
                                 <img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" width="20" alt="">
                             @else
                             {{-- <img src="{!! global_asset('cl/'.Auth::user()->photo.'') !!}" width="20" alt=""> --}}
-                                <img src="{!! global_tenancy_asset('/profile/'.Auth::user()->photo.'') !!}" width="20" alt="">
+                                <img src="{!! global_tenancy_asset('/app/public/profile/'.Auth::user()->photo.'') !!}" width="20" alt="">
                             @endif
                             <div class="header-info">
                                 <span class="text-black"><strong>{{Auth::user()->name}}</strong></span>

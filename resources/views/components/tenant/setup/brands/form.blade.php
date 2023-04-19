@@ -35,7 +35,7 @@
                                 <img src="" id="imagePreview" width="200">
                                 @if(isset($image))
                                     <input type="hidden" name="image" id="image" value="{{ $image }}">
-                                    <img src="{{ global_tenancy_asset('/brands/'.$image) }}" alt="{{ $name }}" id="imagePreviewEdit" width="200">
+                                    <img src="{{ global_tenancy_asset('/app/public/brands/'.$image) }}" alt="{{ $name }}" id="imagePreviewEdit" width="200">
                                 @endif
                             </div>
                         </div>
