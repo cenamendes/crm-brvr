@@ -75,4 +75,8 @@ Route::get('/createdemo/migrate', function ($domain) {
     echo Artisan::output() . "<br>";
 });
 
+Route::get('/storageLink', function ($domain) {
+    Artisan::call('storage:link');
+});
+
 require __DIR__.'/auth.php';
