@@ -116,14 +116,14 @@
 								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
 								$user = \App\Models\User::where('id',$customerr->user_id)->first();
 							@endphp
-							<img src="{!! global_tenancy_asset('/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+							<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
 						@else
 							@php
 								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
 								$user_id = \App\Models\Tenant\TeamMember::where('id',$customerr->account_manager)->first();
 								$user = \App\Models\User::where('id',$user_id->user_id)->first();
 							@endphp
-							<img src="{!! global_tenancy_asset('/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+							<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
 						@endif
 						
 					</div>
@@ -163,7 +163,7 @@
 						<div class="chat-message-right mb-4">
 							<div>
 								@if(Auth::user()->photo != null)
-									<img src="{!! global_tenancy_asset('/profile/'.Auth::user()->photo.'') !!}" class="rounded-circle mr-1" width="40" height="40">
+									<img src="{!! global_tenancy_asset('/app/public/profile/'.Auth::user()->photo.'') !!}" class="rounded-circle mr-1" width="40" height="40">
 								@else
 									<img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
 								@endif
@@ -183,7 +183,7 @@
                     			@endphp
 								@if($photo->photo != null)
 									<div style="position:relative;">
-										<img src="{!! global_tenancy_asset('/profile/'.$photo->photo.'') !!}" style="position:relative;" class="rounded-circle mr-1" width="40" height="40">
+										<img src="{!! global_tenancy_asset('/app/public/profile/'.$photo->photo.'') !!}" style="position:relative;" class="rounded-circle mr-1" width="40" height="40">
 									</div>
 								@else
 									<img src="{!! global_asset('assets/resources/images/avatar/1.png') !!}" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
