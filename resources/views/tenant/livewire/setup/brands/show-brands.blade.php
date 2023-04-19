@@ -53,7 +53,7 @@
                         </div>
                     </td>
                         {{-- <img src="{{asset('/cl/'.$brand->image)}}" width="100px"> --}}
-                    <td><img src="{{ global_tenancy_asset('/brands/'.$brand->image) }}" width="100px"></td>
+                    <td><img src="{{ global_tenancy_asset('/app/public/brands/'.$brand->image) }}" width="100px"></td>
                     <td>{{ $brand->name }}</td>
                     <td>
                         <div class="dropdown ml-auto text-right">
