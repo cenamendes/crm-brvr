@@ -74,7 +74,7 @@
                                                 @if ($uploadFile)
                                                     <img src="{{ $uploadFile->temporaryUrl() }}" style="max-width:300px;">
                                                 @elseif (isset($logotipo) && $logotipo)
-                                                    <img src="{{ global_tenancy_asset('/images/logo/' . $logotipo) }}" style="max-width:300px;">
+                                                    <img src="{{ global_tenancy_asset('/app/public/images/logo/' . $logotipo) }}" style="max-width:300px;">
                                                 @endif
                                             </section>
                                         </div>
