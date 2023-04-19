@@ -18,7 +18,7 @@
                             <div class="timeline-panel">
                                 <div class="media mr-2">
                                     <img alt="image" width="50"
-                                        src="{!! global_tenancy_asset('/profile/'.$not->senderUser->photo.'') !!}">
+                                        src="{!! global_tenancy_asset('/app/public/profile/'.$not->senderUser->photo.'') !!}">
                                 </div>
                                 <div class="media-body">
                                     @if($not->type == "message")
