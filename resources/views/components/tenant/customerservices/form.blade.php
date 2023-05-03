@@ -166,14 +166,45 @@
                                         </select>
                                     </section>
                                 </div>
-                                <div class="form-group row">
+                                {{-- <div class="form-group row">
                                     <section class="col">
                                         <label>{{ __('Alert time (in days)') }}</label>
                                         <input type="number" id="alert" name="alert" class="form-control"
                                         @isset($service->alert) value="{{ $service->alert }}" @endisset
                                         @if(null !== old('alert'))value="{{ old('alert') }}"@endisset placeholder="{{ __("Select Time to alert")}}">
                                     </section>
+                                </div> --}}
+
+                                <div class="form-group row">
+                                    <section class="col-4">
+                                        <label>{{ __('Method of Contract')}}</label>
+                                        <select name="selectedTypeContract" id="selectedTypeContract" class="form-control">
+                                            <option value="semanalmente" @isset($service->selectedTypeContract) @if($service->selectedTypeContract == "semanalmente") selected @endif @endisset>{{__("Weekly")}}</option>
+                                            <option value="mensalmente" @isset($service->selectedTypeContract) @if($service->selectedTypeContract == "mensalmente") selected @endif @endisset>{{__("Monthly")}}</option>
+                                            <option value="anualmente" @isset($service->selectedTypeContract) @if($service->selectedTypeContract == "anualmente") selected @endif @endisset>{{__("Annually")}}</option>
+                                        </select>
+                                    </section>
+                                    <section class="col-4">
+                                        <label>{{ __("Time to repeat")}}</label>
+                                        <input type="number" name="time_repeat" id="time_repeat" class="form-control" @isset($service->time_repeat) value="{{ $service->time_repeat }}" @endisset>
+                                    </section>
+                                    <section class="col-4">
+                                        <label>{{ __("Number of times") }}</label>
+                                        <input type="number" name="number_times" id="number_times" class="form-control" @isset($service->number_times) value="{{ $service->number_times }}" @endisset>
+                                    </section>
                                 </div>
+
+                                <div class="form-group row mt-2">
+                                    <div class="custom-control custom-checkbox mb-3 checkbox-success check-lg">
+                                        &nbsp;<input type="checkbox" class="custom-control-input" @isset($service->allMails) @if($service->allMails == "1") checked @endif @endisset id="customCheckBox8" name="allMails">
+                                        <label class="custom-control-label pl-2" for="customCheckBox8">{{ __('Continue method') }}</label>
+                                    </div>
+                                </div>
+
+
+
+
+
                                 {{-- <section class="form-group row">
                                     <div class="col-3">
                                         <a href="{{ route('tenant.services.index') }}"
