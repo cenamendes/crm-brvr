@@ -6,6 +6,9 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Tenant\TasksReports;
 use App\Events\Tasks\DispatchTaskReport;
+use App\Interfaces\Tenant\Customers\CustomersInterface;
+use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
+use App\Interfaces\Tenant\Setup\Services\ServicesInterface;
 use App\Interfaces\Tenant\TasksReports\TasksReportsInterface;
 
 class ShowTasksReports extends Component
@@ -17,15 +20,50 @@ class ShowTasksReports extends Component
     private ?object $tasksReportsList = NULL;
     public string $searchString = '';
 
+    /** Inicio do Filtro */
+
+    protected object $analysisRepository;
+    protected object $teamMembersRepository;
+    protected object $customersRepository;
+    protected object $serviceRepository;
+
+    private ?object $analysis = NULL;
+    private ?object $members = NULL;
+    private ?object $customers = NULL;
+    private ?object $service = NULL;
+    private ?object $analysisToExcel = NULL;
+
+    public int $technical = 0;
+    public int $client = 0;
+    public int $work = 0;
+    public int $typeTask = 4;
+    public string $ordenation = '';
+
+    public string $dateBegin = '';
+    public string $dateEnd = '';
+ 
+     public int $flagRender = 0;
+
+    /*****FIM DO FILTRO*****/
+
+
      /**
      * Livewire construct function
      *
      * @param TasksInterface $tasksInterface
      * @return Void
      */
-    public function boot(TasksReportsInterface $tasksReportsInterface): Void
+    public function boot(TasksReportsInterface $tasksReportsInterface, TeamMemberInterface $interfaceTeamMember, CustomersInterface $interfaceCustomers, ServicesInterface $interfaceService): Void
     {
         $this->tasksReportsInterface = $tasksReportsInterface;
+
+        //Parte do filtro
+
+        $this->teamMembersRepository = $interfaceTeamMember;
+        $this->customersRepository = $interfaceCustomers;
+        $this->serviceRepository = $interfaceService;
+
+        //Fim da parte do filtro
     }
 
     /**
@@ -37,7 +75,80 @@ class ShowTasksReports extends Component
     {
         $this->initProperties();
 
+        /** Parte do Filtro */
+
+        $this->members = $this->teamMembersRepository->getTeamMembersAnalysis();
+        $this->customers = $this->customersRepository->getCustomersAnalysis();
+        $this->service = $this->serviceRepository->getServicesAnalysis();
+
+
+        //**Fim do Filtro****** */
+
     }
+
+    /**Funções da parte do filtro */
+
+    public function updatedTechnical(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedClient(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedWork(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedTypeTask(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedOrdenation(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedDateBegin(): void
+    {
+        $this->dispatchBrowserEvent("contentChanged");
+
+        $this->flagRender = 1; 
+    }
+
+    public function updatedDateEnd(): void
+    {
+        $this->dispatchBrowserEvent("contentChanged");
+
+        $this->flagRender = 1;
+        $this->resetPage();
+    }
+
+    public function clearFilter(): void
+    {
+        $this->members = $this->teamMembersRepository->getTeamMembersAnalysis();
+        $this->customers = $this->customersRepository->getCustomersAnalysis();
+        $this->service = $this->serviceRepository->getServicesAnalysis();
+
+        $this->technical = 0;
+        $this->client = 0;
+        $this->work = 0;
+        $this->typeTask = 4;
+        $this->ordenation = 'desc';
+        $this->dateBegin = '';
+        $this->dateEnd = '';
+
+        $this->flagRender = 0;
+    }
+
+    /**Fim das funções do filtro*/ 
+
+
+
 
      /**
      * Change number of records to display
@@ -62,15 +173,61 @@ class ShowTasksReports extends Component
 
     public function render()
     {
-        if(isset($this->searchString) && $this->searchString) {
-            $this->tasksReportsList = $this->tasksReportsInterface->getTaskReport($this->searchString,$this->perPage);
-        } else {
-            $this->tasksReportsList = $this->tasksReportsInterface->getTasksReports($this->perPage);
+        /** Filtro */
+
+        $this->members = $this->teamMembersRepository->getTeamMembersAnalysis();
+        $this->customers = $this->customersRepository->getCustomersAnalysis();
+        $this->service = $this->serviceRepository->getServicesAnalysis();
+
+        /** Final do filtro */
+
+        // if(isset($this->searchString) && $this->searchString) {
+        //     $this->tasksReportsList = $this->tasksReportsInterface->getTaskReport($this->searchString,$this->perPage);
+        // } else {
+        //     $this->tasksReportsList = $this->tasksReportsInterface->getTasksReports($this->perPage);
+        // }
+
+        /** Parte do Filtro */
+
+        if(isset($this->searchString) && $this->searchString)
+        {
+            if($this->flagRender == 0)
+            {
+                $this->tasksReportsList = $this->tasksReportsInterface->getTaskReport($this->searchString, $this->perPage);
+            }
+            else
+            {
+                $this->tasksReportsList = $this->tasksReportsInterface->getTasksReportsFilter($this->searchString, $this->technical, $this->client,$this->typeTask, $this->work, $this->ordenation,$this->dateBegin,$this->dateEnd,$this->perPage);
+            }
         }
+        else 
+        {
+            if($this->flagRender == 0)
+            {
+                $this->tasksReportsList = $this->tasksReportsInterface->getTasksReports($this->perPage);
+            }
+            else
+            {
+                $this->tasksReportsList = $this->tasksReportsInterface->getTasksReportsFilter($this->searchString,$this->technical,$this->client,$this->typeTask,$this->work,$this->ordenation,$this->dateBegin,$this->dateEnd,$this->perPage);
+            }
+        }
+
+        /***Fim da parte do filtro */
+
+        // return view('tenant.livewire.tasksreports.show', [
+        //     'tasksReportsList' => $this->tasksReportsList,
+        // ]);
+
+        /***Parte do filtro */
 
         return view('tenant.livewire.tasksreports.show', [
             'tasksReportsList' => $this->tasksReportsList,
+            'members' => $this->members,
+            'customers' => $this->customers,
+            'services' => $this->service
         ]);
+
+        /***Fim do filtro */
     }
 
     public function finishTaskReport(int $reportId): void
