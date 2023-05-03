@@ -8,6 +8,9 @@ use Livewire\WithPagination;
 use Illuminate\Contracts\View\View;
 use App\Events\Tasks\DispatchTasksToUser;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
+use App\Interfaces\Tenant\Customers\CustomersInterface;
+use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
+use App\Interfaces\Tenant\Setup\Services\ServicesInterface;
 use App\Interfaces\Tenant\TasksReports\TasksReportsInterface;
 
 class ShowTasks extends Component
@@ -19,6 +22,7 @@ class ShowTasks extends Component
     private ?object $tasksList = NULL;
     private ?object $counties = NULL;
 
+
     protected $listeners = ['dispatchTask' => 'dispatchTask'];
 
     private TasksInterface $tasksInterface;
@@ -26,16 +30,47 @@ class ShowTasks extends Component
     private ?object $task = NULL;
     public int $taskId = 0;
 
+    /** Inicio do Filtro */
+    protected object $analysisRepository;
+    protected object $teamMembersRepository;
+    protected object $customersRepository;
+    protected object $serviceRepository;
+
+    private ?object $analysis = NULL;
+    private ?object $members = NULL;
+    private ?object $customers = NULL;
+    private ?object $service = NULL;
+    private ?object $analysisToExcel = NULL;
+
+    public int $technical = 0;
+    public int $client = 0;
+    public int $work = 0;
+    public int $typeTask = 4;
+    public string $ordenation = '';
+
+    public string $dateBegin = '';
+    public string $dateEnd = '';
+
+    public int $flagRender = 0;
+    /** Fim do Filtro  */
+
     /**
      * Livewire construct function
      *
      * @param TasksInterface $tasksInterface
      * @return Void
      */
-    public function boot(TasksInterface $tasksInterface, TasksReportsInterface $tasksReportsInterface): Void
+    public function boot(TasksInterface $tasksInterface, TasksReportsInterface $tasksReportsInterface, TeamMemberInterface $interfaceTeamMember, CustomersInterface $interfaceCustomers, ServicesInterface $interfaceService): Void
     {
         $this->tasksInterface = $tasksInterface;
         $this->tasksReportsInterface = $tasksReportsInterface;
+
+        /** Inicio Filtro */
+        $this->teamMembersRepository = $interfaceTeamMember;
+        $this->customersRepository = $interfaceCustomers;
+        $this->serviceRepository = $interfaceService;
+        //** Fim filtro */
+
     }
 
     /**
@@ -47,6 +82,14 @@ class ShowTasks extends Component
     {
         $this->initProperties();
         $this->tasksList = $this->tasksInterface->getTasks($this->perPage);
+
+        /**Parte do Filtro */
+        $this->members = $this->teamMembersRepository->getTeamMembersAnalysis();
+        $this->customers = $this->customersRepository->getCustomersAnalysis();
+        $this->service = $this->serviceRepository->getServicesAnalysis();
+
+        /**Parte do Fim do Filtro */
+
     }
 
     /**
@@ -92,11 +135,12 @@ class ShowTasks extends Component
                 $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Tasks'), 'message' => __('You must set the schedule date and time!'), 'status'=>'error']);
             }
         } else if ($this->task->scheduled_date) {
-            if ($this->task->scheduled_date < date('Y-m-d')) {
-                $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Tasks'), 'message' => __('Cannot assign a task in the past!'), 'status'=>'error']);
-            } else {
-                $error = false;
-            }
+            // if ($this->task->scheduled_date < date('Y-m-d')) {
+            //     $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Tasks'), 'message' => __('Cannot assign a task in the past!'), 'status'=>'error']);
+            // } else {
+            //     $error = false;
+            // }
+            $error = false;
         }
 
         $updateTask = false;
@@ -167,6 +211,69 @@ class ShowTasks extends Component
         return 'tenant.livewire.setup.pagination';
     }
 
+    /** Parte fo Filtro **/
+
+    public function updatedTechnical(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedClient(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedWork(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedTypeTask(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedOrdenation(): void
+    {
+        $this->flagRender = 1;
+    }
+
+    public function updatedDateBegin(): void
+    {
+        $this->dispatchBrowserEvent("contentChanged");
+
+        $this->flagRender = 1;
+    }
+
+    public function updatedDateEnd(): void
+    {
+        $this->dispatchBrowserEvent("contentChanged");
+
+        $this->flagRender = 1;
+        $this->resetPage();
+    }
+
+    public function clearFilter(): void
+    {
+        $this->members = $this->teamMembersRepository->getTeamMembersAnalysis();
+        $this->customers = $this->customersRepository->getCustomersAnalysis();
+        $this->service = $this->serviceRepository->getServicesAnalysis();
+
+
+        $this->technical = 0;
+        $this->client = 0;
+        $this->work = 0;
+        $this->typeTask = 4;
+        $this->dateBegin = '';
+        $this->dateEnd = '';
+        $this->ordenation = 'desc';
+
+        $this->flagRender = 0;
+    }
+
+    /****FIM DO FILTRO ****/
+
+   
     /**
      * Livewire render list tasks view
      *
@@ -174,18 +281,51 @@ class ShowTasks extends Component
      */
     public function render(): View
     {
+        // if($this->searchString != null)
+        // {
+        //     $this->tasksList = $this->tasksInterface->getTaskSearch($this->searchString,$this->perPage);
+        // }
+        // else
+        // {
+        //     $this->tasksList = $this->tasksInterface->getTasks($this->perPage);
+        // }
+
+        // return view('tenant.livewire.tasks.show', [
+        //     'tasksList' => $this->tasksList,
+        // ]);
+
+        /** Parte do Filtro */
+        $this->members = $this->teamMembersRepository->getTeamMembersAnalysis();
+        $this->customers = $this->customersRepository->getCustomersAnalysis();
+        $this->service = $this->serviceRepository->getServicesAnalysis();
+
         if($this->searchString != null)
         {
-            $this->tasksList = $this->tasksInterface->getTaskSearch($this->searchString,$this->perPage);
+            if($this->flagRender == 0){
+                $this->tasksList = $this->tasksInterface->getTaskSearch($this->searchString,$this->perPage);
+            }
+            else {
+                $this->tasksList = $this->tasksInterface->getTasksFilter($this->searchString,$this->technical,$this->client,$this->typeTask,$this->work,$this->ordenation,$this->dateBegin,$this->dateEnd,$this->perPage);
+            }
         }
-        else
+        else 
         {
-            $this->tasksList = $this->tasksInterface->getTasks($this->perPage);
+            if($this->flagRender == 0){
+                $this->tasksList = $this->tasksInterface->getTasks($this->perPage);
+            }
+            else {
+                $this->tasksList = $this->tasksInterface->getTasksFilter($this->searchString,$this->technical,$this->client,$this->typeTask,$this->work,$this->ordenation,$this->dateBegin,$this->dateEnd,$this->perPage);
+            }
         }
 
         return view('tenant.livewire.tasks.show', [
             'tasksList' => $this->tasksList,
+            'members' => $this->members,
+            'customers' => $this->customers,
+            'services' => $this->service
         ]);
+
+        /** Fim do Filtro */
     }
 
     /**
