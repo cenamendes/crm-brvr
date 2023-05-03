@@ -565,7 +565,24 @@
     "My Files": "Meus Ficheiros",
 
     "Creation Date": "Data de Criação",
-    "Send By": "Enviado por"
+    "Send By": "Enviado por",
+
+    "Select Type of Task": "Selecione o tipo de tarefa",
+    "Select Ordenation": "Selecione ordenação",
+    "Newest to Oldest": "Mais recente para o mais antigo",
+    "Oldest to Newest": "Mais antigo para o mais recente",
+    "Visualize Report": "Visualizar relatório",
+    "Export to Excel": "Exportar para Excel",
+    "Actions": "Ações",
+    "Method of Contract": "Método de Contrato",
+    "Weekly": "Semanalmente",
+    "Monthly": "Mensalmente",
+    "Annually": "Anualmente",
+    "Time to repeat": "Tempo até repetir",
+    "Number of times": "Número de vezes",
+    "Continue method": "Sim, continuar método",
+    "Type of Contract": "Tipo de Contrato"
+
 
 
 
