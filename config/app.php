@@ -201,6 +201,7 @@ return [
         App\Providers\CustomTypesRepositoryProvider::class,
         App\Providers\ZonesRepositoryProvider::class,
         App\Providers\TeamMemberRepositoryProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -216,6 +217,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Excel' => Excel::class
     ])->toArray(),
 
 ];
