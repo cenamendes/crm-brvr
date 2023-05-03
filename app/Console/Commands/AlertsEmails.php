@@ -36,13 +36,32 @@ class AlertsEmails extends Command
     {
        
         tenancy()->runForMultiple(null, function (Tenant $tenant) {
-            $customersServices = CustomerServices::where('end_date','>=',date('Y-m-d'))->with('service')->with('customer')->with('customerLocation')->get();
+            //$customersServices = CustomerServices::where('end_date','>=',date('Y-m-d'))->with('service')->with('customer')->with('customerLocation')->get();
+            $customersServices = CustomerServices::with('service')->with('customer')->with('customerLocation')->get();
             foreach ($customersServices as $customer)
             {
-                $date_subtracted = date('Y-m-d', strtotime('-'.$customer->alert.' day', strtotime($customer->end_date)));
-                if(date('Y-m-d') == $date_subtracted)
+                // $date_subtracted = date('Y-m-d', strtotime('-'.$customer->alert.' day', strtotime($customer->end_date)));
+                // if(date('Y-m-d') == $date_subtracted)
+                // {
+                //     event(new AlertEvent($customer));
+                // }
+                if($customer->number_times != null && $customer->number_times > 0 && $customer->allMails == 1)
                 {
-                    event(new AlertEvent($customer));
+                    if($customer->selectedTypeContract == "semanalmente"){
+                        $date_updated = date('Y-m-d', strtotime('+'.$customer->time_repeat.' week', strtotime($customer->new_date)));
+                    } else if($customer->selectedTypeContract == "mensalmente"){
+                        $date_updated = date('Y-m-d', strtotime('+'.$customer->time_repeat.' month', strtotime($customer->new_date)));
+                    } else {
+                        $date_updated = date('Y-m-d', strtotime('+'.$customer->time_repeat.' year', strtotime($customer->new_date)));
+                    }
+
+                    if(date('Y-m-d') == $date_updated)
+                    {
+                        $subtract_actual = $customer->number_times - 1;
+                        CustomerServices::where('id',$customer->id)->update(["number_times" => $subtract_actual, "new_date" => date('Y-m-d')]);
+                    
+                        event(new AlertEvent($customer));
+                    }
                 }
             }
         });
