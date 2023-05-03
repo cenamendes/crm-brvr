@@ -64,6 +64,8 @@ class EditTasksReports extends Component
     {
         $this->task == $task;
         $this->taskReport = $taskReportToUpdate;
+      
+        
         if($taskReportToUpdate->report != null)
         {
             $this->report = $taskReportToUpdate->report;
@@ -76,6 +78,7 @@ class EditTasksReports extends Component
         {
             $this->confidential_information = $taskReportToUpdate->confidential_information;
         }
+
 
         $this->concluded = $taskReportToUpdate->concluded;
         if($taskReportToUpdate->infoConcluded == null)
@@ -148,32 +151,32 @@ class EditTasksReports extends Component
      */
     public function updateTaskReport()
     {
-        $validator = Validator::make(
-            [
-                'report'  => $this->report,
-                'conclusion' => $this->conclusion,
-                'confidential_information' => $this->confidential_information,
-            ],
-            [
-                'report'  => 'required',
-                'conclusion'  => 'required',
-                'confidential_information'  => 'required',
-            ],
-            [
-                'report'  => __('You must insert a report!'),
-                'conclusion' => __('You must insert a conclusion!'),
-                'confidential_information' => __('You must insert a confidential information!'),
-            ]
-        );
+        // $validator = Validator::make(
+        //     [
+        //         'report'  => $this->report,
+        //         'conclusion' => $this->conclusion,
+        //         'confidential_information' => $this->confidential_information,
+        //     ],
+        //     [
+        //         'report'  => 'required',
+        //         'conclusion'  => 'required',
+        //         'confidential_information'  => 'required',
+        //     ],
+        //     [
+        //         'report'  => __('You must insert a report!'),
+        //         'conclusion' => __('You must insert a conclusion!'),
+        //         'confidential_information' => __('You must insert a confidential information!'),
+        //     ]
+        // );
 
-        if ($validator->fails()) {
-            $errorMessage = '';
-            foreach($validator->errors()->all() as $message) {
-                $errorMessage .= '<p>' . $message . '</p>';
-            }
-            $this->dispatchBrowserEvent('swal', ['title' => __('Services'), 'message' => $errorMessage, 'status'=>'error']);
-            return;
-        }
+        // if ($validator->fails()) {
+        //     $errorMessage = '';
+        //     foreach($validator->errors()->all() as $message) {
+        //         $errorMessage .= '<p>' . $message . '</p>';
+        //     }
+        //     $this->dispatchBrowserEvent('swal', ['title' => __('Services'), 'message' => $errorMessage, 'status'=>'error']);
+        //     return;
+        // }
         
         $reportStatus = 0;
         if($this->report || $this->conclusion || $this->confidential_information) {
