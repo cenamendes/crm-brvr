@@ -28,6 +28,10 @@ class EditCustomerServices extends Component
     public string $selectedLocation = '';
     private bool $updatedFields = false;
 
+    public string $selectedTypeContract = '';
+    public int $number_times = 0;
+    public int $allMails = 0;
+
     protected $listeners = ['resetChanges' => 'resetChanges', 'keepChanges' => 'keepChanges'];
 
     public function mount($service): void
@@ -164,6 +168,18 @@ class EditCustomerServices extends Component
         }
         if($service->end_date != '1970-01-01') {
             $this->end_date = $service->end_date;
+        }
+
+        if($this->selectedTypeContract != null){
+            $this->selectedTypeContract = $service->selectedTypeContract;
+        }
+
+        if($this->number_times != null){
+            $this->number_times = $service->number_times;
+        }
+
+        if($this->allMails != null) {
+            $this->allMails = $service->allMails;
         }
 
     }
