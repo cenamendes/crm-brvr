@@ -18,7 +18,7 @@
                     <div class="accordion__body--text">
                         <div class="col-12" style="margin-bottom:25px;padding-left:0px;">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>{{__("Select Technical")}}</label>
                                         <select name="selectTechnical" id="selectTechnical" class="form-control" wire:model="technical">
@@ -29,7 +29,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>{{__("Select Customer")}}</label>
                                         <select class="form-control" name="selectCustomer" id="selectCustomer" wire:model="client">
@@ -37,6 +37,17 @@
                                                 @foreach ($customers as $customer)
                                                     <option value={{$customer->id}}>{{$customer->short_name}}</option> 
                                                 @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>{{__("Select Type of Task")}}</label>
+                                        <select class="form-control" name="selectType" id="selectType" wire:model="typeTask">
+                                            <option value="4">{{__("All")}}</option>
+                                            <option value="0">{{__("Agendadas")}}</option>
+                                            <option value="1">{{__("Em Curso")}}</option>
+                                            <option value="2">{{__("Finalizadas")}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -103,6 +114,9 @@
                         </select>
                         {{ __('entries') }}</label>
                 </div>
+                <div class="col-12 text-right pr-0">
+                    <a wire:click="exportExcel({{$analysisExcel}})" class="btn btn-primary">{{ __('Export to Excel')}}</a>
+                </div>
                 <div id="dataTables_search_filter" class="dataTables_filter" style="display:none;">
                     <label>{{ __('Search') }}:
                         <input type="search" name="searchString" wire:model="searchString"></label>
@@ -118,12 +132,15 @@
                                 <label class="custom-control-label" for="checkAll"></label>
                             </div>
                         </th>
+                        <th>{{ __('Reference') }}</th>
+                        <th>{{ __('State of Task') }}</th>
                         <th>{{ __('Technical') }}</th>
                         <th>{{ __('Date') }}</th>
                         <th>{{ __('Hour') }}</th>
                         <th>{{ __('Customer') }}</th>
-                        <th>{{ __('Service') }}</th> 
+                        <th>{{ __('Service') }}</th>
                         <th>{{ __('Hours')}}</th>
+                        <th>{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -136,12 +153,41 @@
                                     <label class="custom-control-label" for="customCheckBox{{ $item->id }}"></label>
                                 </div>
                             </td>
+                            <td>{{ $item->tasksReports->reference }}</td>
+                            <td>
+                                @if($item->tasksReports->reportStatus == 0)
+                                   {{__("Agendada")}}
+                                @elseif($item->tasksReports->reportStatus == 1)
+                                   {{__("Em Curso")}}
+                                @else
+                                    {{__("Finalizada")}}
+                                @endif
+                            </td>
                             <td>{{ $item->tasksReports->tech->name }}</td>
                             <td>{{ $item->date_begin }}</td>
                             <td>{{ $item->hour_begin }} / {{ $item->hour_end }}</td>
                             <td>{{ $item->tasksReports->taskCustomer->short_name }}</td>
                             <td>{{ $item->service->name }}</td>
                             <td>{{ global_hours_format($item->total_hours) }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary tp-btn-light sharp" type="button" data-toggle="dropdown">
+                                        <span class="fs--1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                    <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                                                    <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                                                    <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->tasksReports->id)}}">{{__('Visualize Report')}}</a>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
