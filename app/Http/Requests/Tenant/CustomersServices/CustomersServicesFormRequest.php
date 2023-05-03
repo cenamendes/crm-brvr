@@ -28,7 +28,10 @@ class CustomersServicesFormRequest extends FormRequest
            'selectedLocation.required' => __("You must select the customer location!"),
            'selectedCustomer.min' => __("The customer must be at least 1 character."),
            'selectedService.min' => __("The service must be at least 1 character."),
-           'selectedLocation.min' => __("The location must be at least 1 character.")
+           'selectedLocation.min' => __("The location must be at least 1 character."),
+           'selectedTypeContract.required' => __("You must select a contract time"),
+           'number_times.required' => __("You must select a number of times"),
+           'time_repeat.required' => __("You must select a time to repeat")
        
          ];
     }
@@ -47,7 +50,10 @@ class CustomersServicesFormRequest extends FormRequest
             'start_date' => ['required'],
             'end_date' => ['required'],
             'type' => ['required'],
-            'selectedLocation' => ['required', 'min:1']
+            'selectedLocation' => ['required', 'min:1'],
+            'selectedTypeContract' => ['required'],
+            'number_times' => ['required'],
+            'time_repeat' => ['required']
          ];
     }
 }
