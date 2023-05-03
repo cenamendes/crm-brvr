@@ -33,7 +33,8 @@ class SendAlertEmailNotification
         $emailConfig = Config::first();
         $countTimes = 0;
 
-        $notification_day = date('Y-m-d', strtotime('-'.$alert->alert.' day', strtotime($alert->end_date)));
+       // $notification_day = date('Y-m-d', strtotime('-'.$alert->alert.' day', strtotime($alert->end_date)));
+        $notification_day = date('Y-m-d');
 
         if(json_decode($emailConfig->alert_email) != null)
         {
