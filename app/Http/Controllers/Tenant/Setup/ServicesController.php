@@ -137,7 +137,7 @@ class ServicesController extends Controller
         }
         else
         {
-            $request->merge(["patch" => $jsonFile]);
+            $request->merge(["patch" => ""]);
         }
 
 
