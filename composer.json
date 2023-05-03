@@ -15,6 +15,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.10",
+        "maatwebsite/excel": "^3.1",
         "mpyw/compoships-eager-limit": "^1.1",
         "nwidart/laravel-modules": "^9.0",
         "pusher/pusher-php-server": "^7.2",
