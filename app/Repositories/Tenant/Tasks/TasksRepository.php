@@ -83,6 +83,15 @@ class TasksRepository implements TasksInterface
                 'scheduled_date' => $values->scheduledDate,
                 'scheduled_hour' => $values->scheduledHour,
                 'tech_id' => $values->selectedTechnician]);
+        
+        $taskReportUpdate = TasksReports::where('task_id', $task->id)
+                             ->update([
+                                'preview_date' => $values->previewDate,
+                                'preview_hour' => $values->previewHour,
+                                'scheduled_date' => $values->scheduledDate,
+                                'scheduled_hour' => $values->scheduledHour
+                             ]);
+        
         if($update == 0) {
             DB::rollBack();
             return false;
@@ -119,34 +128,48 @@ class TasksRepository implements TasksInterface
                     'service_id' => $service,
                     'additional_description' => $values->serviceDescription[$key],
                 ]);
-                if($update == 0) {
-                    DB::rollBack();
-                    return false;
-                }
+               
+               if($update->count() == 0)
+               {
+                    $update = 0;
+                    if($update == 0) {
+                        DB::rollBack();
+                        return false;
+                    }
+               }
+               else {
+                   DB::commit();
+                   return true;
+               } 
+               
+                // if($update == 0) {
+                //     DB::rollBack();
+                //     return false;
+                // }
             }
         }
 
        
-        $update = TasksReports::create([
-            'reference' => $task->reference,
-            'customer_id' => $task->customer_id,
-            'location_id' => $task->location_id,
-            'task_id' => $task->id,
-            'additional_description' => $task->additional_description,
-            'applicant_name' => $task->applicant_name,
-            'applicant_contact' => $task->applicant_contact,
-            'preview_date' => $task->preview_date,
-            'preview_hour' => $task->preview_hour,
-            'scheduled_date' => $values->scheduledDate,
-            'scheduled_hour' => $values->scheduledHour,
-            'tech_id' => $task->tech_id
-        ]);
+        // $update = TasksReports::create([
+        //     'reference' => $task->reference,
+        //     'customer_id' => $task->customer_id,
+        //     'location_id' => $task->location_id,
+        //     'task_id' => $task->id,
+        //     'additional_description' => $task->additional_description,
+        //     'applicant_name' => $task->applicant_name,
+        //     'applicant_contact' => $task->applicant_contact,
+        //     'preview_date' => $task->preview_date,
+        //     'preview_hour' => $task->preview_hour,
+        //     'scheduled_date' => $values->scheduledDate,
+        //     'scheduled_hour' => $values->scheduledHour,
+        //     'tech_id' => $task->tech_id
+        // ]);
         
          
-        if($update == null) {
-            DB::rollBack();
-            return false;
-        }
+        // if($update == null) {
+        //     DB::rollBack();
+        //     return false;
+        // }
         DB::commit();
         return true;
     }
@@ -190,6 +213,7 @@ class TasksRepository implements TasksInterface
                 ->with('taskLocation')
                 ->with('servicesToDo')
                 ->with('taskReports')
+                ->orderBy('created_at','desc')
                 ->paginate($perPage);
         }
         else if(Auth::user()->type_user == 1)
@@ -200,6 +224,7 @@ class TasksRepository implements TasksInterface
                 ->with('taskLocation')
                 ->with('servicesToDo')
                 ->with('taskReports')
+                ->orderBy('created_at','desc')
                 ->paginate($perPage);
         }
         else 
@@ -208,9 +233,11 @@ class TasksRepository implements TasksInterface
             ->with('taskLocation')
             ->with('servicesToDo')
             ->with('taskReports')
+            ->orderBy('created_at','desc')
             ->paginate($perPage);
         }
     }
+
 
     public function getTaskSearch($searchString,$perPage): LengthAwarePaginator
     {
@@ -227,6 +254,7 @@ class TasksRepository implements TasksInterface
               })
               ->with('taskLocation')
               ->with('taskReports')
+              ->orderBy('created_at','desc')
               ->paginate($perPage);
         }
         else if(Auth::user()->type_user == 1)
@@ -379,4 +407,136 @@ class TasksRepository implements TasksInterface
 
         return $tasks;
     }
+
+
+    /**FILTRO */
+
+    public function getTasksFilter($searchString,$tech,$client,$typeReport,$work,$ordenation,$dateBegin,$dateEnd,$perPage): LengthAwarePaginator
+    {
+                  
+        if($client != 0)
+        {
+            $tasks = Tasks::whereHas('tech', function ($query) use ($tech)
+            {
+               if($tech != 0)
+               {
+                   $query->where('id',$tech);
+               }
+            })
+            ->whereHas('servicesToDo', function ($query) use ($work, $searchString)
+            {
+                $query->WhereHas('service', function ($queryy) use($work, $searchString) {
+
+                    if($work != 0)
+                    {
+                         $queryy->where('id',$work);
+                    }
+
+                    if($searchString != "")
+                    {
+                        $queryy->where('name', 'like', '%' . $searchString . '%');
+                    }
+
+                });
+              
+            })
+            ->whereHas('taskCustomer', function ($query) use ($searchString)
+            {
+                if($searchString != "")
+                {
+                    $query->where('short_name', 'like', '%' . $searchString . '%');
+                }
+            })
+    
+            ->whereHas('taskReports', function ($query) use ($typeReport){
+                if($typeReport != 4)
+                {
+                    $query->where('reportStatus',$typeReport);
+                }
+            })
+            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+            })
+            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                $query->where('scheduled_date','>=',$dateBegin);
+            })
+            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                $query->where('scheduled_date','<=',$dateEnd);
+            })
+            ->where('customer_id',$client);
+
+            if($ordenation == "asc"){
+                $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+             }
+             else {
+                $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+             }
+            // ->orderBy('created_at','desc')
+            // ->paginate($perPage);
+            
+        }
+        else 
+        {
+            $tasks = Tasks::whereHas('tech', function ($query) use ($tech)
+            {
+               if($tech != 0)
+               {
+                   $query->where('id',$tech);
+               }
+            })
+            ->whereHas('taskCustomer', function ($query) use ($searchString)
+            {
+                if($searchString != "")
+                {
+                    $query->where('short_name', 'like', '%' . $searchString . '%');
+                }
+            })
+            ->whereHas('servicesToDo', function ($query) use ($work, $searchString)
+            {
+                $query->WhereHas('service', function ($queryy) use($work, $searchString) {
+
+                    if($work != 0)
+                    {
+                         $queryy->where('id',$work);
+                    }
+                    if($searchString != "")
+                    {
+                        $queryy->orwhere('name', 'like', '%' . $searchString . '%');
+                    }
+
+                });
+              
+            })
+            ->whereHas('taskReports', function ($query) use ($typeReport){
+                if($typeReport != 4)
+                {
+                    $query->where('reportStatus',$typeReport);
+                }
+            })
+            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+            })
+            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                $query->where('scheduled_date','>=',$dateBegin);
+            })
+            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                $query->where('scheduled_date','<=',$dateEnd);
+            });
+            if($ordenation == "asc"){
+                $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+             }
+             else {
+                $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+             }
+            // ->orderBy('created_at','desc')
+            // ->paginate($perPage);
+        }
+       
+        return $tasks;
+    }
+
+
+    /**FIM FILTRO */
+
+
 }
