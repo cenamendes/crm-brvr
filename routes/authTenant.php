@@ -143,6 +143,9 @@ Route::middleware(['auth', 'cmsSettings'])->group(function () {
 
     Route::get('loginCustomer/{customer}',[CustomersController::class,'createloginCustomer'])->name('tenant.loginCustomer.loginCustomer');
 
+    Route::get('loginTeamMember/{teammember}',[TeamMemberController::class,'createlogin'])->name('tenant.loginTeamMember.loginTeamMember');
+
+
     Route::resource('customers', CustomersController::class, [
         'as' => 'tenant'
     ]);
