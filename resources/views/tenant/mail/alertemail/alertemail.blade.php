@@ -56,6 +56,7 @@
                                                 <strong>{{__("Service") }} :</strong> {{$customerService->service->name}}<br>
                                                 <strong>{{__("Customer") }}:</strong> {{$customerService->customer->name}}<br>
                                                 <strong>{{__("Customer Location")}}:</strong> {{$customerService->customerLocation->description}}<br>
+                                                <strong>{{__("Type of Contract")}}:</strong> {{$customerService->selectedTypeContract}}<br>
                                                 <strong>{{__("Service Final Date")}}:</strong> {{$customerService->end_date}} 
                                             <hr>
                                                 <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787e; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">
