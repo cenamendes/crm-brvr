@@ -16,13 +16,113 @@
         @endif
     </div>
     <div class="card-body">
-        <!-- Inicio do Filtro -->
 
-       
+       <!-- Inicio do Filtro  -->
 
-        <!-- Fim do Filtro  -->
-        <div class="row">
-          <div class="table-responsive">
+       <div id="accordion-one" class="accordion accordion-primary" wire:ignore>
+        <div class="accordion__item">
+            <div class="accordion__header rounded-lg collapsed" data-toggle="collapse" data-target="#default_collapseOne" aria-expanded="false">
+                <span class="accordion__header--text">{{__("Filters")}}</span>
+                <span class="accordion__header--indicator"></span>
+            </div>
+            <div id="default_collapseOne" class="accordion__body collapse" data-parent="#accordion-one">
+                <div class="accordion__body--text">
+                    <div class="col-12" style="margin-bottom:25px;padding-left:0px;">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>{{__("Select Technical")}}</label>
+                                    <select name="selectTechnical" id="selectTechnical" class="form-control" wire:model="technical">
+                                        <option value="0">{{__("All")}}</option>
+                                        @foreach ($members as $member)
+                                        <option value={{$member->id}}>{{$member->name}}</option> 
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>{{__("Select Customer")}}</label>
+                                    <select class="form-control" name="selectCustomer" id="selectCustomer" wire:model="client">
+                                        <option value="0">{{__("All")}}</option>
+                                            @foreach ($customers as $customer)
+                                                <option value={{$customer->id}}>{{$customer->short_name}}</option> 
+                                            @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>{{__("Select Type of Task")}}</label>
+                                    <select class="form-control" name="selectType" id="selectType" wire:model="typeTask">
+                                        <option value="4">{{__("All")}}</option>
+                                        <option value="0">{{__("Agendadas")}}</option>
+                                        <option value="1">{{__("Em Curso")}}</option>
+                                        <option value="2">{{__("Finalizadas")}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>{{__("Select Ordenation")}}</label>
+                                    <select class="form-control" name="ordenation" id="ordenation" wire:model="ordenation">
+                                        <option value="desc">{{__("Newest to Oldest")}}</option>
+                                        <option value="asc">{{__("Oldest to Newest")}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>{{__("Select Service")}}</label>
+            
+                                    <select class="form-control" name="workDescription" id="workDescription" wire:model="work">
+                                        <option value="0">{{ __("All") }}</option>
+                                        @foreach ($services as $service)
+                                            <option value="{{$service->id}}">{{$service->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>{{__("Initial Date")}}</label>
+                                    <div class="input-group" wire:ignore>
+                                        <input id="dateBegin" class="form-control" type="text" wire:model="dateBegin" placeholder="{{ __("Date Begin") }}">
+                                        <span class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar-o"></i></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>{{__("Final Date")}}</label>
+                                    <div class="input-group" wire:ignore>
+                                        <input id="dateEnd" class="form-control picker__input" type="text" wire:model="dateEnd" placeholder="{{ __("Date End") }}">
+                                        <span class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar-o"></i></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+            
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <button type="button" id="clearFilter" wire:click="clearFilter" class="btn-sm btn btn-primary">{{__("Clear Filter")}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Fim do Filtro -->  
+
+      <div class="row">
+        <div class="table-responsive">
             <div id="dataTables_wrapper" class="dataTables_wrapper">
                 <div class="dataTables_length" id="dataTables_length">
                     <label>{{ __('Show') }}
@@ -56,8 +156,10 @@
                         <th>{{ __('Reference') }}</th>
                         <th>{{ __('Customer') }}</th>
                         <th>{{ __('Service') }}</th>
+                        <th>{{ __('Technical') }}</th>
                         <th>{{ __('Date') }}</th>
                         <th>{{ __('County') }}</th>
+                        <th>{{ __('State of Task') }}</th>
                         @if(Auth::user()->type_user !="2")
                             <th>{{ __('Action') }}</th>
                         @endif
@@ -81,6 +183,7 @@
                                 @empty
                                 @endforelse
                             </td>
+                            <td>{{ $item->tech->name }}</td>
                             <td>
                                 @isset($item->scheduled_date)
                                 <i class="fa fa-calendar" aria-hidden="true"></i> {{ $item->scheduled_date }}<br>
@@ -92,6 +195,22 @@
                             </td>
                             <td>{{ $item->taskLocation->locationCounty->name }}
                             </td>
+
+                            <td>
+                                @if($item->taskReports != null)
+                                  @if($item->taskReports->reportStatus == 0)
+                                        {{ __("Agendada") }}
+                                  @elseif($item->taskReports->reportStatus == 1)
+                                    {{ __("Em Curso") }}
+                                  @else
+                                    {{ __("Finalizado") }}
+                                  @endif
+                                @else
+                                    {{__("Não iniciada")}}
+                                @endif
+
+                            </td>
+
                             @if(Auth::user()->type_user !="2")
                             <td>
                                 {{-- <div class="dropdown ml-auto text-right"> --}}
