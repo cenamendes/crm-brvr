@@ -309,11 +309,11 @@ class EditTasks extends Component
 
         $taskReport = $this->tasksReportsInterface->getReportByTaskId($this->taskToUpdate->id);
         if($taskReport != null && $taskReport->count() > 0 ) {
-            if(!$this->tasksReportsInterface->destroyReportByTaskId($this->taskToUpdate->id)) {
-                return redirect()->route('tenant.tasks.index')
-                    ->with('message', __('There was an error while trying to update the task!'))
-                    ->with('status', 'error');
-            }
+            // if(!$this->tasksReportsInterface->destroyReportByTaskId($this->taskToUpdate->id)) {
+            //     return redirect()->route('tenant.tasks.index')
+            //         ->with('message', __('There was an error while trying to update the task!'))
+            //         ->with('status', 'error');
+            // }
         }
      
         if($this->tasksInterface->updateTask($this->taskToUpdate, $this) === false) {
