@@ -38,7 +38,7 @@ class TasksReportsController extends Controller
     {
 
         return view('tenant.tasksreports.index', [
-            'themeAction' => 'table_datatable_basic',
+            'themeAction' => 'form_element_data_table',
             'status' => session('status'),
             'message' => session('message'),
         ]);
