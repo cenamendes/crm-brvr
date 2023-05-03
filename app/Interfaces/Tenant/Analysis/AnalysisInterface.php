@@ -3,6 +3,7 @@
 namespace App\Interfaces\Tenant\Analysis;
 
 use App\Models\Tenant\Customers;
+use Illuminate\Support\Collection;
 use App\Models\Tenant\CustomerContacts;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Requests\Tenant\CustomerContacts\CustomerContactsFormRequest;
@@ -13,7 +14,7 @@ interface AnalysisInterface
 
     public function getAnalysisFromClient(Customers $customer,int $tech, int $work, string $dateBegin,string $dateEnd, $perPage): LengthAwarePaginator;
 
-    public function getAnalysisFilter(int $tech,int $client,int $work,string $dateBegin,string $dateEnd,$perPage): LengthAwarePaginator;
+    public function getAnalysisFilter(int $tech,int $client,int $typeReport,int $work,string $dateBegin,string $dateEnd,$perPage): LengthAwarePaginator;
 
     // public function getAnalysisByTechnical(int $tech,$perPage): LengthAwarePaginator;
 
@@ -26,6 +27,10 @@ interface AnalysisInterface
     // public function getAnalysisByWorkTime(int $number_of_hours,$perPage): LengthAwarePaginator;
 
     //public function getAnalysisFromClientSearch(Customers $customer,$searchString,$perPage): LengthAwarePaginator;
+
+    public function getAllAnalysisToExcel(): Collection;
+
+    public function getAnalysisFilterToExcel(int $tech,int $client,int $typeReport,int $work,string $dateBegin,string $dateEnd): Collection;
 
 
 }
