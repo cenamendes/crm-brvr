@@ -57,12 +57,12 @@ class TasksController extends Controller
      */
     public function edit(Tasks $task): Redirect|View
     {
-        $taskReport = $this->tasksReportsInterface->getReportByTaskId($task->id);
-        if(isset($taskReport) && $taskReport->reportStatus > 0 ) {
-            return redirect()->route('tenant.tasks.index')
-                ->with('message', __('You cannot update a task with an ongoing report!'))
-                ->with('status', 'error');
-        }
+        // $taskReport = $this->tasksReportsInterface->getReportByTaskId($task->id);
+        // if(isset($taskReport) && $taskReport->reportStatus > 0 ) {
+        //     return redirect()->route('tenant.tasks.index')
+        //         ->with('message', __('You cannot update a task with an ongoing report!'))
+        //         ->with('status', 'error');
+        // }
 
         return view('tenant.tasks.edit', [
             'themeAction' => 'form_element_data_table',
