@@ -25,4 +25,10 @@ interface TasksReportsInterface
 
     public function updateTaskReport($task): int;
 
+
+    /**Parte do filtro */
+    public function getTasksReportsFilter(string $searchString,int $tech,int $client,int $typeReport, int $work, string $ordenation, string $dateBegin, string $dateEnd, $perPage): LengthAwarePaginator;
+
+    /** */
+
 }
