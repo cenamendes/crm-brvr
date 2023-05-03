@@ -47,7 +47,29 @@ class CustomerServicesRepository implements CustomerServicesInterface
 
     public function add(CustomersServicesFormRequest $request): CustomerServices
     {
-        return DB::transaction(function () use ($request) {
+        // return DB::transaction(function () use ($request) {
+        //     $customerService = CustomerServices::create([
+        //         'customer_id' => $request->selectedCustomer,
+        //         'service_id' => $request->selectedService,
+        //         'location_id' => $request->selectedLocation,
+        //         'start_date' => $request->start_date,
+        //         'end_date' => $request->end_date,
+        //         'type' => $request->type,
+        //         'alert' => $request->alert
+        //     ]);
+
+
+        //     return $customerService;
+        // });
+
+        if($request->allMails == "on"){
+            $allMails = 1;
+        }
+        else {
+            $allMails = 0;
+        }
+
+        return DB::transaction(function () use ($request, $allMails){
             $customerService = CustomerServices::create([
                 'customer_id' => $request->selectedCustomer,
                 'service_id' => $request->selectedService,
@@ -55,11 +77,16 @@ class CustomerServicesRepository implements CustomerServicesInterface
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'type' => $request->type,
-                'alert' => $request->alert
+                'alert' => '0',
+                'selectedTypeContract' => $request->selectedTypeContract,
+                'time_repeat' => $request->time_repeat,
+                'number_times' => $request->number_times,
+                'allMails' => $allMails,
+                'new_date' => $request->start_date
             ]);
 
-
             return $customerService;
+
         });
     }
 
@@ -71,6 +98,7 @@ class CustomerServicesRepository implements CustomerServicesInterface
             $arrayCustomerServices = [];
 
             $serviceRequest = [];
+    
             foreach($customerServiceRequest as $req)
             {
                 if($req["selectedService"] != "")
@@ -99,12 +127,48 @@ class CustomerServicesRepository implements CustomerServicesInterface
                     $serviceRequest["location_id"] = $req["selectedLocation"];
                     array_push($arrayCustomerServices, $serviceRequest);
                 }
-                if($req["alert"] != "")
+                // if($req["alert"] != "")
+                // {
+                //     $serviceRequest["alert"] = $req["alert"];
+                //     array_push($arrayCustomerServices,$serviceRequest);
+                // }
+                if($req["selectedTypeContract"] != "")
                 {
-                    $serviceRequest["alert"] = $req["alert"];
+                    $serviceRequest["selectedTypeContract"] = $req["selectedTypeContract"];
+                    array_push($arrayCustomerServices,$serviceRequest);
+                }
+                if($req["time_repeat"] != "")
+                {
+                    $serviceRequest["time_repeat"] = $req["time_repeat"];
+                    array_push($arrayCustomerServices,$serviceRequest);
+                }
+                if($req["number_times"] != "")
+                {
+                    $serviceRequest["number_times"] = $req["number_times"];
+                    array_push($arrayCustomerServices,$serviceRequest);
+                }
+                if(isset($req["allMails"]))
+                {
+                    if($req["allMails"] != "" || $req["allMails"] == "")
+                    {
+                        if($req["allMails"] == "on"){
+                            $req["allMails"] = 1;
+                        }
+                        else {
+                            $req["allMails"] = 0;
+                        }
+                        $serviceRequest["allMails"] = $req["allMails"];
+                        array_push($arrayCustomerServices,$serviceRequest);
+                    }
+                }
+                else if(!isset($req["allMails"]))
+                {
+                    $serviceRequest["allMails"] = 0;
                     array_push($arrayCustomerServices,$serviceRequest);
                 }
 
+                $serviceRequest["alert"] = 0;
+                array_push($arrayCustomerServices,$serviceRequest);
             }
 
 
