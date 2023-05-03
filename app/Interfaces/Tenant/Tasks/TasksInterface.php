@@ -31,4 +31,10 @@ interface TasksInterface
 
     public function taskCalendarMonthChange($month,$year): Collection;
 
+    /**FILTRO */
+
+    public function getTasksFilter(string $searchString,int $tech,int $client,int $typeReport,int $work,string $ordenation,string $dateBegin,string $dateEnd,$perPage): LengthAwarePaginator;
+
+    /**FIM FILTRO */
+
 }
