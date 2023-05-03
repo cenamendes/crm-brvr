@@ -157,7 +157,6 @@
                         today: "{!! __('today') !!}",
                         clear: "{!! __('clear') !!}",
                         close: "{!! __('close') !!}",
-                            min: new Date('Y-m-d'),
                             onSet: function(thingSet) {
                             @this.set('date_inicial', formatDate(thingSet.select), true);
                             jQuery('#date_inicial').val(formatDate(thingSet.select));
@@ -195,7 +194,7 @@
                         finalHour = finalHour.getTime();
                         var startHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_inicial').val());
                         startHour = startHour.getTime();
-                        if(jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)
+                        if(jQuery('#swal2-content #selectedService').val() != "" && jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)
                         {
                             countAdd++;
                             if(countAdd == 1)
