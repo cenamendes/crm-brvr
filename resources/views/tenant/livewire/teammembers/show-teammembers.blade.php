@@ -76,7 +76,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 @if($item->account_active == 0)
-                                    <a class="dropdown-item" href="{{ route('tenant.loginCustomer.loginCustomer', $item->id) }}">{{ __('Create Login')}}</a>
+                                    <a class="dropdown-item" href="{{ route('tenant.loginTeamMember.loginTeamMember', $item->id) }}">{{ __('Create Login')}}</a>
                                 @endif
                                 <a class="dropdown-item"
                                     href="{{ route('tenant.team-member.edit', $item->id) }}">{{ __('Edit Team Member') }}</a>
