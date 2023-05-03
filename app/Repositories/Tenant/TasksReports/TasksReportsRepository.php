@@ -20,15 +20,15 @@ class TasksReportsRepository implements TasksReportsInterface
         if(Auth::user()->type_user == 2)
         {
             $customer = Customers::where('user_id',Auth::user()->id)->first();
-            $tasksReports = TasksReports::where('customer_id',$customer->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->paginate($perPage);
+            $tasksReports = TasksReports::where('customer_id',$customer->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->orderBy('created_at','desc')->paginate($perPage);
         }
         else if(Auth::user()->type_user == 1)
         {
             $teammember = TeamMember::where('user_id',Auth::user()->id)->first();
-            $tasksReports = TasksReports::where('tech_id',$teammember->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->paginate($perPage);
+            $tasksReports = TasksReports::where('tech_id',$teammember->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->orderBy('created_at','desc')->paginate($perPage);
         }
         else {
-            $tasksReports = TasksReports::with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->paginate($perPage);
+            $tasksReports = TasksReports::with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->orderBy('created_at','desc')->paginate($perPage);
         }
 
         return $tasksReports;
@@ -49,6 +49,7 @@ class TasksReportsRepository implements TasksReportsInterface
             })
             ->with('tech')
             ->with('getHoursTask')
+            ->orderBy('created_at','desc')
             ->paginate($perPage);
         }
         else if(Auth::user()->type_user == 1)
@@ -64,6 +65,7 @@ class TasksReportsRepository implements TasksReportsInterface
             })
             ->with('tech')
             ->with('getHoursTask')
+            ->orderBy('created_at','desc')
             ->paginate($perPage);
         }
         else {
@@ -77,6 +79,7 @@ class TasksReportsRepository implements TasksReportsInterface
             })
             ->with('tech')
             ->with('getHoursTask')
+            ->orderBy('created_at','desc')
             ->paginate($perPage);
         }
 
@@ -90,6 +93,13 @@ class TasksReportsRepository implements TasksReportsInterface
 
     public function updateReport($reportId, $taskReport): int
     {
+        $check = TasksReports::where('id', $reportId)->first();
+
+        if($check->reportStatus == 2)
+        {
+            $taskReport["reportStatus"] = 2;
+        }
+
         $report = TasksReports::where('id', $reportId)
             ->update($taskReport);
 
@@ -148,5 +158,86 @@ class TasksReportsRepository implements TasksReportsInterface
 
         });
     }
+
+    /**Parte do filtro */
+
+    public function getTasksReportsFilter($searchString, $tech, $client, $typeReport, $work, $ordenation, $dateBegin, $dateEnd,$perPage): LengthAwarePaginator
+    {
+        $tasksReports = TasksReports::whereHas('tech', function ($query) use ($tech)
+        {
+           if($tech != 0)
+           {
+               $query->where('id',$tech);
+           }
+        })
+        ->whereHas('servicesToDo', function ($query) use ($work,$searchString)
+        {
+            $query->WhereHas('service', function ($queryy) use($work, $searchString) {
+
+                if($work != 0)
+                {
+                     $queryy->where('id',$work);
+                }
+
+                if($searchString != "")
+                {
+                    $queryy->orwhere('name', 'like', '%' . $searchString . '%');
+                }
+
+
+            });
+        })
+        ->whereHas('taskCustomer', function ($query) use ($client,$searchString)
+        {
+           if($client != 0)
+           {
+               $query->where('id',$client);
+           }
+           if($searchString != "")
+           {
+                $query->where('short_name', 'like', '%' . $searchString . '%');
+           }
+        })
+       
+        ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+            $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+        })
+        ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+            $query->where('scheduled_date','>=',$dateBegin);
+        })
+        ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+            $query->where('scheduled_date','<=',$dateEnd);
+        });
+        
+
+        if($typeReport != 4)
+        {
+            if($ordenation == "asc"){
+               $tasksReports = $tasksReports->where('reportStatus', $typeReport)->with('getHoursTask')
+                ->orderBy('created_at', 'asc')->paginate($perPage);
+            }
+            else {
+               $tasksReports = $tasksReports->where('reportStatus', $typeReport)->with('getHoursTask')
+                ->orderBy('created_at','desc')->paginate($perPage);
+            }
+        }
+        else 
+        {
+            if($ordenation == "asc"){
+               $tasksReports = $tasksReports->with('getHoursTask')
+                ->orderBy('created_at','asc')->paginate($perPage);
+            }
+            else {
+               $tasksReports = $tasksReports->with('getHoursTask')
+                ->orderBy('created_at','desc')->paginate($perPage); 
+            }
+        }
+
+       
+
+        return $tasksReports;
+    }
+
+    /*** */
 
 }
