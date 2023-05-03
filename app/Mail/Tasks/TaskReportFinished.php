@@ -37,7 +37,7 @@ class TaskReportFinished extends Mailable
         $subject = 'Relatório da Tarefa #' . $this->tasksReports->reference . ' finalizado.';
         return new Envelope(
             subject: $subject,
-            from: new Address(session('email'), session('sender_name')),
+            from: new Address(env('MAIL_USERNAME'), session('sender_name')),
         );
     }
 
