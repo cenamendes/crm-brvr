@@ -43,7 +43,7 @@ class TeamMember extends Mailable
             subject: $subject,
             //session('email')
             //env('MAIL_USERNAME')
-            from: new Address(session('email'), session('sender_name')),
+            from: new Address(env('MAIL_USERNAME'), session('sender_name')),
         );
     }
 
