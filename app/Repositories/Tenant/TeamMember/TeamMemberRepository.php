@@ -99,7 +99,7 @@ class TeamMemberRepository implements TeamMemberInterface
 
            $teamMember = TeamMember::where('id',$teamMember)->first();
            
-           //$checkIfUserExist = User::where('email',$teamMember->email)->first();
+        //$checkIfUserExist = User::where('email',$teamMember->email)->first();
 
         //    if(empty($checkIfUserExist))
         //    {
@@ -121,8 +121,14 @@ class TeamMemberRepository implements TeamMemberInterface
         //    }
         //    else 
         //    {
-        //         $userCreate = User::select()->get();
-
+        //         $userCreate = User::create([
+        //             'name' => $teamMember->name,
+        //             'username' => $teamMember->username,
+        //             'email' => $teamMember->email,
+        //             'type_user' => '1',
+        //             'password' => $hashed_password,
+        //         ]);
+                
         //    }
 
 
