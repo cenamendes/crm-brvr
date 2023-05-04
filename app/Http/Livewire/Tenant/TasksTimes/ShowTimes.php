@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Tenant\TasksTimes;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 use App\Interfaces\Tenant\TasksTimes\TasksTimesInterface;
 
 class ShowTimes extends Component
@@ -99,6 +100,7 @@ class ShowTimes extends Component
         $arrayInsertTask = [
             "service_id" => $this->serviceSelected,
             "task_id" => $this->task_id,
+            "tech_id" => Auth::user()->id,
             "date_begin" => $this->date_inicial,
             "hour_begin" => $this->hora_inicial,
             "date_end" => $this->date_inicial,
