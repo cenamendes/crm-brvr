@@ -99,6 +99,33 @@ class TeamMemberRepository implements TeamMemberInterface
 
            $teamMember = TeamMember::where('id',$teamMember)->first();
            
+           //$checkIfUserExist = User::where('email',$teamMember->email)->first();
+
+        //    if(empty($checkIfUserExist))
+        //    {
+        //         $userCreate = User::create([
+        //             'name' => $teamMember->name,
+        //             'username' => $teamMember->username,
+        //             'email' => $teamMember->email,
+        //             'type_user' => '1',
+        //             'password' => $hashed_password,
+        //         ]);
+
+        //         $updateTeamMember = TeamMember::where('id',$teamMember->id)->update([
+        //             'user_id' => $userCreate->id,
+        //             'account_active' => '1'
+        //         ]);
+
+        //         $userCreate["user"] = ['password_without_hashed' => $password];
+
+        //    }
+        //    else 
+        //    {
+        //         $userCreate = User::select()->get();
+
+        //    }
+
+
            $userCreate = User::create([
                 'name' => $teamMember->name,
                 'username' => $teamMember->username,
