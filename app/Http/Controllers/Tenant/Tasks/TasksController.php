@@ -30,7 +30,8 @@ class TasksController extends Controller
     public function index(): View
     {
         return view('tenant.tasks.index', [
-            'themeAction' => 'table_datatable_basic',
+            //'themeAction' => 'table_datatable_basic',
+            'themeAction' => 'form_element_data_table',
             'status' => session('status'),
             'message' => session('message'),
         ]);
