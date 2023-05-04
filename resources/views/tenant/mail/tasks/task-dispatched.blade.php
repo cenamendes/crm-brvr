@@ -56,7 +56,7 @@
                                             <div class="table" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
                                                     <p style="font-family: Avenir, Helvetica, sans-serif; color: #74787e; ">
                                                         @foreach ($task->servicesToDo as $servi )
-                                                            <b>{{__("Service")}}: </b> {{$servi->service->name}}<br>
+                                                            <br><b>{{__("Service")}}: </b> {{$servi->service->name}}<br>
                                                             <b>{{__("Service Notes")}}:</b> {{$servi->additional_description}}<br>
                                                             <b>{{__("Hours")}}:</b>
                                                                 @php $total = 0; @endphp
