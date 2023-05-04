@@ -3,9 +3,11 @@
 namespace App\Repositories\Tenant\Analysis;
 
 use App\Models\Tenant\TasksTimes;
+use App\Models\Tenant\TeamMember;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Interfaces\Tenant\Analysis\AnalysisInterface;
+
 
 class AnalysisRepository implements AnalysisInterface
 {
@@ -90,42 +92,76 @@ class AnalysisRepository implements AnalysisInterface
         // ->with('service')
         // ->paginate($perPage);
 
-        $reportsFromClient = TasksTimes::whereHas('tasksReports', function ($query) use ($tech,$client,$typeReport) {
-            if($typeReport != 4)
-            {
-                $query->where('reportStatus',$typeReport);
-            }
-            $query->WhereHas('tech', function ($queryy) use ($tech){
-                if($tech != 0)
+        if($tech != 0)
+        {
+            $teamMember = TeamMember::where('id',$tech)->first();
+
+
+            $reportsFromClient = TasksTimes::whereHas('tasksReports', function ($query) use ($tech,$client,$typeReport) {
+                if($typeReport != 4)
                 {
-                    $queryy->Where('id',$tech);
+                    $query->where('reportStatus',$typeReport);
                 }
-            });
-            $query->whereHas('taskCustomer', function ($queryy) use ($client){
-                if($client != 0)
+                $query->whereHas('taskCustomer', function ($queryy) use ($client){
+                    if($client != 0)
+                    {
+                        $queryy->Where('id',$client);
+                    }
+                 });
+            })
+            ->whereHas('service', function ($query) use ($work){
+                if($work != 0)
                 {
-                    $queryy->Where('id',$client);
+                    $query->where('id',$work);
                 }
-             });
-        })
-        ->whereHas('service', function ($query) use ($work){
-            if($work != 0)
-            {
-                $query->where('id',$work);
-            }
-        })
-        ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
-            $query->where('date_begin','>=',$dateBegin)->where('date_end','<=',$dateEnd);
-        })
-        ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
-            $query->where('date_begin','>=',$dateBegin);
-        })
-        ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
-            $query->where('date_end','<=',$dateEnd);
-        })
-        ->with('tasksReports')
-        ->with('service')
-        ->paginate($perPage);    
+            })
+            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                $query->where('date_begin','>=',$dateBegin)->where('date_end','<=',$dateEnd);
+            })
+            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                $query->where('date_begin','>=',$dateBegin);
+            })
+            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                $query->where('date_end','<=',$dateEnd);
+            })
+            ->with('tasksReports')
+            ->with('service')
+            ->where('tech_id',$teamMember->user_id)
+            ->paginate($perPage);    
+        }
+        else 
+        {
+            $reportsFromClient = TasksTimes::whereHas('tasksReports', function ($query) use ($tech,$client,$typeReport) {
+                if($typeReport != 4)
+                {
+                    $query->where('reportStatus',$typeReport);
+                }
+                $query->whereHas('taskCustomer', function ($queryy) use ($client){
+                    if($client != 0)
+                    {
+                        $queryy->Where('id',$client);
+                    }
+                 });
+            })
+            ->whereHas('service', function ($query) use ($work){
+                if($work != 0)
+                {
+                    $query->where('id',$work);
+                }
+            })
+            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                $query->where('date_begin','>=',$dateBegin)->where('date_end','<=',$dateEnd);
+            })
+            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                $query->where('date_begin','>=',$dateBegin);
+            })
+            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                $query->where('date_end','<=',$dateEnd);
+            })
+            ->with('tasksReports')
+            ->with('service')
+            ->paginate($perPage);
+        }
 
         return $reportsFromClient;
     }
@@ -233,42 +269,77 @@ class AnalysisRepository implements AnalysisInterface
 
     public function getAnalysisFilterToExcel($tech,$client,$typeReport,$work,$dateBegin,$dateEnd): Collection
     {
-        $reportsFromClient = TasksTimes::whereHas('tasksReports', function ($query) use ($tech,$client,$typeReport) {
-            if($typeReport != 4)
-            {
-                $query->where('reportStatus',$typeReport);
-            }
-            $query->WhereHas('tech', function ($queryy) use ($tech){
-                if($tech != 0)
+
+        if($tech != 0)
+        {
+            $teamMember = TeamMember::where('id',$tech)->first();
+
+            $reportsFromClient = TasksTimes::whereHas('tasksReports', function ($query) use ($tech,$client,$typeReport) {
+                if($typeReport != 4)
                 {
-                    $queryy->Where('id',$tech);
+                    $query->where('reportStatus',$typeReport);
                 }
-            });
-            $query->whereHas('taskCustomer', function ($queryy) use ($client){
-                if($client != 0)
+                $query->whereHas('taskCustomer', function ($queryy) use ($client){
+                    if($client != 0)
+                    {
+                        $queryy->Where('id',$client);
+                    }
+                 });
+            })
+            ->whereHas('service', function ($query) use ($work){
+                if($work != 0)
                 {
-                    $queryy->Where('id',$client);
+                    $query->where('id',$work);
                 }
-             });
-        })
-        ->whereHas('service', function ($query) use ($work){
-            if($work != 0)
-            {
-                $query->where('id',$work);
-            }
-        })
-        ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
-            $query->where('date_begin','>=',$dateBegin)->where('date_end','<=',$dateEnd);
-        })
-        ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
-            $query->where('date_begin','>=',$dateBegin);
-        })
-        ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
-            $query->where('date_end','<=',$dateEnd);
-        })
-        ->with('tasksReports')
-        ->with('service')
-        ->get();
+            })
+            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                $query->where('date_begin','>=',$dateBegin)->where('date_end','<=',$dateEnd);
+            })
+            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                $query->where('date_begin','>=',$dateBegin);
+            })
+            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                $query->where('date_end','<=',$dateEnd);
+            })
+            ->with('tasksReports')
+            ->with('service')
+            ->where('tech_id',$teamMember->user_id)
+            ->get();
+        }
+        else 
+        {
+            $reportsFromClient = TasksTimes::whereHas('tasksReports', function ($query) use ($tech,$client,$typeReport) {
+                if($typeReport != 4)
+                {
+                    $query->where('reportStatus',$typeReport);
+                }
+                $query->whereHas('taskCustomer', function ($queryy) use ($client){
+                    if($client != 0)
+                    {
+                        $queryy->Where('id',$client);
+                    }
+                 });
+            })
+            ->whereHas('service', function ($query) use ($work){
+                if($work != 0)
+                {
+                    $query->where('id',$work);
+                }
+            })
+            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                $query->where('date_begin','>=',$dateBegin)->where('date_end','<=',$dateEnd);
+            })
+            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                $query->where('date_begin','>=',$dateBegin);
+            })
+            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                $query->where('date_end','<=',$dateEnd);
+            })
+            ->with('tasksReports')
+            ->with('service')
+            ->get();
+        }
+        
 
         return $reportsFromClient;
     }
