@@ -581,7 +581,10 @@
     "Time to repeat": "Tempo até repetir",
     "Number of times": "Número de vezes",
     "Continue method": "Sim, continuar método",
-    "Type of Contract": "Tipo de Contrato"
+    "Type of Contract": "Tipo de Contrato",
+
+    "The short name field is required.": "O campo nome curto é obrigatório.",
+    "The short name must be at least 2 characters.": "O campo nome curto tem de ser pelo menos 2 carateres."
 
 
 
