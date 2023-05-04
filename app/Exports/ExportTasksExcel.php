@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\User;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -88,12 +89,12 @@ class ExportTasksExcel implements FromCollection, WithHeadings, WithEvents,Shoul
                 $type="Finalizada";
             }
 
-    
-
+            $teamMember = User::where('id',$analysis["tech_id"])->first();
+           
             return [
                 'reference' => $analysis["tasks_reports"]["reference"],
                 'stateOfTask' => $type,
-                'tech' => $analysis["tasks_reports"]["tech"]["name"],
+                'tech' => $teamMember->name,
                 'dateBegin' => $analysis["date_begin"],
                 'hourBegin' => $analysis["hour_begin"],
                 'hourEnd' => $analysis["hour_end"],
