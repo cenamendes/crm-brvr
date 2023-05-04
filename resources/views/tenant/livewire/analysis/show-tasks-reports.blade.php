@@ -163,7 +163,11 @@
                                     {{__("Finalizada")}}
                                 @endif
                             </td>
-                            <td>{{ $item->tasksReports->tech->name }}</td>
+                            {{-- <td>{{ $item->tasksReports->tech->name }}</td> --}}
+                            @php
+                                $user = \App\Models\User::where('id',$item->tech_id)->first();
+                            @endphp
+                            <td>{{ $user->name}}</td>
                             <td>{{ $item->date_begin }}</td>
                             <td>{{ $item->hour_begin }} / {{ $item->hour_end }}</td>
                             <td>{{ $item->tasksReports->taskCustomer->short_name }}</td>
