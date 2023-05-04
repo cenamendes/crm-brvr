@@ -281,6 +281,10 @@
     //     jQuery("#selectedService").on("select2:select", function (e) { @this.selectedService = jQuery('#selectedService').find(':selected').val(); });
     // });
 
+    window.addEventListener('livewire:load', event => {
+        restartObjects();
+    });
+
     window.addEventListener('contentChanged', event => {
         restartObjects();
     });
@@ -335,6 +339,30 @@
         jQuery('#selectedTechnician').select2();
         jQuery("#selectedTechnician").on("select2:select", function (e) {
             @this.set('selectedTechnician', jQuery('#selectedTechnician').find(':selected').val(), true)
+        });
+
+        jQuery('.input-group #dateBegin').pickadate({
+            monthsFull: ["{!!__('January') !!}", "{!!__('February') !!}","{!!__('March') !!}","{!!__('April') !!}","{!!__('May') !!}","{!!__('June') !!}","{!!__('July') !!}","{!!__('August') !!}","{!!__('September') !!}","{!!__('October') !!}","{!!__('November') !!}","{!!__('December') !!}"],
+            weekdaysShort: ["{!!__('Sun') !!}","{!! __('Mon') !!}","{!! __('Tue') !!}", "{!! __('Wed') !!}","{!! __('Thu') !!}", "{!! __('Fri') !!}", "{!! __('Sat') !!}"],
+            today: "{!! __('today') !!}",
+            clear: "{!! __('clear') !!}",
+            close: "{!! __('close') !!}",
+            onSet: function(thingSet) {
+                @this.set('dateBegin', formatDate(thingSet.select));
+                //jQuery('#dateBegin').val(formatDate(thingSet.select));
+                }
+        });
+
+        jQuery('.input-group #dateEnd').pickadate({
+            monthsFull: ["{!! __('January') !!}","{!! __('February') !!}","{!! __('March') !!}","{!! __('April') !!}","{!! __('May') !!}","{!! __('June') !!}","{!! __('July') !!}","{!! __('August') !!}","{!! __('September') !!}","{!! __('October') !!}","{!! __('November') !!}","{!! __('December') !!}"],
+            weekdaysShort: ["{!!__('Sun') !!}","{!!__('Mon') !!}","{!!__('Tue') !!}","{!!__('Wed') !!}","{!!__('Thu') !!}","{!!__('Fri') !!}","{!!__('Sat') !!}"],
+            today: "{!! __('today') !!}",
+            clear: "{!! __('clear') !!}",
+            close: "{!! __('close') !!}",
+            onSet: function(thingSet) {
+                @this.set('dateEnd', formatDate(thingSet.select));
+                //jQuery('#dateEnd').val(formatDate(thingSet.select));
+                }
         });
 
     }
