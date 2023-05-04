@@ -116,14 +116,23 @@
 								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
 								$user = \App\Models\User::where('id',$customerr->user_id)->first();
 							@endphp
-							<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+							@if(isset($user->photo))
+								<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+							@else
+							{{-- https://crm.dajasdourovalley.com/assets/resources/images/avatar/1.png --}}
+								<img src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}" class="rounded-circle user_img">
+							@endif
 						@else
 							@php
 								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
 								$user_id = \App\Models\Tenant\TeamMember::where('id',$customerr->account_manager)->first();
 								$user = \App\Models\User::where('id',$user_id->user_id)->first();
 							@endphp
-							<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+							@if(isset($user->photo))
+								<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+							@else
+								<img src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}" class="rounded-circle user_img">
+							@endif
 						@endif
 						
 					</div>
@@ -140,7 +149,12 @@
 								$user_id = \App\Models\Tenant\TeamMember::where('id',$customerr->account_manager)->first();
 								$user = \App\Models\User::where('id',$user_id->user_id)->first();
 							@endphp
-							<span>{{$user->name}}</span>
+
+							@if($user != null)
+								<span>{{$user->name}}</span>
+							@else
+								<span>{{$user_id->name}}</span>
+							@endif
 						@endif
 						
 					</div>
