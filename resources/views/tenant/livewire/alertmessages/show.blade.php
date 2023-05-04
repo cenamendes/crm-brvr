@@ -17,8 +17,13 @@
                         <li>
                             <div class="timeline-panel">
                                 <div class="media mr-2">
-                                    <img alt="image" width="50"
+                                    @if($not->senderUser->photo == null)
+                                        <img alt="image" width="50" src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}">
+                                    @else
+                                        <img alt="image" width="50"
                                         src="{!! global_tenancy_asset('/app/public/profile/'.$not->senderUser->photo.'') !!}">
+                                    @endif
+                                    
                                 </div>
                                 <div class="media-body">
                                     @if($not->type == "message")
