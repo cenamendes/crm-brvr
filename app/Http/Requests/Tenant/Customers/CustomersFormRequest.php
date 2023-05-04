@@ -22,6 +22,8 @@ class CustomersFormRequest extends FormRequest
         return [
           'name.required' => __("The name field is required."),
           'name.min' => __("The name must be at least 2 characters."),
+          'short_name.required' => __("The short name field is required."),
+          'short_name.min' => __("The short name must be at least 2 characters."),
           'username.required' => __("The username field is required"),
           'vat.required' => __("The vat field is required."),
           'vat.min' => __("The vat must be at least 9 characters."),
@@ -50,6 +52,7 @@ class CustomersFormRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:2'],
+            'short_name' => ['required', 'min:2'],
             'username' => ['required'],
             'vat' => ['required', 'min:9','max:9'],
             'contact' => ['required', 'min:9'],
