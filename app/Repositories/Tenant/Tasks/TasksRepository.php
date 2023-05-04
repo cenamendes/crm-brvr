@@ -412,8 +412,7 @@ class TasksRepository implements TasksInterface
     /**FILTRO */
 
     public function getTasksFilter($searchString,$tech,$client,$typeReport,$work,$ordenation,$dateBegin,$dateEnd,$perPage): LengthAwarePaginator
-    {
-                  
+    {          
         if($client != 0)
         {
             $tasks = Tasks::whereHas('tech', function ($query) use ($tech)
@@ -507,6 +506,7 @@ class TasksRepository implements TasksInterface
                 });
               
             })
+
             ->whereHas('taskReports', function ($query) use ($typeReport){
                 if($typeReport != 4)
                 {
@@ -532,6 +532,7 @@ class TasksRepository implements TasksInterface
             // ->paginate($perPage);
         }
        
+        
         return $tasks;
     }
 
