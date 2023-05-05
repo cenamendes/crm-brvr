@@ -585,7 +585,8 @@
 
     "The short name field is required.": "O campo nome curto é obrigatório.",
     "The short name must be at least 2 characters.": "O campo nome curto tem de ser pelo menos 2 carateres.",
-    "That email already exists.": "Esse email já se encontra registado."
+    "That email already exists.": "Esse email já se encontra registado.",
+    "Password of access": "Password de acesso"
 
 
 
