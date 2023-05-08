@@ -337,24 +337,50 @@ class TasksRepository implements TasksInterface
         {
             $customer = Customers::where('user_id',Auth::user()->id)->first();
           
-            $tasks = Tasks::
-             with('tech')
-            ->with('taskCustomer')
-            ->WhereMonth('scheduled_date', Carbon::now()->month)
-            ->WhereYear('scheduled_date', Carbon::now()->year)
-            ->where('customer_id',$customer->id)
-            ->get();
+            // $tasks = Tasks::
+            //  with('tech')
+            // ->with('taskCustomer')
+            // ->WhereMonth('scheduled_date', Carbon::now()->month)
+            // ->WhereYear('scheduled_date', Carbon::now()->year)
+            // ->where('customer_id',$customer->id)
+            // ->get();
+
+            $tasks = Tasks::with('tech')
+                     ->with('taskCustomer')
+                     ->where(function ($query) {
+                        $query->where(function ($query) {
+                            $query->whereMonth('preview_date', Carbon::now()->month)
+                                    ->whereYear('preview_date', Carbon::now()->year);
+                        })
+                        ->orWhere(function ($query) {
+                            $query->whereMonth('scheduled_date', Carbon::now()->month)
+                                  ->whereYear('scheduled_date', Carbon::now()->year);
+                        });
+                     })
+                     ->where('customer_id',$customer->id)
+                     ->get();
         }
         else if(Auth::user()->type_user == 1)
         {
             $tech = TeamMember::where('user_id',Auth::user()->id)->first();
-            $tasks = Tasks::
-            with('tech')
+
+           $tasks = Tasks::
+           with('tech')
            ->with('taskCustomer')
-           ->WhereMonth('scheduled_date', Carbon::now()->month)
-           ->WhereYear('scheduled_date', Carbon::now()->year)
+           ->where(function ($query) {
+               $query->where(function ($query) {
+                           $query->whereMonth('preview_date', Carbon::now()->month)
+                                   ->whereYear('preview_date', Carbon::now()->year);
+                           })
+                   ->orWhere(function ($query) {
+                       $query->WhereMonth('scheduled_date', Carbon::now()->month)
+                               ->WhereYear('scheduled_date', Carbon::now()->year);
+               });
+           })  
            ->where('tech_id',$tech->id)
            ->get();
+           
+
         }
         else {
             $tasks = Tasks::with('tech')->with('taskCustomer')
@@ -363,6 +389,7 @@ class TasksRepository implements TasksInterface
             ->orWhereMonth('scheduled_date', Carbon::now()->month)
             ->orWhereYear('scheduled_date', Carbon::now()->year)
             ->get();
+
         }
        
         return $tasks;
@@ -374,22 +401,56 @@ class TasksRepository implements TasksInterface
         if(Auth::user()->type_user == 2)
         {
             $customer = Customers::where('user_id',Auth::user()->id)->first();
-            $tasks = Tasks::where('customer_id',$customer->id)->with('tech')->with('taskCustomer')
-            ->Where(function ($query) use($month,$year)  {
-            $query->WhereMonth('scheduled_date', $month)
-                    ->WhereYear('scheduled_date', $year);
-            })
-            ->get();
+
+            //$tasks = Tasks::where('customer_id',$customer->id)->with('tech')->with('taskCustomer')
+            //->Where(function ($query) use($month,$year)  {
+            //$query->WhereMonth('scheduled_date', $month)
+            //        ->WhereYear('scheduled_date', $year);
+            //})
+            //->get();
+
+            $tasks = Tasks::
+                     with('tech')
+                     ->with('taskCustomer')
+                     ->where(function ($query) use ($month,$year) {
+                             $query->where(function ($query) use ($month,$year) {
+                                $query->whereMonth('preview_date', $month)
+                                      ->whereYear('preview_date', $year);
+                             })
+                             ->orWhere(function ($query) use ($month,$year) {
+                                $query->whereMonth('scheduled_date', $month)
+                                      ->whereYear('scheduled_date', $year);
+                             });
+                     })
+                     ->where('customer_id',$customer->id)
+                     ->get();
         }
         else if(Auth::user()->type_user == 1)
         {
             $tech = TeamMember::where('user_id',Auth::user()->id)->first();
-            $tasks = Tasks::where('tech_id',$tech->id)->with('tech')->with('taskCustomer')
-            ->Where(function ($query) use($month,$year)  {
-            $query->WhereMonth('scheduled_date', $month)
-                    ->WhereYear('scheduled_date', $year);
-            })
-            ->get();
+
+            // $tasks = Tasks::where('tech_id',$tech->id)->with('tech')->with('taskCustomer')
+            // ->Where(function ($query) use($month,$year)  {
+            // $query->WhereMonth('scheduled_date', $month)
+            //         ->WhereYear('scheduled_date', $year);
+            // })
+            // ->get();
+
+            $tasks = Tasks::
+                     with('tech')
+                     ->with('taskCustomer')
+                     ->where(function ($query) use ($month,$year) {
+                         $query->where(function($query) use ($month,$year) {
+                             $query->whereMonth('preview_date',$month)
+                                   ->whereYear('preview_date',$year);
+                         })
+                         ->orWhere(function ($query) use ($month,$year) {
+                            $query->whereMonth('scheduled_date', $month)
+                                  ->whereYear('scheduled_date',$year);
+                         });
+                     })
+                     ->where('tech_id',$tech->id)
+                     ->get();
         }
         else 
         {
