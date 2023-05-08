@@ -56,7 +56,7 @@
                 <thead>
                   <tr>
                     <th>{{ __('Service') }}</th>
-                    <th>{{ __('Date Final of service') }}</th>
+                    {{-- <th>{{ __('Date Final of service') }}</th> --}}
                     <th>{{ __('Customer') }}</th>
                     <th>{{ __('Customer Location') }}</th>                   
                     <th>{{ __('Notification day') }}</th>
@@ -68,7 +68,7 @@
                     @foreach ($servicesNotifications as $notification)
                       <tr>
                         <td>{{$notification["service"]}}</td>
-                        <td>{{$notification["date_final_service"]}}</td>
+                        {{-- <td>{{$notification["date_final_service"]}}</td> --}}
                         <td>{{$notification["customer"]}}</td>
                         <td>{{$notification["customer_county"]}}</td>
                         <td>{{$notification["notification"]}}</td>
