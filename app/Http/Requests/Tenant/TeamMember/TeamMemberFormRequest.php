@@ -30,7 +30,7 @@ class TeamMemberFormRequest extends FormRequest
           'name.min' => __("The name must be at least 2 characters."),
           'username.required' => __("The username field is required."),
           //'username.unique' => __("That username already exists"),
-          'email.unique' => __("That email already exists."),
+          //'email.unique' => __("That email already exists."),
           'mobile_phone.required' => __("The mobile phone field is required."),
           'mobile_phone.min' => __("The mobile phone must be at least 9 characters."),
           'job.required' => __("The job field is required."),
@@ -53,7 +53,7 @@ class TeamMemberFormRequest extends FormRequest
         return [
               'name' => ['required', 'min:2'],
               'username' => ['required'],
-              'email' => ['unique:team_members,email'],
+             // 'email' => ['unique:team_members,email'],
               'mobile_phone' => ['required', 'min:9'],
               'job' => ['required', 'min:1'],
               'color' => ['required']
