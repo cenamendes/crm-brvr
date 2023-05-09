@@ -29,7 +29,15 @@ class CustomersRepository implements CustomersInterface
 
     public function getCustomersAnalysis(): Collection
     {
-        $customers = Customers::all();
+        if(Auth::user()->type_user == 2)
+        {
+           $customers = Customers::where('user_id',Auth::user()->id)->get();
+        }
+        else
+        {
+           $customers = Customers::all();
+        }
+       
         return $customers;
     }
 

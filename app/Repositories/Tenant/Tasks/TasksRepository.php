@@ -3,8 +3,10 @@
 namespace App\Repositories\Tenant\Tasks;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Tenant\Tasks;
 use App\Models\Tenant\Customers;
+use App\Models\Tenant\TeamMember;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tenant\TaskServices;
 use App\Models\Tenant\TasksReports;
@@ -14,7 +16,6 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Requests\Tenant\Tasks\TasksFormRequest;
-use App\Models\Tenant\TeamMember;
 
 class TasksRepository implements TasksInterface
 {
@@ -243,15 +244,20 @@ class TasksRepository implements TasksInterface
     {
         if(Auth::user()->type_user == 2)
         {
+
             $customer = Customers::where('user_id',Auth::user()->id)->first();
-           return Tasks::where('customer_id',$customer->id)->whereHas('servicesToDo', function ($query) use($searchString) {
-                $query->WhereHas('service', function ($queryy) use($searchString) {
-                    $queryy->where('name', 'like', '%' . $searchString . '%');
+           return Tasks::where('customer_id',$customer->id)
+           ->where(function($query) use($searchString){
+                $query->whereHas('servicesToDo', function ($query) use($searchString) {
+                    $query->WhereHas('service', function ($queryy) use($searchString) {
+                        $queryy->where('name', 'like', '%' . $searchString . '%');
+                    });
+                })
+                ->orWhereHas('taskCustomer', function ($queryy) use($searchString) {
+                        $queryy->Where('short_name', 'like', '%' . $searchString . '%');
                 });
-              })
-              ->orWhereHas('taskCustomer', function ($queryy) use($searchString) {
-                    $queryy->Where('short_name', 'like', '%' . $searchString . '%');
-              })
+           })
+          
               ->with('taskLocation')
               ->with('taskReports')
               ->orderBy('created_at','desc')
@@ -429,13 +435,6 @@ class TasksRepository implements TasksInterface
         {
             $tech = TeamMember::where('user_id',Auth::user()->id)->first();
 
-            // $tasks = Tasks::where('tech_id',$tech->id)->with('tech')->with('taskCustomer')
-            // ->Where(function ($query) use($month,$year)  {
-            // $query->WhereMonth('scheduled_date', $month)
-            //         ->WhereYear('scheduled_date', $year);
-            // })
-            // ->get();
-
             $tasks = Tasks::
                      with('tech')
                      ->with('taskCustomer')
@@ -506,33 +505,124 @@ class TasksRepository implements TasksInterface
                 {
                     $query->where('short_name', 'like', '%' . $searchString . '%');
                 }
-            })
+            });
+            
+            if($typeReport != 3 && $typeReport != 4 )
+            {
+                $tasks = $tasks->whereHas('taskReports', function ($query) use ($typeReport){
+                    if($typeReport != 4)
+                    {
+                        $query->where('reportStatus',$typeReport);
+                    }
+                })
+                ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                    $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+                })
+                ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                    $query->where('scheduled_date','>=',$dateBegin);
+                })
+                ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                    $query->where('scheduled_date','<=',$dateEnd);
+                });
     
-            ->whereHas('taskReports', function ($query) use ($typeReport){
-                if($typeReport != 4)
+                if(Auth::user()->type_user == 2)
                 {
-                    $query->where('reportStatus',$typeReport);
+                   $customer = Customers::where('user_id',Auth::user()->id)->first();
+                   $tasks = $tasks->where('customer_id',$customer->id);
                 }
-            })
-            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
-                $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
-            })
-            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
-                $query->where('scheduled_date','>=',$dateBegin);
-            })
-            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
-                $query->where('scheduled_date','<=',$dateEnd);
-            })
-            ->where('customer_id',$client);
+                $tasks = $tasks->where('customer_id',$client);
+    
+                if($ordenation == "asc"){
+                    $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+                 }
+                 else {
+                    $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+                 }
+            }
+            else if($typeReport == 4)
+            {
+                $tasks = $tasks
+                ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                    $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+                })
+                ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                    $query->where('scheduled_date','>=',$dateBegin);
+                })
+                ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                    $query->where('scheduled_date','<=',$dateEnd);
+                });
+    
+                if(Auth::user()->type_user == 2)
+                {
+                   $customer = Customers::where('user_id',Auth::user()->id)->first();
+                   $tasks = $tasks->where('customer_id',$customer->id);
+                }
+                $tasks = $tasks->where('customer_id',$client);
+    
+                if($ordenation == "asc"){
+                    $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+                 }
+                 else {
+                    $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+                 }
+            }
+            else
+            {
+                $tasks = $tasks->where('scheduled_date',null)
+                ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                    $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+                })
+                ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                    $query->where('scheduled_date','>=',$dateBegin);
+                })
+                ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                    $query->where('scheduled_date','<=',$dateEnd);
+                });
+    
+                if(Auth::user()->type_user == 2)
+                {
+                   $customer = Customers::where('user_id',Auth::user()->id)->first();
+                   $tasks = $tasks->where('customer_id',$customer->id);
+                }
+                $tasks = $tasks->where('customer_id',$client);
+    
+                if($ordenation == "asc"){
+                    $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+                 }
+                 else {
+                    $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+                 }
+            }
+            // ->whereHas('taskReports', function ($query) use ($typeReport){
+            //     if($typeReport != 4)
+            //     {
+            //         $query->where('reportStatus',$typeReport);
+            //     }
+            // })
+            // ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+            //     $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+            // })
+            // ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+            //     $query->where('scheduled_date','>=',$dateBegin);
+            // })
+            // ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+            //     $query->where('scheduled_date','<=',$dateEnd);
+            // })
+            // $tasks = $tasks->where('customer_id',$client);
 
-            if($ordenation == "asc"){
-                $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
-             }
-             else {
-                $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
-             }
-            // ->orderBy('created_at','desc')
-            // ->paginate($perPage);
+            // if(Auth::user()->type_user == 2)
+            // {
+            //    $customer = Customers::where('user_id',Auth::user()->id)->first();
+            //    $tasks = $tasks->where('customer_id',$customer->id);
+            // }
+
+            // if($ordenation == "asc"){
+            //     $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+            //  }
+            //  else {
+            //     $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+            //  }
+            
             
         }
         else 
@@ -566,31 +656,116 @@ class TasksRepository implements TasksInterface
 
                 });
               
-            })
-
-            ->whereHas('taskReports', function ($query) use ($typeReport){
-                if($typeReport != 4)
-                {
-                    $query->where('reportStatus',$typeReport);
-                }
-            })
-            ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
-                $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
-            })
-            ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
-                $query->where('scheduled_date','>=',$dateBegin);
-            })
-            ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
-                $query->where('scheduled_date','<=',$dateEnd);
             });
-            if($ordenation == "asc"){
-                $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
-             }
-             else {
-                $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
-             }
-            // ->orderBy('created_at','desc')
-            // ->paginate($perPage);
+
+            if($typeReport != 3 && $typeReport != 4 )
+            {
+                $tasks = $tasks->whereHas('taskReports', function ($query) use ($typeReport){
+                    if($typeReport != 4)
+                    {
+                        $query->where('reportStatus',$typeReport);
+                    }
+                })
+                ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                    $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+                })
+                ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                    $query->where('scheduled_date','>=',$dateBegin);
+                })
+                ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                    $query->where('scheduled_date','<=',$dateEnd);
+                });
+    
+                if(Auth::user()->type_user == 2)
+                {
+                   $customer = Customers::where('user_id',Auth::user()->id)->first();
+                   $tasks = $tasks->where('customer_id',$customer->id);
+                }
+    
+                if($ordenation == "asc"){
+                    $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+                 }
+                 else {
+                    $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+                 }
+            }
+            else if($typeReport == 4)
+            {
+                $tasks = $tasks
+                ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                    $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+                })
+                ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                    $query->where('scheduled_date','>=',$dateBegin);
+                })
+                ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                    $query->where('scheduled_date','<=',$dateEnd);
+                });
+    
+                if(Auth::user()->type_user == 2)
+                {
+                   $customer = Customers::where('user_id',Auth::user()->id)->first();
+                   $tasks = $tasks->where('customer_id',$customer->id);
+                }
+    
+                if($ordenation == "asc"){
+                    $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+                 }
+                 else {
+                    $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+                 }
+            }
+            else
+            {
+                $tasks = $tasks->where('scheduled_date',null)
+                ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+                    $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+                })
+                ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+                    $query->where('scheduled_date','>=',$dateBegin);
+                })
+                ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+                    $query->where('scheduled_date','<=',$dateEnd);
+                });
+    
+                if(Auth::user()->type_user == 2)
+                {
+                   $customer = Customers::where('user_id',Auth::user()->id)->first();
+                   $tasks = $tasks->where('customer_id',$customer->id);
+                }
+    
+                if($ordenation == "asc"){
+                    $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+                 }
+                 else {
+                    $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+                 }
+            }
+
+         
+            // ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+            //     $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
+            // })
+            // ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
+            //     $query->where('scheduled_date','>=',$dateBegin);
+            // })
+            // ->when($dateBegin == "" && $dateEnd != "", function($query) use ($dateEnd) {
+            //     $query->where('scheduled_date','<=',$dateEnd);
+            // });
+
+            // if(Auth::user()->type_user == 2)
+            // {
+            //    $customer = Customers::where('user_id',Auth::user()->id)->first();
+            //    $tasks = $tasks->where('customer_id',$customer->id);
+            // }
+
+            // if($ordenation == "asc"){
+            //     $tasks = $tasks->orderBy('created_at', 'asc')->paginate($perPage);
+            //  }
+            //  else {
+            //     $tasks = $tasks->orderBy('created_at','desc')->paginate($perPage);
+            //  }
+        
         }
        
         

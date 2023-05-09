@@ -56,6 +56,7 @@
                                     <label>{{__("Select Type of Task")}}</label>
                                     <select class="form-control" name="selectType" id="selectType" wire:model="typeTask">
                                         <option value="4">{{__("All")}}</option>
+                                        <option value="3">{{__("Not Initiated")}}</option>
                                         <option value="0">{{__("Agendadas")}}</option>
                                         <option value="1">{{__("Em Curso")}}</option>
                                         <option value="2">{{__("Finalizadas")}}</option>

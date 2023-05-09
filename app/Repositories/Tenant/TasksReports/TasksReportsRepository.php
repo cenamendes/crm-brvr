@@ -197,9 +197,15 @@ class TasksReportsRepository implements TasksReportsInterface
            {
                 $query->where('short_name', 'like', '%' . $searchString . '%');
            }
-        })
+        });
+
+        if(Auth::user()->type_user == 2)
+        {
+           $customer = Customers::where('user_id',Auth::user()->id)->first();
+           $tasksReports = $tasksReports->where('customer_id',$customer->id);
+        }
        
-        ->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
+       $tasksReports = $tasksReports->when($dateBegin != "" && $dateEnd != "", function($query) use($dateBegin,$dateEnd) {
             $query->where('scheduled_date','>=',$dateBegin)->where('scheduled_date','<=',$dateEnd);
         })
         ->when($dateBegin != "" && $dateEnd == "", function($query) use($dateBegin) {
