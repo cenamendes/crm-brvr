@@ -52,7 +52,8 @@ class CustomerContactsController extends Controller
     public function edit(CustomerContacts $customerContact): View
     {
         $themeAction = 'form_element';
-        $customerId = $customerContact->id;
+        $cc = CustomerContacts::where('id',$customerContact->id)->first();
+        $customerId = $cc->customer_id;
         $customer = Customers::where('id', $customerContact->id)->first();
         $customerLocation = CustomerLocations::where('customer_id', $customerContact->customer_id)->get();
         return view('tenant.customers.editContact', compact('themeAction', 'customerId', 'customer', 'customerLocation', 'customerContact'));
