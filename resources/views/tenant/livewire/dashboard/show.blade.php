@@ -46,6 +46,9 @@
             </div>
           </div>
         </div>
+
+        @if(Auth::user()->type_user != 2)
+
         <div class="col-xl-12 mt-4">
           <div class="card">
             <div class="card-header">
@@ -57,6 +60,7 @@
                   <tr>
                     <th>{{ __('Service') }}</th>
                     {{-- <th>{{ __('Date Final of service') }}</th> --}}
+                    <th>{{ __('Technical') }}</th>
                     <th>{{ __('Customer') }}</th>
                     <th>{{ __('Customer Location') }}</th>                   
                     <th>{{ __('Notification day') }}</th>
@@ -64,11 +68,11 @@
                 </thead>
                 <tbody>
                   @if ($servicesNotifications != null)
-             
                     @foreach ($servicesNotifications as $notification)
                       <tr>
                         <td>{{$notification["service"]}}</td>
                         {{-- <td>{{$notification["date_final_service"]}}</td> --}}
+                        <td>{{$notification["team_member"]}}</td>
                         <td>{{$notification["customer"]}}</td>
                         <td>{{$notification["customer_county"]}}</td>
                         <td>{{$notification["notification"]}}</td>
@@ -85,6 +89,8 @@
             </div>
           </div>
         </div>
+
+        @endif
       
     </div>
     </div>
