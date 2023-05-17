@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\User;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Style;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -67,6 +68,24 @@ class ExportTasksExcel implements FromCollection, WithHeadings, WithEvents,Shoul
             )
 
         )->getFont()->setBold(true);
+
+       
+
+        $sheet->getStyle("A1:I1")->applyFromArray(
+            array(
+               'fill' => array(
+                  'fillType' => Fill::FILL_SOLID,
+                  'startColor' => ['argb' => '326c91']
+               ),
+               'font' => array(
+                  'color' => ['argb' => 'FFFFFF']
+               ),
+               'alignment' => array(
+                  'horizontal' => "center", 
+               )
+            )
+        )->getFont()->setBold(true);
+        
     }
 
 
@@ -122,6 +141,7 @@ class ExportTasksExcel implements FromCollection, WithHeadings, WithEvents,Shoul
                 ->getStartColor()
                 ->setARGB('326c91');
             }
+
         ];
     }
 }
