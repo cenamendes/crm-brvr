@@ -8,10 +8,14 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laratrust\Traits\LaratrustUserTrait;
+use Shetabit\Visitor\Traits\Visitor;
 
 class User extends Authenticatable
 {
+    use Visitor;
     use HasApiTokens, HasFactory, Notifiable;
+    
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +30,7 @@ class User extends Authenticatable
         'photo',
         'online',
         'password',
+        'last_seen'
     ];
 
     public function users()
@@ -33,6 +38,7 @@ class User extends Authenticatable
         return $this->hasOne(TeamMember::class, 'user_id', 'id');
     }
 
+    
     /**
      * The attributes that should be hidden for serialization.
      *
