@@ -2,17 +2,19 @@
 
 namespace App\Providers;
 
-use App\Events\Alerts\AlertEvent;
 use App\Listeners\EmailEvent;
+use App\Events\Alerts\AlertEvent;
 use Illuminate\Support\Facades\Event;
 
 use Illuminate\Auth\Events\Registered;
-use App\Events\Tasks\DispatchTasksToUser;
+use App\Events\ChatEmail\ChatEmailEvent;
 use App\Events\Tasks\DispatchTaskReport;
+use App\Events\Tasks\DispatchTasksToUser;
 use App\Events\TeamMember\TeamMemberEvent;
-use App\Listeners\AlertEmail\SendAlertEmailNotification;
-use App\Listeners\Tasks\SendDispatchTasksNotification;
+use App\Listeners\ChatEmail\ChatEmailNotification;
 use App\Listeners\Tasks\SendTaskReportNotification;
+use App\Listeners\Tasks\SendDispatchTasksNotification;
+use App\Listeners\AlertEmail\SendAlertEmailNotification;
 use App\Listeners\TeamMember\SendTeamMemberNotification;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -42,7 +44,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         AlertEvent::class => [
             SendAlertEmailNotification::class,
-        ]
+        ],
+        ChatEmailEvent::class => [
+            ChatEmailNotification::class,
+        ],
     ];
 
     /**
