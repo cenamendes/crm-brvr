@@ -291,21 +291,28 @@
             swal.fire({
                 title: e.detail.title,
                 html: e.detail.message,
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
                 type: "error",
 
             }).then((result) => {  
-                restartObjects();
-                if(e.detail.function == 'client')
-                {
-                    location.reload();
-                }
-                //location.reload();
+                if(result.value){
+
+                    window.location.replace("http://"+window.location.hostname+"/services/create");
+
+                    restartObjects();
+                    if(e.detail.function == 'client')
+                    {
+                        location.reload();
+                    }
+                }                
             })
            
         });
 
         function restartObjects()
         {
+
             /* valido */
             jQuery('#selectedCustomer').select2();
             jQuery("#selectedCustomer").on("select2:select", function (e) {
@@ -318,6 +325,7 @@
                 @this.set('selectedLocation', jQuery('#selectedLocation').find(':selected').val());
             });
 
+      
             jQuery('#selectedTechnician').select2();
             jQuery("#selectedTechnician").on("select2:select", function (e) {
                 @this.set('selectedTechnician', jQuery('#selectedTechnician').find(':selected').val(), true)
@@ -379,10 +387,18 @@
             });
         });
 
-        window.addEventListener('contentChanged', event => {
+        window.addEventListener('contentChanged', function(e) {
             restartObjects();
-        });
+        })
 
+        window.addEventListener('refreshPage', function(e) {
+            window.location.reload();
+        })
+        
+  
+
+              
+       
         function formatDate(unixDate)
         {
             var date = new Date(unixDate);

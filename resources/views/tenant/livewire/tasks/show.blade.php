@@ -212,56 +212,81 @@
 
                             </td>
 
-                            @if(Auth::user()->type_user !="2")
-                            <td>
-                                {{-- <div class="dropdown ml-auto text-right"> --}}
-                                    {{-- <div class="btn-link" data-toggle="dropdown">
-                                        <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24"></rect>
-                                                <circle fill="#000000" cx="5" cy="12" r="2"></circle>
-                                                <circle fill="#000000" cx="12" cy="12" r="2"></circle>
-                                                <circle fill="#000000" cx="19" cy="12" r="2"></circle>
-                                            </g>
-                                        </svg>
-                                    </div> --}}
-                                    <!-- dropdown-menu dropdown-menu-right -->
-                                    <div class="dropdown">
-                                        <button class="btn btn-primary tp-btn-light sharp" type="button" data-toggle="dropdown">
-                                            <span class="fs--1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                        <rect x="0" y="0" width="24" height="24"></rect>
-                                                        <circle fill="#000000" cx="5" cy="12" r="2"></circle>
-                                                        <circle fill="#000000" cx="12" cy="12" r="2"></circle>
-                                                        <circle fill="#000000" cx="19" cy="12" r="2"></circle>
-                                                    </g>
-                                                </svg>
-                                            </span>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            @if($item->status == 0 || $item->status == 1)
-                                              @if (!isset($item->taskReports->reportStatus))
-                                                <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
-                                                <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
-                                              @elseif($item->taskReports->reportStatus == 0 )
-                                                <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
-                                              @endif
-                                            @endif
-                                            <button class="dropdown-item btn-sweet-alert" data-type="form"
-                                                data-route="{{ route('tenant.tasks.destroy', $item->id) }}"
-                                                data-style="warning" data-csrf="csrf"
-                                                data-text="{{ __('Do you want to delete this task?') }}"
-                                                data-title="{{ __('Are you sure?') }}"
-                                                data-btn-cancel="{{ __('No, do not delete!!') }}"
-                                                data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
-                                                {{ __('Delete task') }}
+                            {{-- @if(Auth::user()->type_user !="2") --}}
+                                <td>
+                                    {{-- <div class="dropdown ml-auto text-right"> --}}
+                                        {{-- <div class="btn-link" data-toggle="dropdown">
+                                            <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                    <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                                                    <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                                                    <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                                                </g>
+                                            </svg>
+                                        </div> --}}
+                                        <!-- dropdown-menu dropdown-menu-right -->
+
+                                    @if(Auth::user()->type_user != 2)
+
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary tp-btn-light sharp" type="button" data-toggle="dropdown">
+                                                <span class="fs--1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                                            <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                                                            <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                                                            <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                                                        </g>
+                                                    </svg>
+                                                </span>
                                             </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+
+                                                {{-- @if(Auth::user()->type_user != 2) --}}
+
+                                                    @if($item->status == 0 || $item->status == 1)
+                                                        @if (!isset($item->taskReports->reportStatus))
+                                                                <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
+                                                                <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
+                                                        @elseif($item->taskReports->reportStatus == 0 )
+                                                            <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
+                                                        @endif
+                                                    @endif
+                                                
+                                                    <button class="dropdown-item btn-sweet-alert" data-type="form"
+                                                        data-route="{{ route('tenant.tasks.destroy', $item->id) }}"
+                                                        data-style="warning" data-csrf="csrf"
+                                                        data-text="{{ __('Do you want to delete this task?') }}"
+                                                        data-title="{{ __('Are you sure?') }}"
+                                                        data-btn-cancel="{{ __('No, do not delete!!') }}"
+                                                        data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
+                                                        {{ __('Delete task') }}
+                                                    </button>
+                                                {{-- @else
+                                                    @if (!isset($item->taskReports->reportStatus))
+                                                    @else
+                                                        @if($item->taskReports->reportStatus == "2")
+                                                            <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
+                                                        @endif
+                                                    @endif
+                                                @endif --}}
+
+
+
+                                            </div>
                                         </div>
-                                    </div>
-                                {{-- </div> --}}
-                            </td>
-                            @endif
+                                   
+                                    @endif
+
+
+
+
+
+                                    {{-- </div> --}}
+                                </td>
+                            {{-- @endif --}}
                         </tr>
                     @endforeach
                 </tbody>
@@ -311,6 +336,7 @@
     // });
 
     window.addEventListener('swalModalQuestion',function(e){
+        console.log("DO EDIT");
             if(e.detail.confirm) {
                 swal.fire({
                     title: e.detail.title,

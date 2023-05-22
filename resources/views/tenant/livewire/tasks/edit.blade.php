@@ -269,6 +269,29 @@
             jQuery('#selectedCustomer').select2();
         });
 
+        window.addEventListener('swal',function(e){
+            swal.fire({
+                title: e.detail.title,
+                html: e.detail.message,
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                type: "error",
+
+            }).then((result) => {  
+                if(result.value){
+
+                    window.location.replace("http://"+window.location.hostname+"/services/create");
+
+                    restartObjects();
+                    if(e.detail.function == 'client')
+                    {
+                        location.reload();
+                    }
+                }                
+            })
+           
+        });
+
         function restartObjects()
         {
             jQuery('#selectedLocation').select2();
