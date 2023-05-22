@@ -13,12 +13,18 @@
            
             <div class="col-xl-3 col-xs-3 text-right pr-0">
                 <div class="row">
-                <div class="col-xl-4 col-xs-4">
-                    <label class="font-weight-bold">{{ __('Hours in Task')}}:</label><br>{{ global_hours_sum($tasksTimes) }}
-                </div>
-                <div class="col-xl-8 col-xs-8">
-                    <a href="javascript:void(0)" id="taskAddTime" class="btn btn-primary" wire:click="addTime">{{ __('Add Time') }}</a>
-                </div>
+                @if(Auth::user()->type_user == 2)
+                    <div class="col-xl-12 col-xs-12">
+                        <label class="font-weight-bold">{{ __('Hours in Task')}}:</label>&nbsp;{{ global_hours_sum($tasksTimes) }}
+                    </div>
+                @else
+                    <div class="col-xl-4 col-xs-4">
+                        <label class="font-weight-bold">{{ __('Hours in Task')}}:</label><br>{{ global_hours_sum($tasksTimes) }}
+                    </div>
+                    <div class="col-xl-8 col-xs-8">
+                        <a href="javascript:void(0)" id="taskAddTime" class="btn btn-primary" wire:click="addTime">{{ __('Add Time') }}</a>
+                    </div>
+                @endif
             </div>
                 
             </div>
@@ -58,7 +64,9 @@
                             <th>{{ __('Date Begin') }}</th>
                             <th>{{ __('Date End') }}</th>
                             <th>{{ __('Total Hours')}}</th>
-                            <th>{{ __('Action') }}</th>
+                            @if(Auth::user()->type_user != 2)
+                                <th>{{ __('Action') }}</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -86,31 +94,35 @@
                                     {{ global_hours_format($item->total_hours) }}
     
                                 </td>
-                                <td>
-                                    <div class="dropdown ml-auto text-right">
-                                        <div class="btn-link" data-toggle="dropdown">
-                                            <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <rect x="0" y="0" width="24" height="24"></rect>
-                                                    <circle fill="#000000" cx="5" cy="12" r="2"></circle>
-                                                    <circle fill="#000000" cx="12" cy="12" r="2"></circle>
-                                                    <circle fill="#000000" cx="19" cy="12" r="2"></circle>
-                                                </g>
-                                            </svg>
+
+                                @if(Auth::user()->type_user != 2)
+                                    <td>
+                                        <div class="dropdown ml-auto text-right">
+                                            <div class="btn-link" data-toggle="dropdown">
+                                                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                                        <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                                                        <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                                                        <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <button class="dropdown-item btn-sweet-alert" data-type="form"
+                                                data-route="{{ route('tenant.tasks-reports.destroytimetask', $item->id) }}"
+                                                data-style="warning" data-csrf="csrf"
+                                                data-text="{{ __('Do you want to delete this task?') }}"
+                                                data-title="{{ __('Are you sure?') }}"
+                                                data-btn-cancel="{{ __('No, do not delete!!') }}"
+                                                data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
+                                                {{ __('Delete task Time') }}
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <button class="dropdown-item btn-sweet-alert" data-type="form"
-                                            data-route="{{ route('tenant.tasks-reports.destroytimetask', $item->id) }}"
-                                            data-style="warning" data-csrf="csrf"
-                                            data-text="{{ __('Do you want to delete this task?') }}"
-                                            data-title="{{ __('Are you sure?') }}"
-                                            data-btn-cancel="{{ __('No, do not delete!!') }}"
-                                            data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
-                                            {{ __('Delete task Time') }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
+                                    </td>
+                                @endif
+
                             </tr>
                         @endforeach
                     </tbody>
