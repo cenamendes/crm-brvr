@@ -2,16 +2,20 @@
 
 namespace App\Http\Livewire\Tenant\Files;
 
+use Carbon\Carbon;
+use App\Models\User;
 use Livewire\Component;
 use App\Events\ChatMessage;
-use App\Interfaces\Tenant\AlertMessage\AlertMessageInterface;
 use App\Models\Tenant\Files;
 use Livewire\WithFileUploads;
+use App\Models\Tenant\Customers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Events\ChatEmail\ChatEmailEvent;
 use App\Interfaces\Tenant\Files\FilesInterface;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
+use App\Interfaces\Tenant\AlertMessage\AlertMessageInterface;
 
 class UpdateTableFiles extends Component
 {
@@ -142,6 +146,28 @@ class UpdateTableFiles extends Component
          //Manda notificação
          $this->alertRepository->SendNotification(Auth::user()->id,$this->customer_id,"file");
          event(new ChatMessage());
+
+         if(Auth::user()->type_user != 2)
+         {
+             $userOfCustomer = Customers::where('id',$this->customer_id)->first();
+
+             $userResult = User::where('id',$userOfCustomer->user_id)->first();
+
+             $startDate = Carbon::parse($userResult->last_seen);
+             $endDate = Carbon::parse(date('Y-m-d H:i:s'));
+
+             $diff = $startDate->diff($endDate);
+
+             $number_minutes = $diff->days * 24 * 60;
+             $number_minutes += $diff->h * 60;
+             $number_minutes += $diff->i;
+
+            if($startDate == $endDate || $number_minutes <= 30){
+            }
+            else {
+              event(new ChatEmailEvent($this->customer_id));
+            }
+        }
 
     }
      
