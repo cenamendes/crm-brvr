@@ -53,7 +53,7 @@
                                                         @else
                                                             @if($us["last_seen"] != "")
                                                                 @php
-                                                                    $difference = \Carbon\Carbon::parse($us["last_seen"])->diffForHumans();
+                                                                    $difference = \Carbon\Carbon::parse($us["last_seen"])->addMinute(30)->diffForHumans();
                                                                 @endphp
                                                                 <p>offline {{$difference}}</p>
                                                             @endif
