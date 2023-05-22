@@ -2,19 +2,20 @@
 
 namespace App\Http\Livewire\Tenant\Tasks;
 
-use App\Http\Traits\GenerateTaskReference;
 use Livewire\Component;
 use Livewire\Redirector;
 use App\Models\Tenant\Tasks;
-
 use App\Models\Tenant\Services;
+
 use App\Models\Tenant\Customers;
 use App\Models\Tenant\TeamMember;
 use Illuminate\Contracts\View\View;
 use SebastianBergmann\Type\VoidType;
 use App\Models\Tenant\CustomerServices;
 use App\Models\Tenant\CustomerLocations;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Traits\GenerateTaskReference;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
 
@@ -33,6 +34,7 @@ class AddTasks extends Component
     public ?object $customer = NULL;
     public string $selectedLocation = '';
     public ?object $customerServicesList = NULL;
+    public ?object $customerLocations = NULL;
 
     public int $numberOfSelectedServices = 0;
     public array $selectedServiceId = [];
@@ -76,9 +78,15 @@ class AddTasks extends Component
 
     public function updatedSelectedCustomer(): Void
     {
+        if(!empty($this->customer))
+        {
+            $this->dispatchBrowserEvent('refreshPage');
+        }
+
         $this->customer = Customers::where('id', $this->selectedCustomer)->with('customerCounty')->with('customerDistrict')->first();
         $this->customerLocations = CustomerLocations::where('customer_id', $this->selectedCustomer)->with('locationCounty')->get();
         $this->dispatchBrowserEvent('contentChanged');
+        
 
         if($this->customer->customerCounty == null)
         {
@@ -101,6 +109,7 @@ class AddTasks extends Component
             ->with('service')
             ->get();
         $this->teamMembers = TeamMember::get();
+
         $this->dispatchBrowserEvent('contentChanged');
     }
 
