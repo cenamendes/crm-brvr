@@ -535,7 +535,7 @@
     "You need to select a county for this customer": "Tem de selecionar uma localidade para este cliente!<br>Edite este cliente no separador gerir clientes e insira uma cidade",
     "You need to select description for all services selected": "Tem de selecionar uma descrição para todos os serviços selecionados",
 
-    "You cannot add more services to this location!": "Não pode adicionar mais serviços a esta localização!",
+    "You cannot add more services to this location!": "Não tem serviços associados a esta localização de cliente ou terá de adicionar mais serviços a esta localização! Clique OK para associar serviço ao cliente",
     "Task Services": "Serviços para tarefa",
     "Task report closed with sucess!": "Relatório de tarefa fechado com sucesso!",
     "The task report is incomplete, please complete the report!": "A tarefa está incompleta, por favor complete o relatório!",
@@ -587,7 +587,8 @@
     "The short name must be at least 2 characters.": "O campo nome curto tem de ser pelo menos 2 carateres.",
     "That email already exists.": "Esse email já se encontra registado.",
     "Password of access": "Password de acesso",
-    "Not Initiated": "Não iniciadas"
+    "Not Initiated": "Não iniciadas",
+    "Check Task": "Visualizar tarefa"
 
 
 
