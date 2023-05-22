@@ -9,6 +9,10 @@
                 </div>
                 <ul class="navbar-nav header-right">
                     @livewire('tenant.alert-messages.alert-messages')
+
+                    @if(Auth::user()->type_user != 2)
+                        @livewire('tenant.check-users.check-users')
+                    @endif
                     {{-- <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link  ai-icon" href="javascript:void(0)" role="button"
                             data-toggle="dropdown">
@@ -184,6 +188,7 @@
         
     });
 
+   
   
     
 </script>
