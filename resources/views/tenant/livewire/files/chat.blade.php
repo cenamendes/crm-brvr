@@ -60,28 +60,28 @@
 				cursor: pointer;
 	}
 
-	.img_cont{
+	.img_conta{
 			position: relative;
 			height: 70px;
 			width: 70px;
 	}
-	.user_img{
+	.users_img{
 			height: 70px;
 			width: 70px;
 			border:1.5px solid #f5f6fa;
 		
 	}
-	.user_info{
+	.users_info{
 		margin-top: auto;
 		margin-bottom: auto;
 		margin-left: 15px;
 	}
 
-	.user_info span{
+	.users_info span{
 		font-size: 20px;
 		color: white;
 	}
-	.user_info p{
+	.users_info p{
 	font-size: 10px;
 	color: rgba(255,255,255,0.6);
 	}
@@ -110,17 +110,17 @@
 		 <div class="card">
 			<div class="card-header msg_head" style="background-color:#326c91;">
 				<div class="d-flex bd-highlight">
-					<div class="img_cont">
+					<div class="img_conta">
 						@if(Auth::user()->type_user != 2)
 							@php
 								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
 								$user = \App\Models\User::where('id',$customerr->user_id)->first();
 							@endphp
 							@if(isset($user->photo))
-								<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+								<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle users_img">
 							@else
 							{{-- https://crm.dajasdourovalley.com/assets/resources/images/avatar/1.png --}}
-								<img src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}" class="rounded-circle user_img">
+								<img src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}" class="rounded-circle users_img">
 							@endif
 						@else
 							@php
@@ -129,14 +129,14 @@
 								$user = \App\Models\User::where('id',$user_id->user_id)->first();
 							@endphp
 							@if(isset($user->photo))
-								<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle user_img">
+								<img src="{!! global_tenancy_asset('/app/public/profile/'.$user->photo.'') !!}" class="rounded-circle users_img">
 							@else
-								<img src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}" class="rounded-circle user_img">
+								<img src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}" class="rounded-circle users_img">
 							@endif
 						@endif
 						
 					</div>
-					<div class="user_info">
+					<div class="users_info">
 						@if(Auth::user()->type_user != 2)
 							@php
 								$customerr = \App\Models\Tenant\Customers::where('id',$customer)->first();
