@@ -13,23 +13,46 @@
         <div class="dropdown-menu rounded dropdown-menu-right">
             <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3 height380 ps ps--active-y">
                 <ul class="timeline">
-                    @foreach ($notifications as $not)              
+                    @foreach ($notifications as $not)        
                         <li>
                             <div class="timeline-panel">
                                 <div class="media mr-2">
-                                    @if($not->senderUser->photo == null)
-                                        <img alt="image" width="50" src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}">
+                                    @if(Auth::user()->type_user == 0)
+                                        @if($not->senderUser->photo == null)
+                                            <img alt="image" width="50" src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}">
+                                        @else
+                                            @php
+                                                $userCustomer = \App\Models\Tenant\Customers::where('id',$not->group_chat)->first();
+                                                $userTable = \App\Models\User::where('id',$userCustomer->user_id)->first();
+                                            @endphp
+
+                                            <img alt="image" width="50"
+                                            src="{!! global_tenancy_asset('/app/public/profile/'.$userTable->photo.'') !!}">
+
+                                        @endif
                                     @else
-                                        <img alt="image" width="50"
-                                        src="{!! global_tenancy_asset('/app/public/profile/'.$not->senderUser->photo.'') !!}">
+                                        @if($not->senderUser->photo == null)
+                                            <img alt="image" width="50" src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}">
+                                        @else
+                                            <img alt="image" width="50"
+                                            src="{!! global_tenancy_asset('/app/public/profile/'.$not->senderUser->photo.'') !!}">
+                                        @endif
                                     @endif
                                     
                                 </div>
                                 <div class="media-body">
-                                    @if($not->type == "message")
-                                        <h6 class="mb-1">{{$not->senderUser->name}} enviou lhe uma mensagem</h6>
+                                    @if(Auth::user()->type_user == 0)
+                                        @php
+                                            $userCustomer = \App\Models\Tenant\Customers::where('id',$not->group_chat)->first();
+                                            $userTable = \App\Models\User::where('id',$userCustomer->user_id)->first();
+                                        @endphp
+                                          <h6 class="mb-1">No grupo do cliente {{$userTable->name}} houve atividade</h6>
                                     @else
-                                        <h6 class="mb-1">{{$not->senderUser->name}} fez alteração nos ficheiros</h6>
+                                        @if($not->type == "message")
+                                            <h6 class="mb-1">{{$not->senderUser->name}} enviou lhe uma mensagem</h6>
+                                        @else
+                                            <h6 class="mb-1">{{$not->senderUser->name}} fez alteração nos ficheiros</h6>
+                                        @endif
                                     @endif
                                     <small class="d-block">{{$not->created_at}}</small>
                                 </div>
