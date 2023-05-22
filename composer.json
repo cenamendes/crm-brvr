@@ -19,6 +19,7 @@
         "mpyw/compoships-eager-limit": "^1.1",
         "nwidart/laravel-modules": "^9.0",
         "pusher/pusher-php-server": "^7.2",
+        "shetabit/visitor": "^4.0",
         "stancl/tenancy": "^3.5"
     },
     "require-dev": {
@@ -27,6 +28,7 @@
         "laravel/breeze": "^1.12",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
+        "laravel/ui": "^4.2",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5",
