@@ -167,21 +167,21 @@
                                             </section>
                                             <section class="col-12 form-group">
                                                 <label>{{ __('Report') }}</label>
-                                                <textarea class="form-control" wire:model.defer="report" rows="4" cols="50" name="report" id="report"></textarea>
+                                                <textarea class="form-control" wire:model.defer="report" rows="4" cols="50" name="report" id="report" @if(Auth::user()->type_user == 2) disabled @endif></textarea>
                                             </section>
                                             <section class="col-12 form-group">
                                                 <label>{{ __('Conclusion') }}</label>
-                                                <textarea class="form-control" rows="4" cols="50" name="conclusion" id="conclusion" wire:model.defer="conclusion"></textarea>
+                                                <textarea class="form-control" rows="4" cols="50" name="conclusion" id="conclusion" wire:model.defer="conclusion" @if(Auth::user()->type_user == 2) disabled @endif></textarea>
                                             </section>
                                             <section class="col-12 form-group">
                                                 <label>{{ __('Confidential Information') }}</label>
-                                                <textarea class="form-control" rows="4" cols="50" name="confidential_information" id="confidential_information" wire:model.defer="confidential_information"></textarea>
+                                                <textarea class="form-control" rows="4" cols="50" name="confidential_information" id="confidential_information" wire:model.defer="confidential_information" @if(Auth::user()->type_user == 2) disabled @endif></textarea>
                                             </section>
                                             <section class="col-12 form-group">
                                                 <input type="text" id="concluded" wire:model.defer="concluded" style="display:none;">
                                                 <p class="informationConclusion"  style="display:none;">
                                                     <label>{{ __('Information Conclusion') }}</label>
-                                                    <textarea  class="form-control" rows="4" cols="50" name="infoConcluded" id="infoConcluded" wire:model.defer="infoConcluded"></textarea>
+                                                    <textarea  class="form-control" rows="4" cols="50" name="infoConcluded" id="infoConcluded" wire:model.defer="infoConcluded" @if(Auth::user()->type_user == 2) disabled @endif></textarea>
                                                 </p>
                                                 <p>
                                                     <label>{{ __('State of Task') }}</label>
@@ -192,13 +192,13 @@
                                                     <div class="form-group">
                                                         <div class="form-check form-check-inline">
                                                             <label class="form-check-label">
-                                                                <input type="checkbox" id="concludedButton" class="form-check-input">
+                                                                <input type="checkbox" id="concludedButton" class="form-check-input" @if(Auth::user()->type_user == 2) disabled @endif>
                                                                 {{__('Concluded')}}
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <label class="form-check-label">
-                                                                <input type="checkbox" id="notConcludedButton" class="form-check-input">
+                                                                <input type="checkbox" id="notConcludedButton" class="form-check-input" @if(Auth::user()->type_user == 2) disabled @endif>
                                                                 {{__('Not Concluded')}}
                                                             </label>
                                                         </div>
@@ -233,10 +233,12 @@
                     <a wire:click="cancel" class="btn btn-secondary mr-2">
                         {!! $cancelButton !!}
                     </a>
-                    <a wire:click="updateTaskReport" class="btn btn-primary">
-                        {{ __("Update Task Report") }}
-                        <span class="btn-icon-right"><i class="las la-check mr-2"></i></span>
-                    </a>
+                    @if(Auth::user()->type_user != 2)
+                        <a wire:click="updateTaskReport" class="btn btn-primary">
+                            {{ __("Update Task Report") }}
+                            <span class="btn-icon-right"><i class="las la-check mr-2"></i></span>
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

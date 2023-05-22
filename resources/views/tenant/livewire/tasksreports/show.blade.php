@@ -151,9 +151,7 @@
                         <th>{{ __('Total Hours')}}</th>
                         <th>{{ __('Date') }}</th>
                         <th>{{ __('Status') }}</th>
-                        @if (Auth::user()->type_user != '2')
                         <th>{{ __('Action') }}</th>
-                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -223,6 +221,8 @@
                                 <span class="badge badge-xs light badge-info">{{ __('Finished') }}</span>
                             @endif
                             </td>
+
+
                             @if (Auth::user()->type_user != '2')
                             <td>
                                 <div class="dropdown">
@@ -240,22 +240,49 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         {{-- <a class="dropdown-item" href="{{ route('tenant.tasks-reports.preview', $item->id) }}">{{ __('View Report') }}</a> --}}
-                    
-                                        @if($item->reportStatus == 0)
-                                            <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->id)}}">{{__('Edit Report') }}</a>
-                                            <a class="dropdown-item" wire:click="finishTaskReport({{ $item->id }})">{{ __('Finish Task Report') }}</a>
-                                        @endif
-                                        @if($item->reportStatus == 1)
-                                            <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->id)}}">{{__('Edit Report') }}</a>
-                                            <a class="dropdown-item" wire:click="finishTaskReport({{ $item->id }})">{{ __('Finish Task Report') }}</a>
-                                        @endif
-                                        @if($item->reportStatus == 2)
-                                            <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->id)}}">{{__('Visualize Report')}}</a>
-                                        @endif
+                                            @if($item->reportStatus == 0)
+                                                <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->id)}}">{{__('Edit Report') }}</a>
+                                                <a class="dropdown-item" wire:click="finishTaskReport({{ $item->id }})">{{ __('Finish Task Report') }}</a>
+                                            @endif
+                                            @if($item->reportStatus == 1)
+                                                <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->id)}}">{{__('Edit Report') }}</a>
+                                                <a class="dropdown-item" wire:click="finishTaskReport({{ $item->id }})">{{ __('Finish Task Report') }}</a>
+                                            @endif
+                                            @if($item->reportStatus == 2)
+                                                <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->id)}}">{{__('Visualize Report')}}</a>
+                                            @endif
                                     </div>
                                 </div>
                             </td>
+                            @else
+                                @if($item->reportStatus == 2)
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary tp-btn-light sharp" type="button" data-toggle="dropdown">
+                                                <span class="fs--1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                                            <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                                                            <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                                                            <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                                                        </g>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                {{-- <a class="dropdown-item" href="{{ route('tenant.tasks-reports.preview', $item->id) }}">{{ __('View Report') }}</a> --}}
+                                                <a class="dropdown-item" href="{{ route('tenant.tasks-reports.edit', $item->id)}}">{{__('Visualize Report')}}</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td></td>
+                                @endif
                             @endif
+
+
+
                         </tr>
                     @endforeach
                 </tbody>
