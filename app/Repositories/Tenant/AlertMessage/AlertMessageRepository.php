@@ -23,11 +23,26 @@ use App\Models\Tenant\Notifications;
 class AlertMessageRepository implements AlertMessageInterface
 {
 
-   public function getNotifications($receiver_user): Collection
+    public function getNotifications($receiver_user): Collection
     {
       
-      $notifications = Notifications::where('receiver_user_id',$receiver_user)->where('read',0)->with('senderUser')->with('receivedUser')->get();
+      if(Auth::user()->type_user == 0){
+
+         $notifications = Notifications::
+         select('notifications.group_chat', DB::raw("MAX(created_at) as created_at"),DB::raw("MAX(notifications.receiver_user_id) as receiver_user_id"),DB::raw("MAX(notifications.sender_user_id) as sender_user_id"),DB::raw("MAX(notifications.type) as type"))
+         ->where('notifications.receiver_user_id',$receiver_user)
+         ->where('notifications.read',0)
+         ->with('senderUser')
+         ->with('receivedUser')
+         ->groupBy('notifications.group_chat')
+         ->get();
        
+      }
+      else {
+         $notifications = Notifications::where('receiver_user_id',$receiver_user)->where('read',0)->with('senderUser')->with('receivedUser')->get();
+      }
+      
+      
       return $notifications;
     }
 
@@ -74,7 +89,8 @@ class AlertMessageRepository implements AlertMessageInterface
                  "sender_user_id" => $idSender,
                  "receiver_user_id" => $member->id,
                  "read" => 0,
-                 "type" => $type
+                 "type" => $type,
+                 "group_chat" => $customerId
               ]);
            }
           
