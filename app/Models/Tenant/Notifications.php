@@ -15,7 +15,7 @@ class Notifications extends Model
 
     protected $table = 'notifications';
 
-    protected $fillable = ['sender_user_id', 'receiver_user_id','read','type'];
+    protected $fillable = ['sender_user_id', 'receiver_user_id','read','type','group_chat'];
 
     protected static function booted()
     {
