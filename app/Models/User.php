@@ -8,12 +8,10 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laratrust\Traits\LaratrustUserTrait;
-use Shetabit\Visitor\Traits\Visitor;
+
 
 class User extends Authenticatable
 {
-    use Visitor;
     use HasApiTokens, HasFactory, Notifiable;
     
 
