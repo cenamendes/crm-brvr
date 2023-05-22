@@ -28,14 +28,15 @@ use App\Http\Controllers\Tenant\CustomerMember\CustomerMemberController;
 use App\Http\Controllers\Tenant\CustomerContacts\CustomerContactsController;
 use App\Http\Controllers\Tenant\CustomerServices\CustomerServicesController;
 use App\Http\Controllers\Tenant\CustomerLocations\CustomerLocationsController;
-
-
+use Illuminate\Auth\Events\Authenticated;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
+
+    Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
