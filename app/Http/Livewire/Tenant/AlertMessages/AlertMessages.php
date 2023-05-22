@@ -30,7 +30,8 @@ class AlertMessages extends Component
 
     public function mount(): void
     {
-       $this->notifications = $this->alertMessageRepository->getNotifications(Auth::user()->id);     
+       $this->notifications = $this->alertMessageRepository->getNotifications(Auth::user()->id);  
+       
     }
 
     //vem do livewire emit do evento do pusher
