@@ -181,7 +181,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Shetabit\Visitor\Provider\VisitorServiceProvider::class,
 
         /*
          * Package Service Providers...
