@@ -69,9 +69,11 @@ class CustomerContactsController extends Controller
     {
         $this->customersContactsRepository->addCustomerContact($request);
 
+        $slug = Customers::where('id',$request->customer_id)->first();
+
         if(Auth::user()->type_user == '2')
         {
-            return to_route('tenant.customers.edit', $request->customer_id)
+            return to_route('tenant.customers.edit', $slug->slug)
             ->with('message', __('Customer Contact created with success!'))
             ->with('status', 'sucess');
         }
@@ -92,9 +94,12 @@ class CustomerContactsController extends Controller
     {
         $this->customersContactsRepository->updateCustomerContact($contact, $request);
 
+        $slug = Customers::where('id',$request->customer_id)->first();
+
+     
         if(Auth::user()->type_user == '2')
         {
-            return to_route('tenant.customers.edit', $request->customer_id)
+            return to_route('tenant.customers.edit', $slug->slug)
             ->with('message', __('Customer Contact updated with success!'))
             ->with('status', 'sucess');
         }
@@ -119,7 +124,7 @@ class CustomerContactsController extends Controller
 
         if(Auth::user()->type_user == '2')
         {
-            return to_route('tenant.customers.edit', $customer->id)
+            return to_route('tenant.customers.edit', $customer->slug)
             ->with('message', __('Customer Contact updated with success!'))
             ->with('status', 'sucess');
         }
