@@ -119,6 +119,7 @@
                                                                         <input type="file" name="uploadFile" id="uploadFile" class="custom-file-input">
                                                                         <label class="custom-file-label">{{__("Choose file")}}</label>
                                                                     </div>
+                                                                    <small>De preferência imagens 300x300</small>
                                                                 </div>
                                                                 <div class="form-group col-md-6">
                                                                     <img src="" id="imagePreview" width="200">
@@ -167,6 +168,7 @@
                                                                                 <input type="file" name="uploadFile" id="uploadFile" class="custom-file-input">
                                                                                 <label class="custom-file-label">{{__("Choose file")}}</label>
                                                                             </div>
+                                                                            <small>De preferência imagens 300x300</small>
                                                                         </div>
                                                                         <div class="form-group col-md-6">
                                                                             <img src="" id="imagePreview" width="200">
