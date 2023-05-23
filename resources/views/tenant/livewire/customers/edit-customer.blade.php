@@ -1,6 +1,6 @@
 
 <x-tenant.customers.form
-    :action="route('tenant.customers.update',$customer->id)"
+    :action="route('tenant.customers.update',$customer->slug)"
     :districts="$districts"
     :counties="$counties"
     :idCustomer="$customer->id"
