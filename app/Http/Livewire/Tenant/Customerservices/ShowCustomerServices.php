@@ -90,6 +90,7 @@ class ShowCustomerServices extends Component
             $this->customerServices = $this->customerServicesRepository->getAllCustomerServices($this->perPage);
         }
 
+
         return view('tenant.livewire.customerservices.show', [
             'customerServices' => $this->customerServices
         ]);

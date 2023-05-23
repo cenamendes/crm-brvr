@@ -169,6 +169,8 @@ class AddCustomerServices extends Component
             if($this->end_date) {
                 $end_date = $this->end_date;
             }
+
+           
             $CustomerServices->fill([
                 'customer_id' => $this->selectedCustomer,
                 'service_id' => $this->selectedService,
