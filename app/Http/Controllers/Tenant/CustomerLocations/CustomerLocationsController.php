@@ -93,7 +93,7 @@ class CustomerLocationsController extends Controller
         if (Auth::user()->type_user == '2')
         {
             $idCustomer = Customers::where('user_id',Auth::user()->id)->first();
-            return to_route('tenant.customers.edit',$idCustomer->id)
+            return to_route('tenant.customers.edit',$idCustomer->slug)
             ->with('message', __('Customer location created with success!'))
             ->with('status', 'sucess');
         }
@@ -117,7 +117,7 @@ class CustomerLocationsController extends Controller
         if (Auth::user()->type_user == '2')
         {
             $idCustomer = Customers::where('user_id',Auth::user()->id)->first();
-            return to_route('tenant.customers.edit',$idCustomer->id)
+            return to_route('tenant.customers.edit',$idCustomer->slug)
             ->with('message', __('Customer location updated with success!'))
             ->with('status', 'sucess');
         }
@@ -140,7 +140,7 @@ class CustomerLocationsController extends Controller
         if (Auth::user()->type_user == '2')
         {
             $idCustomer = Customers::where('user_id',Auth::user()->id)->first();
-            return to_route('tenant.customers.edit',$idCustomer->id)
+            return to_route('tenant.customers.edit',$idCustomer->slug)
             ->with('message', __('Customer location deleted with success!'))
             ->with('status', 'sucess');
         }
