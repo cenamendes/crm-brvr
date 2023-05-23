@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Tenant\Tasks;
 use Livewire\WithPagination;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\File;
 use App\Events\Tasks\DispatchTasksToUser;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
@@ -161,6 +162,7 @@ class ShowTasks extends Component
             if($updateTask === false) {
                 if($this->tasksInterface->dispatchTask($this->task)) {
                     event(new DispatchTasksToUser(Tasks::with('servicesToDo')->with('tech')->with("taskCustomer")->with('taskLocation')->where('id',$this->task->id)->first()));
+                    File::delete('marcacao-'.$this->task->reference.'.vcs');
                     $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Tasks'), 'message' => __('Task scheduled with success!'), 'status'=>'info']);
                 } else {
                     $this->dispatchBrowserEvent('swalModalQuestion', ['title' => __('Tasks'), 'message' => __('Error while scheduling task!'), 'status'=>'error']);
