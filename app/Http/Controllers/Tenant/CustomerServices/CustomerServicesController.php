@@ -85,10 +85,26 @@ class CustomerServicesController extends Controller
      */
     public function store(CustomersServicesFormRequest $request): RedirectResponse
     { 
-        $this->customerServicesRepository->add($request);      
-        return to_route('tenant.services.index')
-            ->with('message', __('Customer Service created with success!'))
-            ->with('status', 'sucess');
+        $getCustomer = CustomerServices::where('customer_id',$request->selectedCustomer)
+                            ->where('service_id',$request->selectedService)
+                            ->where('location_id',$request->selectedLocation)
+                            ->first();
+
+        if($getCustomer == null)
+        {
+            $this->customerServicesRepository->add($request);      
+            return to_route('tenant.services.index')
+                ->with('message', __('Customer Service created with success!'))
+                ->with('status', 'sucess');
+        }
+        else 
+        {
+            return to_route('tenant.services.index')
+            ->with('message', __('That service is already associated with that customer location!'))
+            ->with('status', 'error');
+        }
+
+        
     }
 
     /**
