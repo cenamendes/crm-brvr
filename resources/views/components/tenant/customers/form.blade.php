@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group row">
-                                    <section class="col-xl-9 col-xs-12">
+                                    <section class="col-xl-8 col-xs-12">
                                         <input style="display:none" type="text" name="idCustomer" id="idCustomer" class="form-control"
                                         @isset($idCustomer) value="{{ $idCustomer }}" @endisset
                                         @if(null !== old('idCustomer'))value="{{ old('idCustomer') }}"@endisset
@@ -22,7 +22,14 @@
                                             @if(null !== old('name'))value="{{ old('name') }}"@endisset
                                             placeholder="{{ __('Customer Name') }}">
                                     </section>
-                                    <section class="col-xl-3 col-xs-12">
+                                    <section class="col-xl-2 col-xs-12">
+                                        <label>{{ __('Slug') }}</label>
+                                        <input type="text" name="slug" id="slug" class="form-control"
+                                            @isset($slug)value="{{ $slug }}" @endisset
+                                            @if(null !== old('slug'))value="{{ old('slug') }}"@endisset
+                                            placeholder="{{ __('slug') }}">
+                                    </section>
+                                    <section class="col-xl-2 col-xs-12">
                                         <label>{{ __('VAT') }}</label>
                                         <input type="text" name="vat" id="vat" class="form-control"
                                             @isset($vat)value="{{ $vat }}" @endisset
