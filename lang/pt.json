@@ -588,8 +588,12 @@
     "That email already exists.": "Esse email já se encontra registado.",
     "Password of access": "Password de acesso",
     "Not Initiated": "Não iniciadas",
-    "Check Task": "Visualizar tarefa"
+    "Check Task": "Visualizar tarefa",
 
+    "Main address": "Sede",
+    "That service is already associated with that customer location!": "Esse serviço já está associado a essa localização de cliente!",
+    "The slug field is required.": "O campo slug é obrigatório.",
+    "The slug must be at least 2 characters.": "O campo slug tem de ser pelo menos 2 carateres."
 
 
 
