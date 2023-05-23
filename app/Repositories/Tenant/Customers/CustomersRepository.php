@@ -58,6 +58,7 @@ class CustomersRepository implements CustomersInterface
         return DB::transaction(function () use ($request) {
             $Customer = Customers::create([
                 'name' => $request->name,
+                'slug' => $request->slug,
                 'short_name' => $request->short_name,
                 'username' => $request->username,
                 'vat' => $request->vat,
