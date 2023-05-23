@@ -18,6 +18,7 @@ class CustomerServicesRepository implements CustomerServicesInterface
     {
         $customerServices = CustomerServices::with('customer')
                             ->with('service')
+                            ->with('customerLocation')
                             ->paginate($perPage);
 
         return $customerServices;
@@ -29,6 +30,7 @@ class CustomerServicesRepository implements CustomerServicesInterface
             $query->where('name', 'like', '%' . $searchString . '%');
         })
         ->with('service')
+        ->with('customerLocation')
         ->paginate($perPage);
 
         return $customerServices;
@@ -40,6 +42,7 @@ class CustomerServicesRepository implements CustomerServicesInterface
             $query->where('name', 'like', '%' . $searchString . '%');
         })
         ->with('service')
+        ->with('customerLocation')
         ->paginate($perPage);
 
         return $customerServices;
@@ -193,6 +196,7 @@ class CustomerServicesRepository implements CustomerServicesInterface
         return CustomerServices::where('customer_id', $customer->id)
             ->where('location_id', $location)
             ->with('service')
+            ->with('customerLocation')
             ->get();
     }
 
