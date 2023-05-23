@@ -46,6 +46,7 @@
                         </div>
                     </th>
                     <th>{{ __('Customer') }}</th>
+                    <th>{{ __('Customer Location')}}</th>
                     <th>{{ __('Service') }}</th>
                     <th>{{ __('Start Date') }}</th>
                     <th>{{ __('Type') }}</th>
@@ -63,6 +64,7 @@
                             </div>
                         </td>
                         <td>{{ $customer->customer->name }}</td>
+                        <td>{{ $customer->customerLocation->description }}</td>
                         <td>{{ $customer->service->name }}</td>
                         <td>{{ $customer->start_date }}</td>
                         <td>{{ $customer->type }}</td>
