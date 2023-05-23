@@ -54,4 +54,6 @@ class TasksReports extends Model
             $queryBuilder->orderBy('scheduled_date');
         });
     }
+
+
 }
