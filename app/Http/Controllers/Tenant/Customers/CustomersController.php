@@ -92,7 +92,7 @@ class CustomersController extends Controller
         if(Auth::user()->type_user == '2')
         {
             $customer = Customers::where('user_id',Auth::user()->id)->first();
-            return to_route('tenant.customers.edit',$customer->id)
+            return to_route('tenant.customers.edit',$customer->slug)
             ->with('message', __('Customer updated with success!'))
             ->with('status', 'sucess');
         }
@@ -115,7 +115,7 @@ class CustomersController extends Controller
         if(Auth::user()->type_user == '2')
         {
             $customer = Customers::where('user_id',Auth::user()->id)->first();
-            return to_route('tenant.customers.edit',$customer->id)
+            return to_route('tenant.customers.edit',$customer->slug)
             ->with('message', __('Customer updated with success!'))
             ->with('status', 'sucess');
         }
