@@ -5,6 +5,7 @@
     :counties="$counties"
     :idCustomer="$customer->id"
     :name="$customer->name"
+    :slug="$customer->slug"
     :shortName="$customer->short_name"
     :username="$customer->username"
     :vat="$customer->vat"
