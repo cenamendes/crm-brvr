@@ -5,6 +5,7 @@ namespace App\Listeners\Tasks;
 use App\Models\Tenant\Tasks;
 use App\Mail\Tasks\TaskDispatched;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\Tasks\TaskDispatchedTech;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\Tasks\DispatchTasksToUser;
@@ -34,7 +35,8 @@ class SendDispatchTasksNotification
      */
     public function handle(DispatchTasksToUser $task)
     {
-        Mail::to($task->task->tech->email)->queue(new TaskDispatched($task));
+        Mail::to($task->task->tech->email)->queue(new TaskDispatchedTech($task));
+
         if($task->task->taskCustomer->email == null || !isset($task->task->taskCustomer->email))
         {
             Mail::to(env('MAIL_USERNAME'))->queue(new TaskDispatched($task));
