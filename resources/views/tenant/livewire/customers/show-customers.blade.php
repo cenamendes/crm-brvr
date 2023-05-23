@@ -79,9 +79,9 @@
                                  <a class="dropdown-item" href="{{ route('tenant.loginCustomer.loginCustomer', $customer->id) }}">{{ __('Create Login')}}</a>
                                 @endif
                                 <a class="dropdown-item"
-                                    href="{{ route('tenant.customers.edit', $customer->id) }}">{{ __('Edit Customer') }}</a>
+                                    href="{{ route('tenant.customers.edit', $customer->slug) }}">{{ __('Edit Customer') }}</a>
                                     <button class="dropdown-item btn-sweet-alert" data-type="form"
-                                        data-route="{{ route('tenant.customers.destroy', $customer->id) }}"
+                                        data-route="{{ route('tenant.customers.destroy', $customer->slug) }}"
                                         data-style="warning" data-csrf="csrf"
                                         data-text="{{ __('Do you want to delete this customer?') }}"
                                         data-title="{{ __('Are you sure?') }}"
