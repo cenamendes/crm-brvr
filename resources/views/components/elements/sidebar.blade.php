@@ -18,7 +18,7 @@
                     @php
                         $idCustomer = \App\Models\Tenant\Customers::where('user_id',Auth::user()->id)->first();
                     @endphp
-                    <li><a href="{{ route('tenant.customers.edit',$idCustomer->id) }}">{{ __('Edit Information') }}</a></li>
+                    <li><a href="{{ route('tenant.customers.edit',$idCustomer->slug) }}">{{ __('Edit Information') }}</a></li>
                 </ul>
                 </li>
             @endif
