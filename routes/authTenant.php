@@ -146,7 +146,7 @@ Route::middleware(['auth', 'cmsSettings'])->group(function () {
 
     Route::get('loginTeamMember/{teammember}',[TeamMemberController::class,'createlogin'])->name('tenant.loginTeamMember.loginTeamMember');
 
-
+    
     Route::resource('customers', CustomersController::class, [
         'as' => 'tenant'
     ]);
