@@ -12,13 +12,18 @@ class Customers extends Model
     use HasFactory;
     use ComposhipsEagerLimit;
 
-    protected $fillable = ['name', 'short_name','username', 'vat', 'contact', 'address', 'email', 'district', 'county', 'zipcode', 'zone','account_manager','user_id','account_active'];
+    protected $fillable = ['name', 'slug', 'short_name','username', 'vat', 'contact', 'address', 'email', 'district', 'county', 'zipcode', 'zone','account_manager','user_id','account_active'];
 
     protected static function booted()
     {
         self::addGlobalScope('ordered', function (Builder $queryBuilder) {
             $queryBuilder->orderBy('name');
         });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     public function customerCounty()
