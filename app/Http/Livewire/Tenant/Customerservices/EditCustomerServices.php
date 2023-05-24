@@ -18,6 +18,7 @@ class EditCustomerServices extends Component
     public object $customer;
     public string $start_date = '';
     public string $end_date = '';
+    public string $new_date = '';
     public string $type = '';
     public int $alert = 0;
     public object $customerList;
@@ -168,6 +169,9 @@ class EditCustomerServices extends Component
         }
         if($service->end_date != '1970-01-01') {
             $this->end_date = $service->end_date;
+        }
+        if($service->new_date != '1970-01-01') {
+            $this->new_date = $service->new_date;
         }
 
         if($this->selectedTypeContract != null){

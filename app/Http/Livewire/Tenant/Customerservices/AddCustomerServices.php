@@ -28,6 +28,7 @@ class AddCustomerServices extends Component
     public $service = '';
     public string $start_date = '';
     public string $end_date = '';
+    public string $new_date = '';
     public string $type = '';
 
     public string $homePanel = 'show active';
@@ -169,6 +170,9 @@ class AddCustomerServices extends Component
             if($this->end_date) {
                 $end_date = $this->end_date;
             }
+            if($this->new_date) {
+                $new_date = $this->new_date;
+            }
 
            
             $CustomerServices->fill([
@@ -177,6 +181,7 @@ class AddCustomerServices extends Component
                 'location_id' => $this->selectedLocation,
                 'start_date' => $start_date,
                 'end_date' => $end_date,
+                'new_date' => $new_date,
                 'type' => $this->type,
                 'last_date' => '1970/01/01'
             ]);
