@@ -34,6 +34,7 @@ class EditTasks extends Component
     public array $serviceDescription = [];
 
 
+
     public string $taskAdditionalDescription = '';
     public bool $changed = false;
 
@@ -41,6 +42,10 @@ class EditTasks extends Component
     public ?string $previewHour = NULL;
     public ?string $scheduledHour = NULL;
     public ?string $scheduledDate = NULL;
+
+    public ?string $origem_pedido = NULL;
+    public ?string $quem_pediu = NULL;
+    public ?string $tipo_pedido = NULL;
 
     private TasksInterface $tasksInterface;
     private TasksReportsInterface $tasksReportsInterface;
@@ -97,6 +102,10 @@ class EditTasks extends Component
         $this->previewHour = $taskToUpdate->preview_hour;
         $this->scheduledDate = $taskToUpdate->scheduled_date;
         $this->scheduledHour = $taskToUpdate->scheduled_hour;
+
+        $this->origem_pedido = $taskToUpdate->origem_pedido;
+        $this->quem_pediu = $taskToUpdate->quem_pediu;
+        $this->tipo_pedido = $taskToUpdate->tipo_pedido;
 
         $this->cancelButton = __('Back') . '<span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>';;
         $this->actionButton = __('Yes, update task');
@@ -270,6 +279,9 @@ class EditTasks extends Component
                 'selectedServiceId' => $this->selectedServiceId,
                 'selectedTechnician' => $this->selectedTechnician,
                 'previewDate' => $this->previewDate,
+                'origem_pedido' => $this->origem_pedido,
+                'quem_pediu' => $this->quem_pediu,
+                'tipo_pedido' => $this->tipo_pedido
             ],
             [
                 'selectedLocation'  => 'required|numeric|min:0|not_in:0',
@@ -288,6 +300,10 @@ class EditTasks extends Component
                 'selectedTechnician'  => 'required|numeric|min:0|not_in:0',
                 'previewDate'  => 'required|string',
 
+                'origem_pedido'  => 'required|string',
+                'quem_pediu'  => 'required|string',
+                'tipo_pedido'  => 'required|string',
+
             ],
             [
                 'selectedCustomer'  => __('You must select the customer location!'),
@@ -295,6 +311,10 @@ class EditTasks extends Component
                 'selectedServiceId' => __('You must select at least a service!'),
                 'selectedTechnician' => __('You must select someone to perform this task!'),
                 'previewDate' => __('You must select, at least, the preview date!'),
+
+                'origem_pedido' => __('You must select, a request origin!'),
+                'quem_pediu' => __('You must select, who asked!'),
+                'tipo_pedido' => __('You must select, a type of request!'),
             ]
         );
 

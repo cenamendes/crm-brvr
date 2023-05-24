@@ -46,6 +46,11 @@ class AddTasks extends Component
     public ?string $scheduledDate = NULL;
 
     public ?string $additional_description = NULL;
+    public ?string $origem_pedido = NULL;
+    public ?string $quem_pediu = NULL;
+    public ?string $tipo_pedido = NULL;
+
+
     public string $selectedTechnician = '';
     public ?object $teamMembers = NULL;
     public ?string $taskAdditionalDescription = '';
@@ -205,6 +210,9 @@ class AddTasks extends Component
                 'selectedTechnician' => $this->selectedTechnician,
                 'serviceDescription' => $this->serviceDescription,
                 'previewDate' => $this->previewDate,
+                'origem_pedido' => $this->origem_pedido,
+                'quem_pediu' => $this->quem_pediu,
+                'tipo_pedido' => $this->tipo_pedido
             ],
             [
                 'selectedLocation'  => 'required|numeric|min:0|not_in:0',
@@ -232,6 +240,10 @@ class AddTasks extends Component
                 'selectedTechnician'  => 'required|numeric|min:0|not_in:0',
                 'previewDate'  => 'required|string',
 
+                'origem_pedido'  => 'required|string',
+                'quem_pediu'  => 'required|string',
+                'tipo_pedido'  => 'required|string',
+
             ],
             [
                 'selectedCustomer'  => __('You must select the customer location!'),
@@ -240,6 +252,10 @@ class AddTasks extends Component
                 'selectedServiceId' => __('You must select at least a service!'),
                 'selectedTechnician' => __('You must select someone to perform this task!'),
                 'previewDate' => __('You must select, at least, the preview date!'),
+
+                'origem_pedido' => __('You must select, a request origin!'),
+                'quem_pediu' => __('You must select, who asked!'),
+                'tipo_pedido' => __('You must select, a type of request!'),
             ]
         );
 
@@ -248,7 +264,7 @@ class AddTasks extends Component
             foreach($validator->errors()->all() as $message) {
                 $errorMessage .= '<p>' . $message . '</p>';
             }
-            $this->dispatchBrowserEvent('swal', ['title' => __('Services'), 'message' => $errorMessage, 'status'=>'error']);
+            $this->dispatchBrowserEvent('swal', ['title' => __('Services'), 'message' => $errorMessage, 'status'=>'error', 'whatfunction'=>"add"]);
             return;
         }
         //$this->dispatchBrowserEvent('loading');
@@ -266,6 +282,7 @@ class AddTasks extends Component
             $this->number = $latest->number + 1;
         }
         $this->taskReference = $this->taskReference($this->number);
+
 
         $this->taskToUpdate = $this->tasksInterface->createTask($this);
 
