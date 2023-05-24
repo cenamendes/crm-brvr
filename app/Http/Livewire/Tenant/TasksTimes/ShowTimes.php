@@ -23,6 +23,7 @@ class ShowTimes extends Component
     public string $date_inicial = '';
     public string $hora_inicial = '';
     public string $hora_final = '';
+    public string $descricao = '';
 
     protected $listeners = [
         'timesInsert'
@@ -105,7 +106,8 @@ class ShowTimes extends Component
             "hour_begin" => $this->hora_inicial,
             "date_end" => $this->date_inicial,
             "hour_end" => $this->hora_final,
-            "total_hours" => $hours
+            "total_hours" => $hours,
+            "descricao" => $this->descricao
         ];
 
 
@@ -158,6 +160,12 @@ class ShowTimes extends Component
         <i class='fa fa-calendar-o'></i>
         </span></span>
         </div>
+
+        <label>".__('Description')."</label>
+        <div class='input-group'>
+        <textarea type='text' name='data' id='descricao' wire:model.defer='descricao' class='form-control' style='height:189px;'></textarea>
+        </div>
+
        <div id='actionsDiv' style='display:flex; margin-top:20px; justify-content:center;'>
          <button type='button' id='btnAddTime' class='btn btn-primary'>Adicione</button>
          &nbsp;<button type='button' id='btnremoveTime' class='btn btn-danger'>Fechar</button>
