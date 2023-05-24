@@ -176,7 +176,7 @@
                                 </div> --}}
 
                                 <div class="form-group row">
-                                    <section class="col-4">
+                                    <section class="col-3">
                                         <label>{{ __('Method of Contract')}}</label>
                                         <select name="selectedTypeContract" id="selectedTypeContract" class="form-control">
                                             <option value="semanalmente" @isset($service->selectedTypeContract) @if($service->selectedTypeContract == "semanalmente") selected @endif @endisset>{{__("Weekly")}}</option>
@@ -184,13 +184,19 @@
                                             <option value="anualmente" @isset($service->selectedTypeContract) @if($service->selectedTypeContract == "anualmente") selected @endif @endisset>{{__("Annually")}}</option>
                                         </select>
                                     </section>
-                                    <section class="col-4">
+                                    <section class="col-3">
                                         <label>{{ __("Time to repeat")}}</label>
                                         <input type="number" name="time_repeat" id="time_repeat" class="form-control" @isset($service->time_repeat) value="{{ $service->time_repeat }}" @endisset>
                                     </section>
-                                    <section class="col-4">
+                                    <section class="col-3">
                                         <label>{{ __("Number of times") }}</label>
                                         <input type="number" name="number_times" id="number_times" class="form-control" @isset($service->number_times) value="{{ $service->number_times }}" @endisset>
+                                    </section>
+                                    <section class="col-3">
+                                        <label>{{ __("Initialization date")}}</label>
+                                        <input type="date" name="new_date" id="new_date" class="form-control"  class="datepicker-default"
+                                        @if(isset($service->new_date) && $service->new_date != '1970-01-01') value="{{ $service->new_date }}"@endisset
+                                        @if(null !== old('new_date'))value="{{ old('new_date') }}"@endisset placeholder="{{ __('Select Start Date') }}">
                                     </section>
                                 </div>
 
@@ -286,6 +292,7 @@
                             jQuery("#selectedService").val("");
                             jQuery("#start_date").val("");
                             jQuery("#end_date").val("");
+                            jQuery("#new_date").val("");
                             jQuery("#type").val("");
                         }
                     } else {
@@ -327,6 +334,18 @@
                 onSet: function(thingSet) {
                     @this.set('end_date', formatDate(thingSet.select), true)
                     jQuery('#end_date').val(formatDate(thingSet.select))
+               }
+            });
+
+            jQuery('#new_date').pickadate({
+                monthsFull:["{!! __('January') !!}","{!! __('February') !!}","{!! __('March') !!}","{!! __('April') !!}","{!! __('May') !!}","{!! __('June') !!}","{!! __('July') !!}","{!! __('August') !!}","{!! __('September') !!}","{!! __('October') !!}","{!! __('November') !!}","{!! __('December') !!}"],
+                weekdaysShort: ["{!!__('Sun') !!}","{!!__('Mon') !!}","{!!__('Tue') !!}","{!!__('Wed') !!}","{!!__('Thu') !!}","{!!__('Fri') !!}","{!!__('Sat') !!}"],
+                today: "{!! __('today') !!}",
+                clear: "{!! __('clear') !!}",
+                close: "{!! __('close') !!}",
+                onSet: function(thingSet) {
+                    @this.set('new_date', formatDate(thingSet.select), true)
+                    jQuery('#new_date').val(formatDate(thingSet.select))
                }
             });
         }
