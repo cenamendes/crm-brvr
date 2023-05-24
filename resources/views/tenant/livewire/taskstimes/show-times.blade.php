@@ -161,6 +161,7 @@
                         @this.set('serviceSelected', jQuery(this).val(), true);
                     });
 
+                   
 
                                        
                     jQuery('#swal2-content .input-group #date_inicial').pickadate({
@@ -202,6 +203,8 @@
 
                      jQuery("body").on('click', '#actionsDiv #btnAddTime', function() {
                         
+                        @this.set('descricao', jQuery("#descricao").val(), true);
+
                         var finalHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_final').val());
                         finalHour = finalHour.getTime();
                         var startHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_inicial').val());
