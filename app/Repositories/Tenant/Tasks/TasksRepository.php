@@ -51,7 +51,11 @@ class TasksRepository implements TasksInterface
                 'scheduled_hour' => $values->scheduledHour,
                 'applicant_name' => ' ',
                 'applicant_contact' => ' ',
-                'tech_id' => $values->selectedTechnician]);
+                'tech_id' => $values->selectedTechnician,
+                'origem_pedido' => $values->origem_pedido,
+                'quem_pediu' => $values->quem_pediu,
+                'tipo_pedido' => $values->tipo_pedido
+            ]);
 
             foreach ($values->selectedServiceId as $key => $service) {
                 TaskServices::create([
@@ -83,7 +87,11 @@ class TasksRepository implements TasksInterface
                 'preview_hour' => $values->previewHour,
                 'scheduled_date' => $values->scheduledDate,
                 'scheduled_hour' => $values->scheduledHour,
-                'tech_id' => $values->selectedTechnician]);
+                'tech_id' => $values->selectedTechnician,
+                'origem_pedido' => $values->origem_pedido,
+                'quem_pediu' => $values->quem_pediu,
+                'tipo_pedido' => $values->tipo_pedido
+                ]);
         
         $taskReportUpdate = TasksReports::where('task_id', $task->id)
                              ->update([
