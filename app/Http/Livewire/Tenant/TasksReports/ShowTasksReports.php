@@ -244,7 +244,7 @@ class ShowTasksReports extends Component
                 $update['end_date'] = date('Y-m-d');
                 $update['end_hour'] = date('H:i:s');
                 $this->tasksReportsInterface->updateReport($reportId, $update);
-                event(new DispatchTaskReport(TasksReports::where('id',$taskReport->id)->with('servicesToDo')->with('tech')->with("taskCustomer")->with('taskLocation')->with('getHoursTask')->first()));
+                event(new DispatchTaskReport(TasksReports::where('id',$taskReport->id)->with('servicesToDo')->with('tasks')->with('tech')->with("taskCustomer")->with('taskLocation')->with('getHoursTask')->first()));
 
                 $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('Task report closed with sucess!'), 'status'=>'info']);
             }
