@@ -593,7 +593,15 @@
     "Main address": "Sede",
     "That service is already associated with that customer location!": "Esse serviço já está associado a essa localização de cliente!",
     "The slug field is required.": "O campo slug é obrigatório.",
-    "The slug must be at least 2 characters.": "O campo slug tem de ser pelo menos 2 carateres."
+    "The slug must be at least 2 characters.": "O campo slug tem de ser pelo menos 2 carateres.",
+    "Initialization date": "Data de inicialização",
+    "You must select a initialization date": "Tem de selecionar uma data de inicialização",
+    "Origin request": "Origem do pedido",
+    "Who asked": "Quem pediu",
+    "Type of Request": "Tipo de pedido",
+    "You must select, a request origin!": "Tem de selecionar, uma origem de pedido",
+    "You must select, who asked!": "Tem de selecionar, quem pediu",
+    "You must select, a type of request!": "Tem de selecionar o tipo de pedido"
 
 
 
