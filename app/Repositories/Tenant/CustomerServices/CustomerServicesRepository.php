@@ -85,7 +85,7 @@ class CustomerServicesRepository implements CustomerServicesInterface
                 'time_repeat' => $request->time_repeat,
                 'number_times' => $request->number_times,
                 'allMails' => $allMails,
-                'new_date' => $request->start_date
+                'new_date' => $request->new_date
             ]);
 
             return $customerService;
@@ -149,6 +149,11 @@ class CustomerServicesRepository implements CustomerServicesInterface
                 {
                     $serviceRequest["number_times"] = $req["number_times"];
                     array_push($arrayCustomerServices,$serviceRequest);
+                }
+                if($req["new_date"] != "")
+                {
+                    $serviceRequest["new_date"] = $req["new_date"];
+                    array_push($arrayCustomerServices, $serviceRequest);
                 }
                 if(isset($req["allMails"]))
                 {
