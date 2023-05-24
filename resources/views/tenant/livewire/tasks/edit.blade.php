@@ -226,6 +226,90 @@
                                             </div>
                                         </section>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <section class="col-4">
+                                            <label>{{ __('Origin request') }}</label>
+                                            <select name="origem_pedido" id="origem_pedido">
+                                                <option value="">{{ __('Selecione Origem do Pedido') }}</option>
+                                                
+                                                <option value="Pessoalmente"
+                                                    @if($origem_pedido == "Pessoalmente")
+                                                        selected @endif>
+                                                        Pessoalmente
+                                                </option>
+                                                <option value="Telefone"
+                                                    @if($origem_pedido == "Telefone")
+                                                        selected @endif>
+                                                        Telefone
+                                                </option>
+                                                <option value="E-mail"
+                                                    @if($origem_pedido == "E-mail")
+                                                        selected @endif>
+                                                        E-mail
+                                                </option>
+                                                <option value="WhatsApp"
+                                                    @if($origem_pedido == "WhatsApp")
+                                                        selected @endif>
+                                                        WhatsApp
+                                                </option>
+                                          
+                                            </select>
+                                        </section>
+
+                                        <section class="col-4">
+                                            <label>{{ __('Type of Request') }}</label>
+                                            <select name="tipo_pedido" id="tipo_pedido">
+                                                <option value="">{{ __('Selecione Tipo de pedido') }}</option>
+                                                
+                                                <option value="Comercial"
+                                                    @if($tipo_pedido == "Comercial")
+                                                        selected @endif>
+                                                        Comercial
+                                                </option>
+                                                <option value="Externo"
+                                                    @if($tipo_pedido == "Externo")
+                                                        selected @endif>
+                                                        Externo
+                                                </option>
+                                                <option value="Faturado"
+                                                    @if($tipo_pedido == "Faturado")
+                                                        selected @endif>
+                                                        Faturado
+                                                </option>
+                                                <option value="Interno"
+                                                    @if($tipo_pedido == "Interno")
+                                                        selected @endif>
+                                                        Interno
+                                                </option>
+                                                <option value="Projecto"
+                                                    @if($tipo_pedido == "Projecto")
+                                                        selected @endif>
+                                                        Projeto
+                                                </option>
+
+                                                <option value="Remoto"
+                                                    @if($tipo_pedido == "Remoto")
+                                                    selected @endif>
+                                                    Remoto
+                                                </option>
+                                          
+                                              
+                                            </select>
+                                        </section>
+
+                                        <section class="col-4">
+                                            <label>{{ __('Who asked') }}</label>
+                                            <input name="quem_pediu" class="form-control"
+                                                id="quem_pediu" wire:model.defer="quem_pediu" value="{{ $quem_pediu }}">
+                                                   
+                                        </section>
+
+
+                                    </div>
+
+
+
                                     <div class="form-group row">
                                         <section class="col">
                                             <label>{{ __('Additional notes') }}</label>
@@ -299,6 +383,17 @@
             jQuery("#selectedTechnician").on("select2:select", function (e) {
                 @this.set('selectedTechnician', jQuery('#selectedTechnician').find(':selected').val(), true)
             });
+
+            jQuery('#tipo_pedido').select2();
+            jQuery("#tipo_pedido").on("select2:select", function (e) {
+                @this.set('tipo_pedido', jQuery('#tipo_pedido').find(':selected').val(),true);
+            });
+
+            jQuery('#origem_pedido').select2();
+            jQuery("#origem_pedido").on("select2:select", function (e) {
+                @this.set('origem_pedido', jQuery('#origem_pedido').find(':selected').val(),true);
+            });
+
             jQuery('.selectedService').each(function() {
                 var selectId = '#' + jQuery(this).attr('id');
                 jQuery(selectId).off('select2:select');
