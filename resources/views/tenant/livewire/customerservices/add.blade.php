@@ -14,6 +14,7 @@
 :profile="$profile"
 :start_date="$start_date"
 :end_date="$end_date"
+:new_date="$new_date"
 :type="$type"
 buttonAction="{{ __('Create Service') }}"
 formTitle="{{ __('Create Service') }}" />
