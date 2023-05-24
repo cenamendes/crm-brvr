@@ -12,7 +12,7 @@ class Tasks extends Model
     use HasFactory;
     use ComposhipsEagerLimit;
 
-    protected $fillable = ['number', 'reference', 'customer_id', 'location_id', 'additional_description', 'applicant_name', 'applicant_contact', 'preview_date', 'preview_hour', 'scheduled_date', 'scheduled_hour', 'tech_id'];
+    protected $fillable = ['number', 'reference', 'customer_id', 'location_id', 'additional_description', 'applicant_name', 'applicant_contact', 'preview_date', 'preview_hour', 'scheduled_date', 'scheduled_hour', 'tech_id','origem_pedido','quem_pediu','tipo_pedido'];
 
     public function taskCustomer()
     {
