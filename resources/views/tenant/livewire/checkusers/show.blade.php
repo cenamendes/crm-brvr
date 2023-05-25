@@ -22,7 +22,7 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="chat" role="tabpanel">
-                        <div class="card mb-sm-3 mb-md-0 contacts_card dz-chat-user-box">
+                        <div class="card mb-sm-3 mb-md-0 contacts_card">
                             <div class="card-body contacts_body p-0 dz-scroll ps ps--active-y" id="DZ_W_Contacts_Body">
                                 <ul class="contacts">
                                     
@@ -70,7 +70,7 @@
 
                         <!--  Poderei fazer aqui a situação do chat  -->
                         <!-- Mas terei de fazer este codigo abaixo em livewire -->
-                        <div class="card chat dz-chat-history-box d-none">
+                        {{-- <div class="card chat dz-chat-history-box d-none">
                             <div class="card-header chat-list-header text-center">
                                 <a href="javascript:void(0)" class="dz-chat-history-back">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1">
@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
 
 
