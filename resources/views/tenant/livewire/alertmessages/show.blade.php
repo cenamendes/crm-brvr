@@ -21,9 +21,18 @@
                                         @if($not->senderUser->photo == null)
                                             <img alt="image" width="50" src="{!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!}">
                                         @else
+                                        {{$userCustomer = null;}}
                                             @php
+                                            if($not->group_chat != null && $not->group_chat != "")
+                                            {
                                                 $userCustomer = \App\Models\Tenant\Customers::where('id',$not->group_chat)->first();
                                                 $userTable = \App\Models\User::where('id',$userCustomer->user_id)->first();
+                                            }
+                                            else 
+                                            {
+
+                                                $userTable = \App\Models\User::where('id',$not->sender_user_id)->first();
+                                            }
                                             @endphp
 
                                             <img alt="image" width="50"
@@ -43,10 +52,21 @@
                                 <div class="media-body">
                                     @if(Auth::user()->type_user == 0)
                                         @php
-                                            $userCustomer = \App\Models\Tenant\Customers::where('id',$not->group_chat)->first();
-                                            $userTable = \App\Models\User::where('id',$userCustomer->user_id)->first();
+                                           if($not->group_chat != null)
+                                            {
+                                                $userCustomer = \App\Models\Tenant\Customers::where('id',$not->group_chat)->first();
+                                                $userTable = \App\Models\User::where('id',$userCustomer->user_id)->first();
+                                            }
+                                            else 
+                                            {
+                                                $userTable = \App\Models\User::where('id',$not->sender_user_id)->first();
+                                            }
                                         @endphp
+                                         @if($not->group_chat != null)
                                           <h6 class="mb-1">No grupo do cliente {{$userTable->name}} houve atividade</h6>
+                                        @else
+                                          <h6 class="mb-1">{{$userTable->name}} mandou lhe mensagem</h6>
+                                        @endif
                                     @else
                                         @if($not->type == "message")
                                             <h6 class="mb-1">{{$not->senderUser->name}} enviou lhe uma mensagem</h6>
