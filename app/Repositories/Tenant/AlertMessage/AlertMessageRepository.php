@@ -99,6 +99,22 @@ class AlertMessageRepository implements AlertMessageInterface
         });
     }
 
+    public function SendNotificationBetweenTech($idSender,$techId,$type): Notifications
+    {
+      return DB::transaction(function () use ($idSender,$techId,$type) {
+
+         $notification = Notifications::create([
+            "sender_user_id" => $idSender,
+            "receiver_user_id" => $techId,
+            "read" => 0,
+            "type" => $type,
+            "group_chat" => null
+         ]);
+
+         return $notification;
+      });
+    }
+
       
 
 }
