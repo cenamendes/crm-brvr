@@ -20,7 +20,7 @@
 		</div>
 		<div class="dropdown"></div>
 	</div>
-	<div class="card-body msg_card_body dz-scroll ps ps--active-y" id="teste">
+	<div class="card-body msg_card_body" id="DZ_W_Contacts_Body3" style="overflow:scroll; overflow-x:auto;">
 
 		@if($chat != null)
 		  @if(count($chat) == 0)
@@ -64,25 +64,26 @@
 					@endif
 				@endforeach
 			@endif
-			<div class="ps__rail-x">
-				<div class="ps__thumb-x" tabindex="0"></div>
-			</div>
-			<div class="ps__rail-y">
-				<div class="ps__thumb-y" tabindex="0"></div>
-			</div>
+			
 		@else
 			<h4 class="text-center">Escreva uma mensagem para começar conversação</h4>
 		@endif
-
+		
+		<div class="ps__rail-x">
+			<div class="ps__thumb-x" tabindex="0"></div>
+		</div>
+		<div class="ps__rail-y">
+			<div class="ps__thumb-y" tabindex="0"></div>
+		</div>
 
 
 
 	</div>
 	<div class="card-footer type_msg">
 		<div class="input-group">
-			<textarea class="form-control" placeholder="Escreva a sua mensagem..." wire:model.defer="usermsg"></textarea>
+			<textarea class="form-control" id="usermsg" placeholder="Escreva a sua mensagem..." wire:model.defer="usermsg"></textarea>
 			<div class="input-group-append">
-				<button type="button" class="btn btn-primary" wire:click="SendMessage">
+				<button type="button" id="submitmsg" class="btn btn-primary" wire:click="SendMessage">
 					<i class="fa fa-location-arrow"></i>
 				</button>
 			</div>
@@ -98,20 +99,20 @@
 <script>
 
 jQuery(document).ready(function(){ 
-//   var input = document.getElementById("usermsg");
-//   //Livewire.emit("submitmsg")
-//   input.addEventListener("keypress", function(event) {
-//   // If the user presses the "Enter" key on the keyboard
-//   if (event.key === "Enter") {
-//     // Cancel the default action, if needed
-//     event.preventDefault();
-//     // Trigger the button element with a click
-//     document.getElementById("submitmsg").click();
-//   }
-// });
+  var input = document.getElementById("usermsg");
+  //Livewire.emit("submitmsg")
+  input.addEventListener("keypress", function(event) {
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("submitmsg").click();
+  }
+});
 
 
-    jQuery('#teste').on('scroll',function(){
+    jQuery('#DZ_W_Contacts_Body3').on('scroll',function(){
         clearInterval(time);
         time = setInterval(updateScroll, 10000000000000000);
     });
@@ -119,21 +120,18 @@ jQuery(document).ready(function(){
     updateScroll();
 
     function updateScroll() {
-      var element = document.getElementById("teste");
+      var element = document.getElementById("DZ_W_Contacts_Body3");
       element.scrollTop = element.scrollHeight;
     }
 
     var time = setInterval(updateScroll, 100);
     
 	
-	window.addEventListener('refreshChatPosition',function(e){
-      	clearInterval(time);
-        time = setInterval(updateScroll, 100);
-    });
-
-	window.addEventListener('cleanChatBox',function(e){
-		
-	});
+	 window.addEventListener('refreshChatPosition',function(e){
+       	clearInterval(time);
+         time = setInterval(updateScroll, 100);
+		 jQuery("#DZ_W_Contacts_Body3").scrollTop(jQuery("DZ_W_Contacts_Body3")[0].scrollHeight);
+     });
 
 	
 	
