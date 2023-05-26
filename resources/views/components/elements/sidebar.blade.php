@@ -78,7 +78,7 @@
                     </ul>
                 </li>
             @endif
-            @if(Auth::user()->type_user == '0')
+            @if(Auth::user()->type_user != '2')
                 <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-381-id-card-1"></i>
                         <span class="nav-text">{{ __('Manage Customers') }}</span>
