@@ -55,7 +55,7 @@ class ChatUsers extends Component
 
     public function messagesRightSide($tech)
     {
-        $this->dispatchBrowserEvent("cleanChatBox"); 
+        // $this->dispatchBrowserEvent("cleanChatBox"); 
         $this->tech = $tech;
         $this->chat = $this->chatRepository->getMessagesBetweenTech($this->tech);
         $this->dispatchBrowserEvent("refreshChatPosition"); 
