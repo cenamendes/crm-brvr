@@ -78,7 +78,7 @@ class CheckUsers extends Component
             {
                 if(mb_substr($user->name,0,1) == $letter)
                 {
-                    $groupedByName[$letter][$i] = ["name" => $user->name, "last_seen" => $user->last_seen, "photo" => $user->photo, "status" => $checkStatus];
+                    $groupedByName[$letter][$i] = ["id" => $user->id , "type_user" => $user->type_user, "name" => $user->name, "last_seen" => $user->last_seen, "photo" => $user->photo, "status" => $checkStatus];
                 }
                 
             }
@@ -88,6 +88,7 @@ class CheckUsers extends Component
 
     }
 
+   
     public function RefreshUserLog()
     {
         $users = User::where('id',"!=",Auth::user()->id)->orderBy('name','asc')->get();
@@ -136,7 +137,7 @@ class CheckUsers extends Component
             {
                 if(mb_substr($user->name,0,1) == $letter)
                 {
-                    $groupedByName[$letter][$i] = ["name" => $user->name, "last_seen" => $user->last_seen, "photo" => $user->photo, "status" => $checkStatus];
+                    $groupedByName[$letter][$i] = ["id" => $user->id, "type_user" => $user->type_user, "name" => $user->name, "last_seen" => $user->last_seen, "photo" => $user->photo, "status" => $checkStatus];
                 }
                 
             }
