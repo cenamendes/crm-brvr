@@ -13,5 +13,7 @@ interface AlertMessageInterface
     public function updateReadState($receiver_id): int;
 
     public function SendNotification($idSender,$customerId,$type): Notifications;
+
+    public function SendNotificationBetweenTech($idSender,$techId,$type): Notifications;
  
 }
