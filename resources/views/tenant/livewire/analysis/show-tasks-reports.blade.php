@@ -115,7 +115,7 @@
                         {{ __('entries') }}</label>
                 </div>
                 <div class="col-12 text-right pr-0">
-                    <a wire:click="exportExcel({{$analysisExcel}})" class="btn btn-primary">{{ __('Export to Excel')}}</a>
+                    <a wire:click="exportExcel({{$analysisExcel}})" class="btn btn-primary"><i class="fa fa-file-text scale5 mr-3" aria-hidden='true'></i>{{ __('Export to Excel')}}</a>
                 </div>
                 <div id="dataTables_search_filter" class="dataTables_filter" style="display:none;">
                     <label>{{ __('Search') }}:
