@@ -312,25 +312,27 @@
         restartObjects();
     });
 
-    // window.addEventListener('swalModalQuestion',function(e){
-    //     if(e.detail.confirm) {
-    //         swal.fire({
-    //             title: e.detail.title,
-    //             html: e.detail.message,
-    //             type: e.detail.status,
-    //             showCancelButton: true,
-    //             confirmButtonColor: '#d33',
-    //             confirmButtonText: e.detail.confirmButtonText,
-    //             cancelButtonText: e.detail.cancellButtonText})
-    //         .then((result) => {
-    //             if(result.value) {
-    //                 Livewire.emit('dispatchTask');\dashboard
-    //             }
-    //         });
-    //     } else {
-    //         swal(e.detail.title, e.detail.message, e.detail.status);
-    //     }
-    // });
+    window.addEventListener('swalDispatch',function(e){
+
+        swal.fire({
+                        title: e.detail.title,
+                        html: e.detail.message,
+                        type: e.detail.status,
+                        page: e.detail.page,
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Cancelar'
+                    })  .then((result) => {
+                            if(result.value == true){
+                                //Finish task
+                                Livewire.emit('taskContinue',e.detail.parameter,e.detail.parameterSecond);
+
+                            }
+                        });
+      
+
+    });
+    
 
     window.addEventListener('swalModalQuestion',function(e){
             if(e.detail.confirm) {
