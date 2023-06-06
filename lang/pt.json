@@ -601,7 +601,10 @@
     "Type of Request": "Tipo de pedido",
     "You must select, a request origin!": "Tem de selecionar, uma origem de pedido",
     "You must select, who asked!": "Tem de selecionar, quem pediu",
-    "You must select, a type of request!": "Tem de selecionar o tipo de pedido"
+    "You must select, a type of request!": "Tem de selecionar o tipo de pedido",
+
+    "Finish Task": "Finalizar Tarefa",
+    "Are you sure you want to finish this task?": "Tem a certeza que quer finalizar esta tarefa?"
 
 
 
