@@ -16,6 +16,8 @@ class ShowTasksReports extends Component
 
     use WithPagination;
 
+    protected $listeners = ["taskContinue" => "taskContinue"];
+
     private TasksReportsInterface $tasksReportsInterface;
     private ?object $tasksReportsList = NULL;
     public string $searchString = '';
@@ -84,6 +86,17 @@ class ShowTasksReports extends Component
 
         //**Fim do Filtro****** */
 
+    }
+
+    public function taskContinue($reportId,$taskReport): void
+    {
+         $update['reportStatus'] = 2;
+         $update['end_date'] = date('Y-m-d');
+         $update['end_hour'] = date('H:i:s');
+         $this->tasksReportsInterface->updateReport($reportId, $update);
+         event(new DispatchTaskReport(TasksReports::where('id',$taskReport["id"])->with('servicesToDo')->with('tasks')->with('tech')->with("taskCustomer")->with('taskLocation')->with('getHoursTask')->first()));
+
+         $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('Task report closed with sucess!'), 'status'=>'info']);
     }
 
     /**Funções da parte do filtro */
@@ -240,13 +253,19 @@ class ShowTasksReports extends Component
             {
                 $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('The task is not complete and the there is no missing information!'), 'status'=>'error']);
             } else {
-                $update['reportStatus'] = 2;
-                $update['end_date'] = date('Y-m-d');
-                $update['end_hour'] = date('H:i:s');
-                $this->tasksReportsInterface->updateReport($reportId, $update);
-                event(new DispatchTaskReport(TasksReports::where('id',$taskReport->id)->with('servicesToDo')->with('tasks')->with('tech')->with("taskCustomer")->with('taskLocation')->with('getHoursTask')->first()));
 
-                $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('Task report closed with sucess!'), 'status'=>'info']);
+                //um dispatch se for sim coloca aqui
+
+                $this->dispatchBrowserEvent('swalDispatch', ['title' => __('Finish Task'), 'message' => __('Are you sure you want to finish this task?'), 'status' => 'info', 'function' => 'finishTask', 'parameter' => $reportId, 'parameterSecond' => $taskReport]);
+
+
+                // $update['reportStatus'] = 2;
+                // $update['end_date'] = date('Y-m-d');
+                // $update['end_hour'] = date('H:i:s');
+                // $this->tasksReportsInterface->updateReport($reportId, $update);
+                // event(new DispatchTaskReport(TasksReports::where('id',$taskReport->id)->with('servicesToDo')->with('tasks')->with('tech')->with("taskCustomer")->with('taskLocation')->with('getHoursTask')->first()));
+
+                // $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('Task report closed with sucess!'), 'status'=>'info']);
             }
         }
     }
