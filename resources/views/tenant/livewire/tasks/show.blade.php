@@ -315,26 +315,7 @@
         restartObjects();
     });
 
-    // window.addEventListener('swalModalQuestion',function(e){
-    //     if(e.detail.confirm) {
-    //         swal.fire({
-    //             title: e.detail.title,
-    //             html: e.detail.message,
-    //             type: e.detail.status,
-    //             showCancelButton: true,
-    //             confirmButtonColor: '#d33',
-    //             confirmButtonText: e.detail.confirmButtonText,
-    //             cancelButtonText: e.detail.cancellButtonText})
-    //         .then((result) => {
-    //             if(result.value) {
-    //                 Livewire.emit('dispatchTask');
-    //             }
-    //         });
-    //     } else {
-    //         swal(e.detail.title, e.detail.message, e.detail.status);
-    //     }
-    // });
-
+   
     window.addEventListener('swalModalQuestion',function(e){
         console.log("DO EDIT");
             if(e.detail.confirm) {
