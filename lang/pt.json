@@ -604,7 +604,12 @@
     "You must select, a type of request!": "Tem de selecionar o tipo de pedido",
 
     "Finish Task": "Finalizar Tarefa",
-    "Are you sure you want to finish this task?": "Tem a certeza que quer finalizar esta tarefa?"
+    "Are you sure you want to finish this task?": "Tem a certeza que quer finalizar esta tarefa?",
+
+    "Resume": "Resumo",
+    "Open Times": "Tempos abertos",
+    "Time used": "Inicio do Tempo",
+    "Edit Time": "Editar Tempo"
 
 
 
