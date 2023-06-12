@@ -38,7 +38,7 @@
                 
                 @livewire('tenant.dashboard.show')
 
-                <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="modalInfo" data-id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -51,6 +51,10 @@
                        
                       </div>
                       <div class="modal-footer">
+                        <!-- Fazer aqui   -->
+          
+                        {{-- <button type="button" id="deleteTaskButton" class="btn btn-danger" onclick="window.location='{{ url("deleteTask/?") }}'">Apagar Tarefa</button> --}}
+                        <button type="button" id="deleteTaskButton" class="btn btn-danger">Apagar Tarefa</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                       </div>
                     </div>
@@ -72,6 +76,7 @@
       restartCalendar();
           
   });
+  
 
     jQuery('body').on('click','.fc-next-button',function(){
    
@@ -91,6 +96,7 @@
       var event = [];
     var startDate = "";
     var titleTask = "";
+    var idTask = "";
   
     jQuery('.events-tasks span').each(function(){
       if(jQuery(this).attr("data-previewdate") != "" && typeof jQuery(this).attr("data-previewdate") !== 'undefined')
@@ -99,6 +105,7 @@
         startDate = jQuery(this).attr("data-previewdate");
         totalHour = startDate+"T"+jQuery(this).attr("data-previewhour");
         color = jQuery(this).attr("data-color");
+        idTask = jQuery(this).attr("data-id");
       }
       if(jQuery(this).attr("data-scheduleddate") != "" && typeof jQuery(this).attr("data-scheduleddate") !== 'undefined') 
       {
@@ -106,13 +113,16 @@
         startDate = jQuery(this).attr("data-scheduleddate");
         totalHour = startDate+"T"+jQuery(this).attr("data-scheduledhour");
         color = jQuery(this).attr("data-color");
+        idTask = jQuery(this).attr("data-id");
       }
 
         {event.push({
             title: titleTask,
             start: totalHour,
-            color: color
+            color: color,
+            idTask: idTask
         })}
+
     });
 
       
@@ -140,25 +150,35 @@
         dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
         dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
         timeFormat: 'HH(:mm)',
-        aspectRatio:  2 
+        aspectRatio:  2,
+        eventRender: function (info,element) {
+          element.find(".fc-title").attr("data-id",info.idTask);
+        } 
     });
    
-    
-   
-
 
   }
 
     jQuery("body").on("click",".fc-content",function(){
     
       jQuery(".modal-body").empty();
+
       jQuery('#modalInfo').modal('show');
       jQuery(".modal-body").append("Cliente: "+jQuery(this).find('.fc-title').text()+ "<br>Hora Marcada: "+jQuery(this).find('.fc-time').text()); 
+      
+      var valueData = jQuery(this).find('.fc-title').attr('data-id');
+
+      jQuery("body").on("click","#deleteTaskButton",function(){
+      
+        window.location.href="deleteTask/"+valueData;
+      });
+
+
     });
 
+    
   
     window.addEventListener('calendar',function(e){
-      console.log(e);
       jQuery('#calendarr').fullCalendar('destroy');
       restartCalendar();
       jQuery('#calendarr').fullCalendar('gotoDate',e.detail);
