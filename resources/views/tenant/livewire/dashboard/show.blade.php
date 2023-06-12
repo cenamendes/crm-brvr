@@ -26,9 +26,9 @@
             <div class="events-tasks" style="display:none;">
               @foreach ($tasks as $task)
                 @if($task->scheduled_date != null)
-                    <span data-color="{{$task->tech->color}}" data-scheduleddate="{{$task->scheduled_date}}" data-scheduledhour="{{$task->scheduled_hour}}">{{$task->taskCustomer->short_name}}</span>
+                    <span data-color="{{$task->tech->color}}" data-id="{{$task->id}}" data-scheduleddate="{{$task->scheduled_date}}" data-scheduledhour="{{$task->scheduled_hour}}">{{$task->taskCustomer->short_name}}</span>
                 @else
-                    <span data-color="{{$task->tech->color}}" data-previewdate="{{$task->preview_date}}" data-previewhour="{{$task->preview_hour}}">{{$task->taskCustomer->short_name}}</span>
+                    <span data-color="{{$task->tech->color}}" data-id="{{$task->id}}" data-previewdate="{{$task->preview_date}}" data-previewhour="{{$task->preview_hour}}">{{$task->taskCustomer->short_name}}</span>
                 @endif
               @endforeach
             </div>
