@@ -34,7 +34,7 @@ class EditTasks extends Component
     public array $serviceDescription = [];
 
 
-
+    public string $resume = '';
     public string $taskAdditionalDescription = '';
     public bool $changed = false;
 
@@ -96,6 +96,7 @@ class EditTasks extends Component
         $this->restartCustomerServiceList();
         $this->selectedTechnician = $taskToUpdate->tech_id;
         $this->taskAdditionalDescription = $taskToUpdate->additional_description;
+        $this->resume = $taskToUpdate->resume;
         $this->selectedLocation = $taskToUpdate->location_id;
 
         $this->previewDate = $taskToUpdate->preview_date;

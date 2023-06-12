@@ -2,14 +2,18 @@
 
 namespace App\Http\Livewire\Tenant\Tasks;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Redirector;
 use App\Models\Tenant\Tasks;
 use App\Models\Tenant\Services;
 
 use App\Models\Tenant\Customers;
+use App\Events\Tasks\TaskCreated;
 use App\Models\Tenant\TeamMember;
+use App\Events\Tasks\TaskCustomer;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\Type\VoidType;
 use App\Models\Tenant\CustomerServices;
 use App\Models\Tenant\CustomerLocations;
@@ -53,6 +57,7 @@ class AddTasks extends Component
 
     public string $selectedTechnician = '';
     public ?object $teamMembers = NULL;
+    public ?string $resume = '';
     public ?string $taskAdditionalDescription = '';
     public ?string $taskReference = NULL;
     public int $number = 0;
@@ -60,7 +65,7 @@ class AddTasks extends Component
     private CustomerServicesInterface $customerServicesInterface;
     private TasksInterface $tasksInterface;
 
-    protected $listeners = ['resetChanges' => 'resetChanges'];
+    protected $listeners = ['resetChanges' => 'resetChanges', 'responseEmailCustomer' => 'responseEmailCustomer'];
 
     /**
      * Livewire construct function
@@ -188,7 +193,7 @@ class AddTasks extends Component
 
         if(empty($this->serviceDescription))
         {
-            $this->dispatchBrowserEvent('swal', ['title' => __("Services"), 'message' => __("You need to select description for all services selected"), 'status'=>'error']);
+            $this->dispatchBrowserEvent('swal', ['title' => __("Services"), 'message' => __("You need to select description for all services selected"), 'status'=>'error', 'whatfunction' => 'servicesMissing']);
             return;
         }
         else if(!empty($this->serviceDescription))
@@ -283,12 +288,46 @@ class AddTasks extends Component
         }
         $this->taskReference = $this->taskReference($this->number);
 
-
         $this->taskToUpdate = $this->tasksInterface->createTask($this);
 
-        return redirect()->route('tenant.tasks.index')
-            ->with('message', __('Task created with success!'))
-            ->with('status', 'info');
+        
+        $techUser = TeamMember::where('id',$this->taskToUpdate->tech_id)->first();
+
+        $user = User::where('id',$techUser->user_id)->first();
+
+        $task = Tasks::where('id',$this->taskToUpdate->id)->with('servicesToDo')->first();
+
+
+        if(Auth::user()->id != $user->id && $user != null)
+        {
+            event(new TaskCreated($task));
+        }
+
+        $message = "";
+
+        $message = "<div class='swalBox'>";
+        $message .= "<div class='row mt-4' style='justify-content:center;'>";
+        $message .= "<button type='button' id='buttonresponse' data-anwser='ok' class='btn btn-primary'>Enviar</button>";
+        $message .= "&nbsp;<button type='button' class='btn btn-secondary' id='buttonresponse' data-anwser='close'>Fechar</button>";
+        $message .= "</div>";
+        $message .= "</div>";
+
+        $this->dispatchBrowserEvent('SendEmailTech', ['title' => __('Quer enviar email para o cliente?'), 'message' => $message, 'status' => 'info', 'parameter_function' => $task]);
+
+    
+    }
+
+    public function responseEmailCustomer($email,$response,$responseEmailCustomer)
+    {
+
+        if($response == "ok")
+        {
+            event(new TaskCustomer($responseEmailCustomer));
+        }
+
+          return redirect()->route('tenant.tasks.index')
+             ->with('message', __('Task created with success!'))
+             ->with('status', 'info');
     }
 
     public function cancel()
