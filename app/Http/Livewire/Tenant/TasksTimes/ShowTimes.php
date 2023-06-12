@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use App\Interfaces\Tenant\TasksTimes\TasksTimesInterface;
+use App\Models\Tenant\TasksTimes;
 
 class ShowTimes extends Component
 {
@@ -22,11 +23,12 @@ class ShowTimes extends Component
     public string $serviceSelected = '';
     public string $date_inicial = '';
     public string $hora_inicial = '';
-    public string $hora_final = '';
+    public $hora_final;
     public string $descricao = '';
 
     protected $listeners = [
-        'timesInsert'
+        'timesInsert',
+        'EditTimes'
      ];
 
       /**
@@ -90,12 +92,21 @@ class ShowTimes extends Component
     {
         $startTime = Carbon::parse($this->hora_inicial);
         $finishTime = Carbon::parse($this->hora_final);
-        $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
 
-        $hours = date("H:i",strtotime($totalDurationOfTask));
+        if($this->hora_final != "")
+        {
+            $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
+            $hours = date("H:i",strtotime($totalDurationOfTask));
+            $date_final = $this->date_inicial;
+        }
+        else {
+            $date_final = null;
+            $hours = null;
+            $this->hora_final = null;
+        }
+        
 
-
-        $newHours = (float)$totalDurationOfTask;
+        //$newHours = (float)$totalDurationOfTask;
 
 
         $arrayInsertTask = [
@@ -104,7 +115,7 @@ class ShowTimes extends Component
             "tech_id" => Auth::user()->id,
             "date_begin" => $this->date_inicial,
             "hour_begin" => $this->hora_inicial,
-            "date_end" => $this->date_inicial,
+            "date_end" => $date_final,
             "hour_end" => $this->hora_final,
             "total_hours" => $hours,
             "descricao" => $this->descricao
@@ -112,6 +123,26 @@ class ShowTimes extends Component
 
 
         $this->tasksTimesInterface->addTime($arrayInsertTask);
+
+    }
+
+    public function EditTimes($id,$values)
+    {
+        $startTime = Carbon::parse($values[2]);
+        $finishTime = Carbon::parse($values[3]);
+        $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
+
+        $hours = date("H:i",strtotime($totalDurationOfTask));
+
+        TasksTimes::where('id',$id)->update([
+            "service_id" => $values[0],
+            "date_begin" => $values[1],
+            "hour_begin" => $values[2],
+            "date_end" => $values[1],
+            "hour_end" => $values[3],
+            "total_hours" => $hours,
+            "descricao" => $values[4]
+        ]);
 
     }
 
@@ -186,6 +217,84 @@ class ShowTimes extends Component
                 'function' => "timesInsert"
             ]);
 
+    }
+
+    public function editTimeTask($id)
+    {
+        $getInfoTaskTimes = TasksTimes::with('service')->where('id',$id)->first();
+
+        $message ="
+        <label>".__("Service")."</label>";
+        $message .= "<select name='selectedService' id='selectedService' wire:model='serviceSelected' class='form-control'>
+        <option value=''>". __('Select Service')."</option>";
+
+        foreach($this->taskInfo->servicesToDo as $serv)
+        {
+            if($getInfoTaskTimes->service->id == $serv->service->id){
+                $message .='<option value="'. $serv->service->id.'" selected>'. $serv->service->name.'
+                </option>';
+            }
+            else {
+                $message .='<option value="'. $serv->service->id.'">'. $serv->service->name.'
+                </option>';
+            }
+           
+
+        }
+
+        $message .='</select>';
+
+        $message .= "
+
+        <label>".__('Date of Initial')."</label>
+        <div class='input-group'>
+        <input type='text' name='data' id='date_inicial' @if(".$getInfoTaskTimes->date_begin.") value='".$getInfoTaskTimes->date_begin."' @endif wire:model.defer='date_inicial' class='datepicker-default form-control'>
+        <span class='input-group-append'><span class='input-group-text'>
+        <i class='fa fa-calendar-o'></i>
+        </span></span>
+        </div>
+
+        <label>".__('Initial Hour')."</label>
+        <div class='input-group'>
+        <input type='text' name='data' id='hora_inicial' @if(".$getInfoTaskTimes->hour_begin.") value='".$getInfoTaskTimes->hour_begin."' @endif wire:model.defer='hora_inicial' class='datepicker-default form-control'>
+        <span class='input-group-append'><span class='input-group-text'>
+        <i class='fa fa-calendar-o'></i>
+        </span></span>
+        </div>
+
+        <label>".__('Final Hour')."</label>
+        <div class='input-group clockpicker'>
+        <input type='text' name='data' id='hora_final' @if(".$getInfoTaskTimes->hour_end.") value='".$getInfoTaskTimes->hour_end."' @endif wire:model.defer='hora_final' class='datepicker-default form-control'>
+        <span class='input-group-append'><span class='input-group-text'>
+        <i class='fa fa-calendar-o'></i>
+        </span></span>
+        </div>
+
+        <label>".__('Description')."</label>
+        <div class='input-group'>
+        <textarea type='text' name='data' id='descricao' @if(".$getInfoTaskTimes->descricao.") value='".$getInfoTaskTimes->descricao."' @endif wire:model.defer='descricao' class='form-control' style='height:189px;'></textarea>
+        </div>
+
+       <div id='actionsDiv' style='display:flex; margin-top:20px; justify-content:center;'>
+         <button type='button' id='btnEditTime' class='btn btn-primary'>Adicione</button>
+         &nbsp;<button type='button' id='btnremoveTime' class='btn btn-danger'>Fechar</button>
+       </div>
+       ";
+
+
+        $this->dispatchBrowserEvent('swal',
+            [
+                'title' => __('Add Time'),
+                'message' => $message,
+                'status'=>'info',
+                'showCancelButton'=>false,
+                'showConfirmButton'=>false,
+                'confirmButtonColor'=> '#326c91 ',
+                'confirmButtonText' => __("Edit"),
+                'cancelButtonText' => __("Cancel"),
+                'function' => "EditTimes",
+                'parameter' => $id
+            ]);
     }
 
     public function render()
