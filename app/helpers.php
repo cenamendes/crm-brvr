@@ -23,6 +23,10 @@ if (! function_exists('getCustomerConfig')) {
       
         foreach($get_hours as $hour)
         {
+            if($hour->total_hours == "")
+            {
+                $hour->total_hours = "00:00";
+            }
             $explodedTime = array_map('intval',explode(':',$hour->total_hours));
             $sum_minutes += $explodedTime[0]*60+$explodedTime[1];
         }
