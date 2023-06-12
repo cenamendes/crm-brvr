@@ -328,6 +328,15 @@
 
                                     <div class="form-group row">
                                         <section class="col">
+                                            <label>{{ __('Resume') }}</label>
+                                            <input name="resume" class="form-control"
+                                               id="resume" wire:model.defer="resume" value="{{ $resume }}">
+
+                                        </section>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <section class="col">
                                             <label>{{ __('Adicional notes') }}</label>
                                             <textarea name="taskAdditionalDescription" class="form-control"
                                                 id="taskAdditionalDescription" wire:model.defer="taskAdditionalDescription"
@@ -336,6 +345,8 @@
 </textarea>
                                         </section>
                                     </div>
+
+
                                     @endif
                                 </div>
                             </div>
@@ -369,8 +380,45 @@
             restartObjects();
         });
 
+        window.addEventListener('SendEmailTech', function (e) {
+
+            swal.fire({
+                title: e.detail.title,
+                html: e.detail.message,
+                type: e.detail.status,
+                showCancelButton: false,
+                showconfirmButton: false,
+            
+            });
+       
+
+            jQuery(".swal2-confirm").css("display","none");
+
+            jQuery(".swalBox .row").on("click", "#buttonresponse",function(){
+            
+                if(jQuery(this).attr("data-anwser") == "ok")
+                {
+                    var email = jQuery("#emailToReceive").val();
+
+                    var response = jQuery(this).attr("data-anwser");
+
+                    window.livewire.emit("responseEmailCustomer",email,response,e.detail.parameter_function);
+                    jQuery(this).remove();
+                    jQuery(".swalBox").remove();
+                    jQuery(".swal2-container").remove();
+
+                    Swal.close();
+                }
+                else {
+                    Swal.close();
+                }
+
+            });
+
+    });
+
         window.addEventListener('swal',function(e){
-            if(e.detail.whatfunction == "add")
+            if(e.detail.whatfunction == "add" || e.detail.whatfunction == "servicesMissing")
             {
                 swal.fire({
                 title: e.detail.title,

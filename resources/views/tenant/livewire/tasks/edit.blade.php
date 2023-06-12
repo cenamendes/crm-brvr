@@ -308,7 +308,13 @@
 
                                     </div>
 
-
+                                    <div class="form-group row">
+                                        <section class="col">
+                                            <label>{{ __('Resume') }}</label>
+                                            <input name="resume" class="form-control"
+                                                id="resume" wire:model.defer="resume" value="{{ $resume }}">
+                                        </section>
+                                    </div>
 
                                     <div class="form-group row">
                                         <section class="col">
@@ -320,6 +326,8 @@
 </textarea>
                                         </section>
                                     </div>
+
+
                                     @endif
                                 </div>
                             </div>
