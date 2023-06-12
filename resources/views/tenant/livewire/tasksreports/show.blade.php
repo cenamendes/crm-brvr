@@ -179,33 +179,39 @@
                                     $sum_minutes = 0;
                                     $sumTime = '00:00'; 
                                 @endphp
+                                @if(!empty($item->getHoursTask))
+                                    @forelse ($item->getHoursTask as $itemTask)
+                                        @php
+                                            if($itemTask->total_hours == "")
+                                            {
+                                                $itemTask->total_hours = "00:00";
+                                            }
 
-                                @forelse ($item->getHoursTask as $itemTask)
-                                    @php
-                                        
-                                        $explodedTime = array_map('intval', explode(':', $itemTask->total_hours ));
-                                        $sum_minutes += $explodedTime[0]*60+$explodedTime[1];
-                                        if(strlen(floor($sum_minutes/60)) == 1){
-                                            $hoursCheck = '0'.floor($sum_minutes/60);
-                                        }
-                                        else{
-                                            $hoursCheck = floor($sum_minutes/60);
-                                        }
+                                            $explodedTime = array_map('intval', explode(':', $itemTask->total_hours ));
+                                            $sum_minutes += $explodedTime[0]*60+$explodedTime[1];
+                                            if(strlen(floor($sum_minutes/60)) == 1){
+                                                $hoursCheck = '0'.floor($sum_minutes/60);
+                                            }
+                                            else{
+                                                $hoursCheck = floor($sum_minutes/60);
+                                            }
 
-                                        if(strlen(floor($sum_minutes % 60)) == 1){
-                                            $minutesCheck = '0'.floor($sum_minutes % 60);
-                                        }
-                                        else {
-                                            $minutesCheck = floor($sum_minutes % 60);
-                                        }
+                                            if(strlen(floor($sum_minutes % 60)) == 1){
+                                                $minutesCheck = '0'.floor($sum_minutes % 60);
+                                            }
+                                            else {
+                                                $minutesCheck = floor($sum_minutes % 60);
+                                            }
 
-                                        $sumTime = $hoursCheck.':'.$minutesCheck;
-                                        
-                                    @endphp
-                                @empty
-                                @endforelse
-                            
-                                {{ global_hours_format($sumTime) }}
+                                            $sumTime = $hoursCheck.':'.$minutesCheck;
+                                            
+                                        @endphp
+                                    @empty
+                                    @endforelse
+                                
+                                    {{ global_hours_format($sumTime) }}
+                                 @endif
+                                 
 
                             </td>
                             <td>
