@@ -38,6 +38,7 @@
                     </div>
                 </th>
                 <th>{{ __('Name') }}</th>
+                <th>{{ __('Customer') }}</th>
                 <th>{{ __('Contact') }}</th>
                 <th>{{ __('Manager') }}</th>
                 <th>{{ __('District') }}</th>
@@ -55,6 +56,11 @@
                         </div>
                     </td>
                     <td>{{ $item->description }}</td>
+                    @php
+                        $customer = \App\Models\Tenant\Customers::where('id',$item->customer_id)->first();
+                    @endphp
+
+                    <td>{{$customer->name}}</td>
                     <td>{{ $item->contact }}</td>
                     <td>{{ $item->manager_name }}</td>
                     <td>
