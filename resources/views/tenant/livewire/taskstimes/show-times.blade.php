@@ -91,7 +91,12 @@
                                     <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $item->hour_end }}<br>
                                 </td>
                                 <td>
-                                    {{ global_hours_format($item->total_hours) }}
+                                   
+                                    @if($item->total_hours != null)
+                                    
+                                        {{ global_hours_format($item->total_hours) }}
+                                    @endif
+                                  
     
                                 </td>
 
@@ -109,6 +114,10 @@
                                                 </svg>
                                             </div>
                                             <div class="dropdown-menu dropdown-menu-right">
+                                                <a wire:click="editTimeTask({{$item->id}})" class="dropdown-item">
+                                                    {{__("Edit Time")}}
+                                                </a>
+
                                                 <button class="dropdown-item btn-sweet-alert" data-type="form"
                                                 data-route="{{ route('tenant.tasks-reports.destroytimetask', $item->id) }}"
                                                 data-style="warning" data-csrf="csrf"
@@ -134,6 +143,7 @@
     @push('custom-scripts')
     <script>
         var countAdd = 0;  
+        var countEdit = 0;  
         window.addEventListener('contentChanged', event => {
             restartObjects();
         });
@@ -153,7 +163,12 @@
                 
                 onOpen: function() {
                     countAdd = 0;
+                    countEdit = 0;
                     if(e.detail.function == "timesInsert")
+                    {
+                        jQuery(".swal2-confirm").css("display","none");
+                    }
+                    else if(e.detail.function == "EditTimes")
                     {
                         jQuery(".swal2-confirm").css("display","none");
                     }
@@ -202,14 +217,14 @@
 
 
                      jQuery("body").on('click', '#actionsDiv #btnAddTime', function() {
-                        
+                        console.log("btnAddTime");
                         @this.set('descricao', jQuery("#descricao").val(), true);
 
                         var finalHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_final').val());
                         finalHour = finalHour.getTime();
                         var startHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_inicial').val());
                         startHour = startHour.getTime();
-                        if(jQuery('#swal2-content #selectedService').val() != "" && jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)
+                        if(jQuery('#swal2-content #selectedService').val() != ""  && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "")
                         {
                             countAdd++;
                             if(countAdd == 1)
@@ -217,6 +232,35 @@
                                 Livewire.emit(e.detail.function);
                                 Swal.close();
                             }                            
+                        }
+                        else {
+                            return false;
+                        }
+                     });
+
+                     jQuery("body").on('click', '#actionsDiv #btnEditTime', function() {
+                        
+                        @this.set('descricao', jQuery("#descricao").val(), true);
+
+                        var service = jQuery('#swal2-content #selectedService').val();
+
+                        var initialDate = jQuery('#swal2-content .input-group #date_inicial').val();
+
+                        var finalHour = jQuery('#swal2-content .input-group #hora_final').val();
+                        
+                        var startHour = jQuery('#swal2-content .input-group #hora_inicial').val();
+    
+                        var description = jQuery("#descricao").val();
+
+                        var values = [];
+
+                        values.push(service,initialDate,startHour,finalHour,description);
+
+                        if(e.detail.function != "timesInsert" && jQuery('#swal2-content #selectedService').val() != "" && jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)
+                        {
+                            Livewire.emit(e.detail.function,e.detail.parameter,values);
+                            Swal.close();
+                                                       
                         }
                         else {
                             return false;
@@ -238,7 +282,7 @@
                         startHour = startHour.getTime();
                         if(jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)
                         {
-                            Livewire.emit(e.detail.function);
+                            
                         }
                         else {
                             return false;
