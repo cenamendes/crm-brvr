@@ -44,6 +44,7 @@ class TasksRepository implements TasksInterface
                 'reference' => $values->taskReference,
                 'customer_id' => $values->selectedCustomer,
                 'location_id' => $values->selectedLocation,
+                'resume' => $values->resume,
                 'additional_description' => $values->taskAdditionalDescription,
                 'preview_date' => $values->previewDate,
                 'preview_hour' => $values->previewHour,
@@ -82,6 +83,7 @@ class TasksRepository implements TasksInterface
         $update = Tasks::where('id', $task->id)
             ->update([
                 'location_id' => $values->selectedLocation,
+                'resume' => $values->resume,
                 'additional_description' => $values->taskAdditionalDescription,
                 'preview_date' => $values->previewDate,
                 'preview_hour' => $values->previewHour,
