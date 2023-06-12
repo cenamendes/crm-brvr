@@ -10,6 +10,8 @@ use App\Models\Tenant\TeamMember;
 use App\Http\Controllers\Controller;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\TasksReports\TasksReportsInterface;
+use App\Models\Tenant\TasksReports;
+use App\Models\Tenant\TasksTimes;
 use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
@@ -114,6 +116,21 @@ class TasksController extends Controller
 
         $this->tasksInterface->deleteTask($task);
         return to_route('tenant.tasks.index')
+            ->with('message', __('Task deleted with success!'))
+            ->with('status', 'sucess');
+    }
+
+    public function destroyTask(string $task)
+    {
+        $taskNumber = (int) $task;
+
+        Tasks::where('id',$taskNumber)->delete();
+
+        TasksReports::where('task_id',$taskNumber)->delete();
+
+        TasksTimes::where('task_id',$taskNumber)->delete();
+
+        return to_route('login')
             ->with('message', __('Task deleted with success!'))
             ->with('status', 'sucess');
     }
