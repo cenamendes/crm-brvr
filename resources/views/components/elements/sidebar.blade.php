@@ -56,7 +56,9 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('tenant.analysis.index') }}">{{ __('Completed Tasks') }}</a></li>
+                    <li><a href="{{ route('tenant.open-times.index')}}">{{ __('Open Times') }}</a></li>
                 </ul>
+
             </li>
             @endif
             @if (Auth::user()->type_user != '2')
