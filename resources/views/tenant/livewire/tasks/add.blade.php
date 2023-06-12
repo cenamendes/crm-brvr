@@ -330,7 +330,7 @@
                                         <section class="col">
                                             <label>{{ __('Resume') }}</label>
                                             <input name="resume" class="form-control"
-                                               id="resume" wire:model.defer="resume" value="{{ $resume }}">
+                                               id="resume" maxlength="150" wire:model.defer="resume" value="{{ $resume }}">
 
                                         </section>
                                     </div>
@@ -410,6 +410,7 @@
                     Swal.close();
                 }
                 else {
+                    window.livewire.emit("responseEmailCustomer",email,response,e.detail.parameter_function);
                     Swal.close();
                 }
 
