@@ -18,6 +18,7 @@ class AnalysisRepository implements AnalysisInterface
         })
         ->with('tasksReports')
         ->with('service')
+        ->where('date_end','!=',null)
         ->paginate($perPage);
 
         return $reportsFinished;
@@ -51,6 +52,7 @@ class AnalysisRepository implements AnalysisInterface
         })
         ->with('tasksReports')
         ->with('service')
+        ->where('date_end','!=',null)
         ->paginate($perPage);
 
         return $reportsFromClient;
@@ -127,6 +129,7 @@ class AnalysisRepository implements AnalysisInterface
             ->with('tasksReports')
             ->with('service')
             ->where('tech_id',$teamMember->user_id)
+            ->where('date_end','!=',null)
             ->paginate($perPage);    
         }
         else 
@@ -160,6 +163,7 @@ class AnalysisRepository implements AnalysisInterface
             })
             ->with('tasksReports')
             ->with('service')
+            ->where('date_end','!=',null)
             ->paginate($perPage);
         }
 
@@ -262,6 +266,7 @@ class AnalysisRepository implements AnalysisInterface
         })
         ->with('tasksReports')
         ->with('service')
+        ->where('date_end','!=',null)
         ->get();
 
         return $reportsFinished;
@@ -304,6 +309,7 @@ class AnalysisRepository implements AnalysisInterface
             ->with('tasksReports')
             ->with('service')
             ->where('tech_id',$teamMember->user_id)
+            ->where('date_end','!=',null)
             ->get();
         }
         else 
@@ -337,6 +343,7 @@ class AnalysisRepository implements AnalysisInterface
             })
             ->with('tasksReports')
             ->with('service')
+            ->where('date_end','!=',null)
             ->get();
         }
         
