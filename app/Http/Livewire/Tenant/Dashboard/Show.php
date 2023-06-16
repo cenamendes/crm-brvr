@@ -9,11 +9,12 @@ use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
 use App\Interfaces\Tenant\CustomerNotification\CustomerNotificationInterface;
+use App\Models\Tenant\TasksReports;
 
 class Show extends Component
 {
     
-    protected $listeners = ["CalendarNextChanges" => 'CalendarNextChanges', "CalendarPreviousChanges" => 'CalendarPreviousChanges'];
+    protected $listeners = ["CalendarNextChanges" => 'CalendarNextChanges', "CalendarPreviousChanges" => 'CalendarPreviousChanges', "checkReport" => 'checkReport'];
     public string $month = '';
 
     public string $nextMonth = "";
@@ -47,17 +48,18 @@ class Show extends Component
     {
         if($state == "Mês")
         {
-            $this->avancoMes--;
-            $month = date('m',strtotime("+".$this->avancoMes." month",strtotime($date)));
-            $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
+            // $this->avancoMes--;
+            // $month = date('m',strtotime("+".$this->avancoMes." month",strtotime($date)));
+            // $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
 
-            $this->nextMonth = $month;
-            $this->nextYear = $year;
+            // $this->nextMonth = $month;
+            // $this->nextYear = $year;
 
-            $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
-            $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
+            // $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
+            // $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
 
-            $this->dispatchBrowserEvent("calendar","".$this->nextYear."-".$this->nextMonth."-01T10:00:00");
+            // $this->dispatchBrowserEvent("calendar",["calendarResult" => "".$this->nextYear."-".$this->nextMonth."-01T10:00:00"]);
+            $this->skipRender();
         }
         else {
             $this->skipRender();
@@ -71,22 +73,36 @@ class Show extends Component
     {
         if($state == "Mês")
         {
-            $this->avancoMes++;
-            $month = date('m', strtotime("+".$this->avancoMes." month",strtotime($date)));
-            $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
+            // $this->avancoMes++;
+            // $month = date('m', strtotime("+".$this->avancoMes." month",strtotime($date)));
+            // $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
 
-            $this->nextMonth = $month;
-            $this->nextYear = $year;
+            // $this->nextMonth = $month;
+            // $this->nextYear = $year;
 
-            $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
-            $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
+            // $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
+            // $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
                     
-            $this->dispatchBrowserEvent("calendar","".$this->nextYear."-".$this->nextMonth."-01T10:00:00");
+            // $this->dispatchBrowserEvent("calendar",["calendarResult" => "".$this->nextYear."-".$this->nextMonth."-01T10:00:00"]);
+            $this->skipRender();
         }
         else {
             $this->skipRender();
         }
+    }
 
+    public function checkReport($task)
+    {
+        $report = TasksReports::where('task_id',$task)->first();
+
+        if($report != null){
+            $this->dispatchBrowserEvent("responseReport",["response" => "existe", "value" => $report->id]);
+        }
+        else {
+            $this->dispatchBrowserEvent("responseReport",["response" => "naoexiste", "value" => $task]);
+        }
+
+        $this->skipRender();
     }
 
     public function treated($id)
