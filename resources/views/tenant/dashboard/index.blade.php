@@ -72,12 +72,14 @@
   var mesAtual = (new Date).getMonth() + 1;
   var anoAtual = (new Date).getFullYear();
   var date = (new Date);
+
  
   document.addEventListener('livewire:load', function () {
       restartCalendar();
           
   });
 
+  
   
     jQuery('body').on('click','.fc-next-button',function(){
       
@@ -95,7 +97,7 @@
 
     function restartCalendar()
     {
-     
+  
       var event = [];
     var startDate = "";
     var titleTask = "";
@@ -130,13 +132,13 @@
 
       
     jQuery('#calendarr').fullCalendar({
-      defaultView: 'month',
+      defaultView: 'listDay',
       events:event,
       allDay:true,
       header: {
              center:'title',
              left:'prev,next,today',
-             right:'month,listWeek,listDay'
+             right:'listMonth,listWeek,listDay'
          },
          buttonText: {
           today: 'Hoje',
@@ -156,36 +158,72 @@
         timeFormat: 'HH(:mm)',
         aspectRatio:  2,
         eventRender: function (info,element) {
-          element.find(".fc-title").attr("data-id",info.idTask);
+          element.find(".fc-list-item-time").attr("data-id",info.idTask);
         } 
     });
    
 
   }
 
-    jQuery("body").on("click",".fc-content",function(){
-    
-      jQuery(".modal-body").empty();
+  
+  var timer = 0;
+  var delay = 200;
+  var prevent = false;
 
-      jQuery('#modalInfo').modal('show');
-      jQuery(".modal-body").append("Cliente: "+jQuery(this).find('.fc-title').text()+ "<br>Hora Marcada: "+jQuery(this).find('.fc-time').text()); 
+
+  jQuery("body").on("click",".fc-list-item",function(){
+
+    var cliente = jQuery(this).find('.fc-list-item-title a').text();
+    var time = jQuery(this).find('.fc-list-item-time').text();
+    var valueData = jQuery(this).find('.fc-list-item-time').attr('data-id');
+
+    timer = setTimeout(function() {
+      if (!prevent) {
+        jQuery(".modal-body").empty();
+
+        jQuery('#modalInfo').modal('show');
+        jQuery(".modal-body").append("Cliente: "+cliente+ "<br>Hora Marcada: "+time); 
+
+        
+
+        jQuery("body").on("click","#deleteTaskButton",function(){
+
+          window.location.href="deleteTask/"+valueData;
+        });
+      }
+      prevent = false;
+    }, delay);
+  });
+
+  jQuery("body").on("dblclick",".fc-list-item",function(){
+
+    clearTimeout(timer);
+    prevent = true;
+
+    var valueData = jQuery(this).find('.fc-list-item-time').attr('data-id');
+
+    Livewire.emit("checkReport",valueData);
+
+    document.addEventListener('responseReport', function (e) {
+      console.log(e.detail.response);
       
-      var valueData = jQuery(this).find('.fc-title').attr('data-id');
-
-      jQuery("body").on("click","#deleteTaskButton",function(){
-      
-        window.location.href="deleteTask/"+valueData;
-      });
-
-
+        if(e.detail.response == "existe")
+        {
+            window.location.href="tasks-reports/"+e.detail.value+"/edit";
+        }
+        else {
+            window.location.href="tasks/"+e.detail.value+"/edit";
+        }
     });
+  });
+
 
     
   
     window.addEventListener('calendar',function(e){
       jQuery('#calendarr').fullCalendar('destroy');
       restartCalendar();
-      jQuery('#calendarr').fullCalendar('gotoDate',e.detail);
+      jQuery('#calendarr').fullCalendar('gotoDate',e.detail.calendarResult);
       });
 
         
