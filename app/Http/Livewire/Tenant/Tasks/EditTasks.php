@@ -34,8 +34,8 @@ class EditTasks extends Component
     public array $serviceDescription = [];
 
 
-    public string $resume = '';
-    public string $taskAdditionalDescription = '';
+    public ?string $resume = '';
+    public ?string $taskAdditionalDescription = '';
     public bool $changed = false;
 
     public ?string $previewDate = NULL;
