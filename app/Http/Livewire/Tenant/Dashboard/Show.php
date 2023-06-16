@@ -43,35 +43,49 @@ class Show extends Component
     }
 
 
-    public function CalendarPreviousChanges($date)
+    public function CalendarPreviousChanges($date,$state)
     {
-        $this->avancoMes--;
-        $month = date('m',strtotime("+".$this->avancoMes." month",strtotime($date)));
-        $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
+        if($state == "Mês")
+        {
+            $this->avancoMes--;
+            $month = date('m',strtotime("+".$this->avancoMes." month",strtotime($date)));
+            $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
 
-        $this->nextMonth = $month;
-        $this->nextYear = $year;
+            $this->nextMonth = $month;
+            $this->nextYear = $year;
 
-        $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
-        $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
+            $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
+            $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
+
+            $this->dispatchBrowserEvent("calendar","".$this->nextYear."-".$this->nextMonth."-01T10:00:00");
+        }
+        else {
+            $this->skipRender();
+        }
 
 
-        $this->dispatchBrowserEvent("calendar","".$this->nextYear."-".$this->nextMonth."-01T10:00:00");
+       
     }
 
-    public function CalendarNextChanges($date)
+    public function CalendarNextChanges($date,$state)
     {
-        $this->avancoMes++;
-        $month = date('m', strtotime("+".$this->avancoMes." month",strtotime($date)));
-        $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
+        if($state == "Mês")
+        {
+            $this->avancoMes++;
+            $month = date('m', strtotime("+".$this->avancoMes." month",strtotime($date)));
+            $year = date('Y', strtotime("+".$this->avancoMes." month",strtotime($date)));
 
-        $this->nextMonth = $month;
-        $this->nextYear = $year;
+            $this->nextMonth = $month;
+            $this->nextYear = $year;
 
-        $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
-        $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
-                
-        $this->dispatchBrowserEvent("calendar","".$this->nextYear."-".$this->nextMonth."-01T10:00:00");
+            $this->tasks = $this->taskInterface->taskCalendarMonthChange($month,$year);
+            $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
+                    
+            $this->dispatchBrowserEvent("calendar","".$this->nextYear."-".$this->nextMonth."-01T10:00:00");
+        }
+        else {
+            $this->skipRender();
+        }
 
     }
 

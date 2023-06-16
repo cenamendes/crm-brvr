@@ -53,8 +53,9 @@
                       <div class="modal-footer">
                         <!-- Fazer aqui   -->
           
-                        {{-- <button type="button" id="deleteTaskButton" class="btn btn-danger" onclick="window.location='{{ url("deleteTask/?") }}'">Apagar Tarefa</button> --}}
-                        <button type="button" id="deleteTaskButton" class="btn btn-danger">Apagar Tarefa</button>
+                        @if(Auth::user()->type_user == "0")
+                          <button type="button" id="deleteTaskButton" class="btn btn-danger">Apagar Tarefa</button>
+                        @endif
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                       </div>
                     </div>
@@ -76,17 +77,19 @@
       restartCalendar();
           
   });
-  
 
+  
     jQuery('body').on('click','.fc-next-button',function(){
-   
-      Livewire.emit('CalendarNextChanges',date);
+      
+      var state = jQuery(".fc-state-active").text();
+      Livewire.emit('CalendarNextChanges',date,state);
 
     });
 
     jQuery('body').on('click','.fc-prev-button',function(){
 
-      Livewire.emit('CalendarPreviousChanges',date);
+      var state = jQuery(".fc-state-active").text();
+      Livewire.emit('CalendarPreviousChanges',date,state);
 
     });
 
@@ -115,7 +118,7 @@
         color = jQuery(this).attr("data-color");
         idTask = jQuery(this).attr("data-id");
       }
-
+      
         {event.push({
             title: titleTask,
             start: totalHour,
@@ -129,10 +132,11 @@
     jQuery('#calendarr').fullCalendar({
       defaultView: 'month',
       events:event,
+      allDay:true,
       header: {
              center:'title',
              left:'prev,next,today',
-             right:'month'
+             right:'month,listWeek,listDay'
          },
          buttonText: {
           today: 'Hoje',
