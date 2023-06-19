@@ -39,7 +39,7 @@
                     <li><a href="#">{{ __('Devices') }}</a></li>
                 </ul>
             </li>
-            @if(Auth::user()->type_user == '0')
+            {{-- @if(Auth::user()->type_user == '0') --}}
                 <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-381-notepad"></i>
                         <span class="nav-text">{{ __('Manage Services') }}</span>
@@ -48,7 +48,7 @@
                         <li><a href="{{ route('tenant.services.index') }}">{{ __('Services') }}</a></li>
                     </ul>
                 </li>
-            @endif
+            {{-- @endif --}}
             @if (Auth::user()->type_user != '2')
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-notepad"></i>
