@@ -223,6 +223,7 @@ class ShowTimes extends Component
     {
         $getInfoTaskTimes = TasksTimes::with('service')->where('id',$id)->first();
 
+    
         $message ="
         <label>".__("Service")."</label>";
         $message .= "<select name='selectedService' id='selectedService' wire:model='serviceSelected' class='form-control'>
@@ -272,7 +273,7 @@ class ShowTimes extends Component
 
         <label>".__('Description')."</label>
         <div class='input-group'>
-        <textarea type='text' name='data' id='descricao' @if(".$getInfoTaskTimes->descricao.") value='".$getInfoTaskTimes->descricao."' @endif wire:model.defer='descricao' class='form-control' style='height:189px;'></textarea>
+        <textarea type='text' name='data' id='descricao' wire:model.defer='descricao' class='form-control' style='height:189px;'>".$getInfoTaskTimes->descricao."</textarea>
         </div>
 
        <div id='actionsDiv' style='display:flex; margin-top:20px; justify-content:center;'>
