@@ -60,7 +60,8 @@ class Show extends Component
                         "reference" => $taskReference,
                         "customer" => $customer_name->name,
                         "date_begin" => $time->date_begin,
-                        "hour_begin" => $time->hour_begin
+                        "hour_begin" => $time->hour_begin,
+                        "task_id" => $time->task_id
                     ];
                 }
             }
