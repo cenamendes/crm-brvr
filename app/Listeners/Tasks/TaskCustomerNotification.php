@@ -3,6 +3,7 @@
 namespace App\Listeners\Tasks;
 
 use App\Models\Tenant\Tasks;
+use App\Models\Tenant\Config;
 use App\Models\Tenant\Customers;
 use App\Events\Tasks\TaskCreated;
 use App\Models\Tenant\TeamMember;
@@ -45,5 +46,8 @@ class TaskCustomerNotification
 
         Mail::to($customerEmail->email)->queue(new TaskReceiveEmailUser($task));
 
+        //criação da tarefa
+        $emailConfig = Config::first();
+        Mail::to($emailConfig->email)->queue(new TaskReceiveEmailUser($task));
     }
 }

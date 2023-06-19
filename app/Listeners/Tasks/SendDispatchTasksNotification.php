@@ -3,6 +3,7 @@
 namespace App\Listeners\Tasks;
 
 use App\Models\Tenant\Tasks;
+use App\Models\Tenant\Config;
 use App\Mail\Tasks\TaskDispatched;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Tasks\TaskDispatchedTech;
@@ -71,7 +72,7 @@ class SendDispatchTasksNotification
 	
 	    curl_exec($curl);
 
-         
+        
         Mail::to($task->task->tech->email)->queue(new TaskDispatchedTech($task));
 
         if($task->task->taskCustomer->email == null || !isset($task->task->taskCustomer->email))
@@ -82,7 +83,11 @@ class SendDispatchTasksNotification
             Mail::to($task->task->taskCustomer->email)->queue(new TaskDispatched($task));
         }
 
-        //envio do json para api
+        $emailAdmin = Config::first();
+
+        Mail::to($emailAdmin->email)->queue(new TaskDispatched($task));
+
+        //agendar tarefas
         
        
 

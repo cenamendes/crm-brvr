@@ -2,9 +2,10 @@
 
 namespace App\Listeners\Tasks;
 
-use App\Events\Tasks\DispatchTaskReport;
-use App\Mail\Tasks\TaskReportFinished;
+use App\Models\Tenant\Config;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\Tasks\TaskReportFinished;
+use App\Events\Tasks\DispatchTaskReport;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -99,7 +100,9 @@ class SendTaskReportNotification
             Mail::to($tasksReports->taskCustomer->email)->queue(new TaskReportFinished($tasksReports));
         }
         
-        //enviar para o phc
+        //finalizar tarefas
+        $emailAdmin = Config::first();
+        Mail::to($emailAdmin->email)->queue(new TaskReportFinished($tasksReports));
        
 
     }
