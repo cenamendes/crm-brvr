@@ -19,9 +19,11 @@
                     <th class="sorting" style="color:white;" tabindex="0" aria-controls="data5" rowspan="1" colspan="1">{{ __('Customer') }}</th>
                     <th class="d-lg-inline-block sorting" style="color:white;" tabindex="0" aria-controls="data5" rowspan="1" colspan="1">{{ __('Task') }}</th>
                     <th class="sorting" style="color:white;" tabindex="0" aria-controls="data5" rowspan="1" colspan="1">{{ __('Time used') }}</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
+              
                   @foreach ($arrayTimes as $name => $time)
             
                   {{-- {!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!} --}}
@@ -53,6 +55,13 @@
                       {{$time["date_begin"]}} <br> 
                       <i class="fa fa-clock-o" aria-hidden="true"></i>
                       {{$time["hour_begin"]}}
+                  </td>
+                  <td>
+                     <div class="d-flex">
+                        <a href="{{ route('tenant.tasks-reports.edit', $time["task_id"])}}" class="btn btn-primary shadow  sharp mr-1">
+                          <i class="fa fa-pencil"></i>
+                        </a>
+                     </div>
                   </td>
                   </tr>
                   @endforeach
