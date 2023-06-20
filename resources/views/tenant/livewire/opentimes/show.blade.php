@@ -23,7 +23,6 @@
                   </tr>
                 </thead>
                 <tbody>
-              
                   @foreach ($arrayTimes as $name => $time)
             
                   {{-- {!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!} --}}
