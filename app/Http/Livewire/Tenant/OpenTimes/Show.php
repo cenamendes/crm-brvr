@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Models\Tenant\Tasks;
 use App\Models\Tenant\Customers;
 use App\Models\Tenant\TasksTimes;
+use App\Models\Tenant\TasksReports;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
@@ -54,6 +55,8 @@ class Show extends Component
 
                     $customer_name = Customers::where('id',$customer_id)->first();
 
+                    $timeReport = TasksReports::where('task_id',$time->task_id)->first();
+
                     $arrayTimes[$user->name] = [
                         "photo" => $user->photo,
                         "service" => $serviceName,
@@ -61,7 +64,7 @@ class Show extends Component
                         "customer" => $customer_name->name,
                         "date_begin" => $time->date_begin,
                         "hour_begin" => $time->hour_begin,
-                        "task_id" => $time->task_id
+                        "task_id" => $timeReport->id
                     ];
                 }
             }
