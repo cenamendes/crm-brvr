@@ -171,7 +171,10 @@
           if(object != "[]" && view.name != 'listMonth')
           {
             jQuery.each( object, function( i, val ) {
-              console.log(val);
+              if(val.descricao == "")
+              {
+                val.descricao = "<span style='color:green;'>Em aberto</span>";
+              }
               element.find(".fc-list-item-title").append("<br><i class='fa-solid fa fa-arrow-right'></i> ["+val.date_begin+" "+val.hour_begin.slice(0,-3)+"] "+ val.descricao)
             });
           }
