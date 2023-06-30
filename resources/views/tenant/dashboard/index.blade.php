@@ -172,7 +172,7 @@
           {
             jQuery.each( object, function( i, val ) {
               console.log(val);
-              element.find(".fc-list-item-title").append("<br><i class='fa-solid fa fa-arrow-right'></i> ["+val.date_begin+" "+val.hour_begin.slice(0,-3)+"]"+ val.descricao)
+              element.find(".fc-list-item-title").append("<br><i class='fa-solid fa fa-arrow-right'></i> ["+val.date_begin+" "+val.hour_begin.slice(0,-3)+"] "+ val.descricao)
             });
           }
 
