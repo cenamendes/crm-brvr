@@ -44,6 +44,11 @@ class Tasks extends Model
         return $this->belongsTo(TasksReports::class,'reference','reference');
     }
 
+    public function tasksTimes()
+    {
+        return $this->HasMany(TasksTimes::class,'task_id','id');
+    }
+
     protected static function booted()
     {
         self::addGlobalScope('ordered', function (Builder $queryBuilder) {
