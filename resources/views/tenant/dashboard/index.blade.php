@@ -168,12 +168,11 @@
 
           var view = jQuery('#calendarr').fullCalendar('getView');
 
-          console.log(view);
-
           if(object != "[]" && view.name != 'listMonth')
           {
             jQuery.each( object, function( i, val ) {
-              element.find(".fc-list-item-title").append("<br><i class='fa-solid fa fa-arrow-right'></i> "+ val.descricao)
+              console.log(val);
+              element.find(".fc-list-item-title").append("<br><i class='fa-solid fa fa-arrow-right'></i> ("+val.hour_begin+")"+ val.descricao)
             });
           }
 
