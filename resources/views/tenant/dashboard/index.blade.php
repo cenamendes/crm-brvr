@@ -99,9 +99,10 @@
     {
   
       var event = [];
-    var startDate = "";
-    var titleTask = "";
-    var idTask = "";
+      var startDate = "";
+      var titleTask = "";
+      var idTask = "";
+      var descricao = [];
   
     jQuery('.events-tasks span').each(function(){
       if(jQuery(this).attr("data-previewdate") != "" && typeof jQuery(this).attr("data-previewdate") !== 'undefined')
@@ -111,6 +112,7 @@
         totalHour = startDate+"T"+jQuery(this).attr("data-previewhour");
         color = jQuery(this).attr("data-color");
         idTask = jQuery(this).attr("data-id");
+        descricao = jQuery(this).attr("data-obj");
       }
       if(jQuery(this).attr("data-scheduleddate") != "" && typeof jQuery(this).attr("data-scheduleddate") !== 'undefined') 
       {
@@ -119,13 +121,15 @@
         totalHour = startDate+"T"+jQuery(this).attr("data-scheduledhour");
         color = jQuery(this).attr("data-color");
         idTask = jQuery(this).attr("data-id");
+        descricao = jQuery(this).attr("data-obj");
       }
       
         {event.push({
             title: titleTask,
             start: totalHour,
             color: color,
-            idTask: idTask
+            idTask: idTask,
+            descricao: descricao
         })}
 
     });
@@ -159,9 +163,24 @@
         aspectRatio:  2,
         eventRender: function (info,element) {
           element.find(".fc-list-item-time").attr("data-id",info.idTask);
+
+          var object = JSON.parse(info.descricao);
+
+          var view = jQuery('#calendarr').fullCalendar('getView');
+
+          console.log(view);
+
+          if(object != "[]" && view.name != 'listMonth')
+          {
+            jQuery.each( object, function( i, val ) {
+              element.find(".fc-list-item-title").append("<br><i class='fa-solid fa fa-arrow-right'></i> "+ val.descricao)
+            });
+          }
+
         } 
     });
-   
+    
+    
 
   }
 
