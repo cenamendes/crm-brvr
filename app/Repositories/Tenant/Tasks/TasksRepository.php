@@ -363,6 +363,7 @@ class TasksRepository implements TasksInterface
 
             $tasks = Tasks::with('tech')
                      ->with('taskCustomer')
+                     ->with('tasksTimes')
                      ->where(function ($query) {
                         $query->where(function ($query) {
                             $query->whereMonth('preview_date', Carbon::now()->month)
@@ -383,6 +384,7 @@ class TasksRepository implements TasksInterface
            $tasks = Tasks::
            with('tech')
            ->with('taskCustomer')
+           ->with('tasksTimes')
            ->where(function ($query) {
                $query->where(function ($query) {
                            $query->whereMonth('preview_date', Carbon::now()->month)
@@ -400,6 +402,7 @@ class TasksRepository implements TasksInterface
         }
         else {
             $tasks = Tasks::with('tech')->with('taskCustomer')
+            ->with('tasksTimes')
             ->whereMonth('preview_date', Carbon::now()->month)
             ->whereYear('preview_date', Carbon::now()->year)
             ->orWhereMonth('scheduled_date', Carbon::now()->month)
