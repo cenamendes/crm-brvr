@@ -419,6 +419,8 @@
     });
 
         window.addEventListener('swal',function(e){
+
+            var flag;
             if(e.detail.whatfunction == "add" || e.detail.whatfunction == "servicesMissing")
             {
                 swal.fire({
@@ -438,26 +440,38 @@
                 })
             }
             else {
+
+                if(typeof e.detail.function === "undefined"){
+                    flag=true;
+                } else {
+                    flag = false;
+                }
+
                 swal.fire({
                 title: e.detail.title,
                 html: e.detail.message,
-                showCancelButton: true,
+                showCancelButton: flag,
                 cancelButtonText: "Cancelar",
                 type: "error",
 
             }).then((result) => {  
-                if(result.value){
 
-                    window.location.replace("http://"+window.location.hostname+"/services/create");
+                if(typeof e.detail.function === "undefined")
+                {
+                    if(result.value){
 
-                    restartObjects();
-                    if(e.detail.function == 'client')
-                    {
-                        location.reload();
-                    }
-                }                
+                        window.location.replace("http://"+window.location.hostname+"/services/create");
+
+                        restartObjects();
+                        if(e.detail.function == 'client')
+                        {
+                            location.reload();
+                        }
+                    }   
+                }
+                              
             })
-            }
+          }
          
            
         });

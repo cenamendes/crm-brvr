@@ -5,9 +5,10 @@ namespace App\Http\Livewire\Tenant\TasksTimes;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Tenant\TasksTimes;
+use App\Models\Tenant\TasksReports;
 use Illuminate\Support\Facades\Auth;
 use App\Interfaces\Tenant\TasksTimes\TasksTimesInterface;
-use App\Models\Tenant\TasksTimes;
 
 class ShowTimes extends Component
 {
@@ -24,7 +25,10 @@ class ShowTimes extends Component
     public string $date_inicial = '';
     public string $hora_inicial = '';
     public $hora_final;
+    public string $desconto_hora = '';
     public string $descricao = '';
+
+    private ?object $total_hours = NULL;
 
     protected $listeners = [
         'timesInsert',
@@ -92,21 +96,36 @@ class ShowTimes extends Component
     {
         $startTime = Carbon::parse($this->hora_inicial);
         $finishTime = Carbon::parse($this->hora_final);
+        $desconto = Carbon::parse($this->desconto_hora);
 
-        if($this->hora_final != "")
+
+        if($this->hora_final != "" && $this->desconto_hora == "")
         {
             $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
             $hours = date("H:i",strtotime($totalDurationOfTask));
             $date_final = $this->date_inicial;
-        }
-        else {
-            $date_final = null;
-            $hours = null;
-            $this->hora_final = null;
-        }
-        
+            $descont1 = null;
 
-        //$newHours = (float)$totalDurationOfTask;
+            $tempo_final= date("H:i", strtotime($totalDurationOfTask));
+        }
+      
+        if($this->hora_final != "" && $this->desconto_hora!= "")
+        {
+            $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
+           
+            $hours = date("H:i", strtotime($desconto));
+            $descont1 = global_hours_format_descontos($hours);
+    
+            $minutos=substr($descont1,-2,strpos($descont1,":"));
+            $tempo_final = date("H:i",strtotime($totalDurationOfTask));
+
+            //TEMPO COM DESCONTO
+            $tempo_final=date("H:i", strtotime("-".$minutos." minutes", strtotime($totalDurationOfTask)));
+
+
+            $date_final = $this->date_inicial;
+            
+        }
 
 
         $arrayInsertTask = [
@@ -117,32 +136,66 @@ class ShowTimes extends Component
             "hour_begin" => $this->hora_inicial,
             "date_end" => $date_final,
             "hour_end" => $this->hora_final,
-            "total_hours" => $hours,
+            "total_hours" => $tempo_final,
+            "descontos" => $descont1,
             "descricao" => $this->descricao
         ];
 
 
+
         $this->tasksTimesInterface->addTime($arrayInsertTask);
+
+        $reportstatus1 = TasksReports::where('task_id', '=', $this->task_id)->first();
+
+        if($reportstatus1->resportStatus == 0)
+        {
+           TasksReports::where('id', '=', $reportstatus1->id)
+           ->update(['reportStatus' => '1']);
+            
+        }
 
     }
 
     public function EditTimes($id,$values)
     {
         $startTime = Carbon::parse($values[2]);
+        //dd($startTime);
         $finishTime = Carbon::parse($values[3]);
-        $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
+        $desconto = Carbon::parse($this->desconto_hora);
 
-        $hours = date("H:i",strtotime($totalDurationOfTask));
+        
+        if($this->desconto_hora == "00:00")
+        {
+            $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
+            $tempo_final = date("H:i",strtotime($totalDurationOfTask));
+            $descont1=null;
+        }
+        else
+        {
+            $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
+           
+            $hours = date("H:i", strtotime($desconto));
+            $descont1 = global_hours_format_descontos($hours);
+        
+            $minutos=substr($descont1,-2,strpos($descont1,":"));
+            $tempo_final = date("H:i",strtotime($totalDurationOfTask));
+
+            //TEMPO COM DESCONTO
+            $tempo_final=date("H:i", strtotime("-".$minutos." minutes", strtotime($totalDurationOfTask)));
+        }
 
         TasksTimes::where('id',$id)->update([
+            
             "service_id" => $values[0],
             "date_begin" => $values[1],
             "hour_begin" => $values[2],
             "date_end" => $values[1],
             "hour_end" => $values[3],
-            "total_hours" => $hours,
+            "total_hours" => $tempo_final,
+            "descontos" => $descont1,
             "descricao" => $values[4]
         ]);
+
 
     }
 
@@ -192,9 +245,18 @@ class ShowTimes extends Component
         </span></span>
         </div>
 
+        <label>".'Descontos'."</label>
+        <div class='input-group clockpicker'>
+        <input type='text' name='data' id='desconto_hora' wire:model.defer='desconto_hora' class='datepicker-default form-control'>
+        <span class='input-group-append'><span class='input-group-text'>
+        <i class='fa fa-calendar-o'></i>
+        </span></span>
+        </div>
+
         <label>".__('Description')."</label>
         <div class='input-group'>
-        <textarea type='text' name='data' id='descricao' wire:model.defer='descricao' class='form-control' style='height:189px;'></textarea>
+        <textarea type='text' name='data' id='descricao' wire:model.defer='descricao' class='form-control'
+        MAXLENGTH= 60000 style='height:189px;'></textarea>
         </div>
 
        <div id='actionsDiv' style='display:flex; margin-top:20px; justify-content:center;'>
@@ -271,9 +333,18 @@ class ShowTimes extends Component
         </span></span>
         </div>
 
+        <label>".'Descontos'."</label>
+        <div class='input-group clockpicker'>
+        <input type='text' name='data' id='desconto_hora' @if(".$getInfoTaskTimes->descontos.") value='".$getInfoTaskTimes->descontos."' @endif wire:model.defer='desconto_hora' ' class='datepicker-default form-control'>
+        <span class='input-group-append'><span class='input-group-text'>
+        <i class='fa fa-calendar-o'></i>
+        </span></span>
+        </div>
+
+
         <label>".__('Description')."</label>
         <div class='input-group'>
-        <textarea type='text' name='data' id='descricao' wire:model.defer='descricao' class='form-control' style='height:189px;'>".$getInfoTaskTimes->descricao."</textarea>
+        <textarea type='text' name='data' id='descricao' wire:model.defer='descricao' class='form-control' MAXLENGTH= 60000 style='height:189px;'>".$getInfoTaskTimes->descricao."</textarea>
         </div>
 
        <div id='actionsDiv' style='display:flex; margin-top:20px; justify-content:center;'>
@@ -300,6 +371,7 @@ class ShowTimes extends Component
 
     public function render()
     {
+        $this->desconto_hora = '';
         if(isset($this->searchString) && $this->searchString) {
             $this->taskTimes = $this->tasksTimesInterface->getTaskTime($this->task_id,$this->searchString,$this->perPage);
         }
@@ -307,9 +379,13 @@ class ShowTimes extends Component
             $this->taskTimes = $this->tasksTimesInterface->getTasksTimes($this->task_id,$this->perPage);
             $this->task_hours = $this->tasksTimesInterface->getTotalHoursForTask($this->task_id);
         }
+
+        $totalHours = $this->tasksTimesInterface->totalHours($this->task_id);
+
         return view('tenant.livewire.taskstimes.show-times',[
             'tasksTimes' => $this->taskTimes,
-            'taskHours' => $this->task_hours
+            'taskHours' => $this->task_hours,
+            'totalHours' => $totalHours
         ]);
     }
 }

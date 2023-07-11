@@ -145,6 +145,7 @@ class AddTasks extends Component
         }
     }
 
+    
     public function updatedSelectedServiceId(): Void
     {
         $this->homePanel = '';
@@ -160,7 +161,7 @@ class AddTasks extends Component
 
             }else {
                 $tempArray[$key] = '';
-                $this->dispatchBrowserEvent('swal', ['title' => __('Task Services'), 'message' => __('Cannot add the same service!'), 'status'=>'error']);
+                $this->dispatchBrowserEvent('swal', ['title' => __('Task Services'), 'message' => __('Cannot add the same service!'), 'status'=>'error', 'function' => 'same']);
             }
         }
         $this->selectedServiceId = $tempArray;

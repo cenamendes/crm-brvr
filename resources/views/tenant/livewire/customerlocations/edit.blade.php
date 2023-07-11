@@ -10,6 +10,6 @@
     :county="$county"
     cancelButton="{{ __('No, cancel update') }}"
     buttonAction="{{ __('Yes, update') }}"
-    formTitle="{{ __('Update Customer Location') }}" />
+    formTitle="Atualizar Localização de Cliente" />
 
    

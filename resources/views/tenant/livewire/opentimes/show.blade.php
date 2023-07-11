@@ -24,7 +24,7 @@
                 </thead>
                 <tbody>
                   @foreach ($arrayTimes as $name => $time)
-            
+
                   {{-- {!! "https://".$_SERVER['SERVER_NAME']."/assets/resources/images/avatar/1.png" !!} --}}
 
                   <tr>
@@ -57,9 +57,11 @@
                   </td>
                   <td>
                      <div class="d-flex">
+                      @if (Auth::user()->type_user == 0 || (Auth::user()->id == $time["tech"]))
                         <a href="{{ route('tenant.tasks-reports.edit', $time["task_id"])}}" class="btn btn-primary shadow  sharp mr-1">
                           <i class="fa fa-pencil"></i>
                         </a>
+                      @endif
                      </div>
                   </td>
                   </tr>

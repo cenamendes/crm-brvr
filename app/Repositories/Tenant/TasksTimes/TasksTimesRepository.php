@@ -12,6 +12,14 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TasksTimesRepository implements TasksTimesInterface
 {
+
+    public function totalHours($task_id): Collection
+    {
+        $tasksTimes = TasksTimes::where('task_id',$task_id)->with('service')->get();
+
+        return $tasksTimes;
+    }
+
     public function getTasksTimes($task_id,$perPage): LengthAwarePaginator
     {
         $tasksTimes = TasksTimes::where('task_id',$task_id)->with('service')->paginate($perPage);

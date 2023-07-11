@@ -41,7 +41,6 @@
         <div class="col-xl-12">
           <div class="card">
             <div class="card-body">
-    
               <div id="calendarr" class="app-fullcalendarr fc fc-unthemed fc-ltr" wire:ignore></div>
             </div>
           </div>

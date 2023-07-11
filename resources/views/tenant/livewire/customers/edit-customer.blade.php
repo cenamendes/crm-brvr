@@ -17,5 +17,5 @@
     :county="$customer->county"
     :accountmanager="$account_manager"
     :allAccountManagers="$allAccountManagers"
-    :update="true" buttonAction="{{ __('Update Customer') }}"
-    formTitle="{{ __('Update Customer') }}"/>
+    :update="true" buttonAction="Atualizar Cliente"
+    formTitle="Atualizar Cliente"/>

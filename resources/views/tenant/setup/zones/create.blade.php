@@ -1,4 +1,4 @@
-<x-tenant-layout title="_('New Zone')" :themeAction="$themeAction">
+<x-tenant-layout title="Nova Zona" :themeAction="$themeAction">
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">

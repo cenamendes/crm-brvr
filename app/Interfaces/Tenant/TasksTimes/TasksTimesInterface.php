@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface TasksTimesInterface
 {
+    public function totalHours($task_id): Collection;
    
     public function getTasksTimes($task_id,$perPage): LengthAwarePaginator;
 

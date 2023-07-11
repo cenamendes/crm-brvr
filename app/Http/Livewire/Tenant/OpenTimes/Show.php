@@ -9,6 +9,7 @@ use App\Models\Tenant\Tasks;
 use App\Models\Tenant\Customers;
 use App\Models\Tenant\TasksTimes;
 use App\Models\Tenant\TasksReports;
+use Illuminate\Support\Facades\Auth;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
@@ -64,7 +65,8 @@ class Show extends Component
                         "customer" => $customer_name->name,
                         "date_begin" => $time->date_begin,
                         "hour_begin" => $time->hour_begin,
-                        "task_id" => $timeReport->id
+                        "task_id" => $timeReport->id,
+                        "tech" => $time->tech_id
                     ];
                 }
             }

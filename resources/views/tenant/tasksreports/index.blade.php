@@ -1,4 +1,4 @@
-<x-tenant-layout title="{{ __('List Tasks Reports') }}" :themeAction="$themeAction" :status="$status" :message="$message">
+<x-tenant-layout title="Listagem Relatórios Tarefa" :themeAction="$themeAction" :status="$status" :message="$message">
 {{-- :status="$status" :message="$message"> --}}
     <div class="container-fluid">
         <div class="row">

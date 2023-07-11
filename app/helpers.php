@@ -16,6 +16,11 @@ if (! function_exists('getCustomerConfig')) {
         return strtok($hour,':').__("h ").substr($hour, strpos($hour, ":") + 1);
     }
 
+    function global_hours_format_descontos($hour)
+    {
+        return strtok($hour,':').__(":").substr($hour, strpos($hour, ":") + 1);
+    }
+
     function global_hours_sum($get_hours)
     {
         $sum_minutes = 0;

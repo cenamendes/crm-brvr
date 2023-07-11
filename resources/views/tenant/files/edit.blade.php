@@ -1,4 +1,4 @@
-<x-tenant-layout title="_('Edit Customer Location') '{!! $customerLocation->description !!}'" :themeAction="$themeAction">
+<x-tenant-layout title="Editar Localização de Cliente '{!! $customerLocation->description !!}'" :themeAction="$themeAction">
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">

@@ -1,4 +1,4 @@
-<x-tenant-layout title="_('New Team Member')" :themeAction="$themeAction">
+<x-tenant-layout title="Novo Membro de Equipa" :themeAction="$themeAction">
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">

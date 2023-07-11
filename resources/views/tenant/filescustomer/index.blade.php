@@ -1,4 +1,4 @@
-<x-tenant-layout title="{{ __('List Files') }}" :themeAction="$themeAction" :status="$status" :message="$message">
+<x-tenant-layout title="Listagem de Ficheiros" :themeAction="$themeAction" :status="$status" :message="$message">
     {{-- Content --}}
     <div class="container-fluid">
         <div class="row">

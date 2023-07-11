@@ -96,8 +96,7 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item"
-                                                href="{{ route('tenant.customer-locations.edit', $item->id) }}">{{
-                                                __('Edit Customer Location') }}</a>
+                                                href="{{ route('tenant.customer-locations.edit', $item->id) }}">Editar Localização de Cliente</a>
                                             @if($item->main != 1)
                                                 <button class="dropdown-item btn-sweet-alert" data-type="form"
                                                     data-route="{{ route('tenant.customer-locations.destroy', $item->id) }}"

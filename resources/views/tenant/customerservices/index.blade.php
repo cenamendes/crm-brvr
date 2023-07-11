@@ -1,4 +1,4 @@
-<x-tenant-layout title="{{ __('List Customers Services') }}" :themeAction="$themeAction" :status="$status" :message="$message">
+<x-tenant-layout title="Listagem de Serviços de Cliente" :themeAction="$themeAction" :status="$status" :message="$message">
     {{-- Content --}}
     <div class="container-fluid">
         <div class="row">

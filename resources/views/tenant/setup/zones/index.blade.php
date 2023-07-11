@@ -1,4 +1,4 @@
-<x-tenant-layout title="{{ __('List Zones') }}" :themeAction="$themeAction" :status="$status" :message="$message">
+<x-tenant-layout title="Listagem de Zonas" :themeAction="$themeAction" :status="$status" :message="$message">
     {{-- Content --}}
     <div class="container-fluid">
         <div class="row">

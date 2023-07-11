@@ -15,11 +15,11 @@
                 <div class="row">
                 @if(Auth::user()->type_user == 2)
                     <div class="col-xl-12 col-xs-12">
-                        <label class="font-weight-bold">{{ __('Hours in Task')}}:</label>&nbsp;{{ global_hours_sum($tasksTimes) }}
+                        <label class="font-weight-bold">{{ __('Hours in Task')}}:</label>&nbsp;{{ global_hours_sum($totalHours) }}
                     </div>
                 @else
                     <div class="col-xl-4 col-xs-4">
-                        <label class="font-weight-bold">{{ __('Hours in Task')}}:</label><br>{{ global_hours_sum($tasksTimes) }}
+                        <label class="font-weight-bold">{{ __('Hours in Task')}}:</label><br>{{ global_hours_sum($totalHours) }}
                     </div>
                     <div class="col-xl-8 col-xs-8">
                         <a href="javascript:void(0)" id="taskAddTime" class="btn btn-primary" wire:click="addTime">{{ __('Add Time') }}</a>
@@ -207,6 +207,14 @@
                         },
                      });
 
+                    jQuery('#swal2-content .input-group #desconto_hora').clockpicker({
+                        donetext: '<i class="fa fa-check" aria-hidden="true"></i>',
+                        placement: 'top',
+                        afterDone: function() {
+                            @this.set('desconto_hora', jQuery("#swal2-content .input-group #desconto_hora").val(), true);
+                        },
+                     });
+
                     jQuery('#swal2-content .input-group #hora_final').clockpicker({
                         donetext: '<i class="fa fa-check" aria-hidden="true"></i>',
                         placement: 'top',
@@ -222,6 +230,8 @@
 
                         var finalHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_final').val());
                         finalHour = finalHour.getTime();
+                        var desconto_hora = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #desconto_hora').val());
+                        desconto_hora = desconto_hora.getTime();
                         var startHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_inicial').val());
                         startHour = startHour.getTime();
                         if(jQuery('#swal2-content #selectedService').val() != ""  && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "")
@@ -239,14 +249,19 @@
                      });
 
                      jQuery("body").on('click', '#actionsDiv #btnEditTime', function() {
+                        console.log("teste");
                         
                         @this.set('descricao', jQuery("#descricao").val(), true);
+
+                        @this.set('desconto_hora', jQuery("#desconto_hora").val(), true);
 
                         var service = jQuery('#swal2-content #selectedService').val();
 
                         var initialDate = jQuery('#swal2-content .input-group #date_inicial').val();
 
                         var finalHour = jQuery('#swal2-content .input-group #hora_final').val();
+
+                        var desconto_hora = jQuery('#swal2-content .input-group #desconto_hora').val();
                         
                         var startHour = jQuery('#swal2-content .input-group #hora_inicial').val();
     
@@ -258,6 +273,7 @@
 
                         if(e.detail.function != "timesInsert" && jQuery('#swal2-content #selectedService').val() != "" && jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)
                         {
+                            console.log("teste");
                             Livewire.emit(e.detail.function,e.detail.parameter,values);
                             Swal.close();
                                                        
@@ -278,6 +294,8 @@
                     if(result.value) {
                         var finalHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_final').val());
                         finalHour = finalHour.getTime();
+                        var desconto_hora = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #desconto_hora').val());
+                        desconto_hora = desconto_hora.getTime();
                         var startHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_inicial').val());
                         startHour = startHour.getTime();
                         if(jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)

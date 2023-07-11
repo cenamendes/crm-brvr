@@ -1,4 +1,4 @@
-<x-tenant-layout title="_('Update Customer Service')" :themeAction="$themeAction">
+<x-tenant-layout title="Atualizar Serviço de Cliente" :themeAction="$themeAction">
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">

@@ -15,7 +15,7 @@ class TasksTimes extends Model
     use HasFactory;
     use ComposhipsEagerLimit;
 
-    protected $fillable = ['service_id','task_id', 'tech_id', 'date_begin', 'hour_begin','date_end','hour_end', 'total_hours','descricao'];
+    protected $fillable = ['service_id','task_id', 'tech_id', 'date_begin', 'hour_begin','date_end','hour_end', 'total_hours','descontos','descricao'];
 
    
     public function service()

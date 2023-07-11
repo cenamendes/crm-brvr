@@ -1,4 +1,4 @@
-<x-tenant-layout title="_('Edit Task')" :themeAction="$themeAction">
+<x-tenant-layout title="Editar Tarefa" :themeAction="$themeAction">
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">
