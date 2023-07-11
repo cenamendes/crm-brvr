@@ -276,7 +276,7 @@
 
     "Custom types": "Campos personalizados",
     "Custom Types": "Campos Personalizados",
-    "Create Custom Type": "Criar Campo personalizado",
+    "Create Custom Type": "Criar Campo Personalizado",
     "Controller": "Controlador",
     "field_name": "Campo",
     "Field Name": "Campo",
@@ -609,7 +609,9 @@
     "Resume": "Resumo",
     "Open Times": "Tempos abertos",
     "Time used": "Inicio do Tempo",
-    "Edit Time": "Editar Tempo"
+    "Edit Time": "Editar Tempo",
+
+    "Cannot add the same service!": "Não pode selecionar o mesmo serviço!"
 
 
 
