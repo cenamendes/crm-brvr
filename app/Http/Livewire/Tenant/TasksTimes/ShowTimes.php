@@ -98,19 +98,35 @@ class ShowTimes extends Component
         $finishTime = Carbon::parse($this->hora_final);
         $desconto = Carbon::parse($this->desconto_hora);
 
-
         if($this->hora_final != "" && $this->desconto_hora == "")
         {
+
+            $tempo_final = null;
             $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
             $hours = date("H:i",strtotime($totalDurationOfTask));
             $date_final = $this->date_inicial;
             $descont1 = null;
 
             $tempo_final= date("H:i", strtotime($totalDurationOfTask));
+
+            $arrayInsertTask = [
+                "service_id" => $this->serviceSelected,
+                "task_id" => $this->task_id,
+                "tech_id" => Auth::user()->id,
+                "date_begin" => $this->date_inicial,
+                "hour_begin" => $this->hora_inicial,
+                "date_end" => $date_final,
+                "hour_end" => $this->hora_final,
+                "total_hours" => $tempo_final,
+                "descricao" => $this->descricao
+            ];
+
+
         }
       
-        if($this->hora_final != "" && $this->desconto_hora!= "")
+        if($this->hora_final != "" && $this->desconto_hora != "")
         {
+            $tempo_final = null;
             $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
            
             $hours = date("H:i", strtotime($desconto));
@@ -124,23 +140,47 @@ class ShowTimes extends Component
 
 
             $date_final = $this->date_inicial;
+
+            $arrayInsertTask = [
+                "service_id" => $this->serviceSelected,
+                "task_id" => $this->task_id,
+                "tech_id" => Auth::user()->id,
+                "date_begin" => $this->date_inicial,
+                "hour_begin" => $this->hora_inicial,
+                "date_end" => $date_final,
+                "hour_end" => $this->hora_final,
+                "total_hours" => $tempo_final,
+                "descontos" => $descont1,
+                "descricao" => $this->descricao
+            ];
             
         }
 
+        if($this->hora_final == "" && $this->desconto_hora == "")
+        {
+             $arrayInsertTask = [
+                "service_id" => $this->serviceSelected,
+                "task_id" => $this->task_id,
+                "tech_id" => Auth::user()->id,
+                "date_begin" => $this->date_inicial,
+                "hour_begin" => $this->hora_inicial,
+            ];
 
-        $arrayInsertTask = [
-            "service_id" => $this->serviceSelected,
-            "task_id" => $this->task_id,
-            "tech_id" => Auth::user()->id,
-            "date_begin" => $this->date_inicial,
-            "hour_begin" => $this->hora_inicial,
-            "date_end" => $date_final,
-            "hour_end" => $this->hora_final,
-            "total_hours" => $tempo_final,
-            "descontos" => $descont1,
-            "descricao" => $this->descricao
-        ];
+        }
 
+
+        // $arrayInsertTask = [
+        //     "service_id" => $this->serviceSelected,
+        //     "task_id" => $this->task_id,
+        //     "tech_id" => Auth::user()->id,
+        //     "date_begin" => $this->date_inicial,
+        //     "hour_begin" => $this->hora_inicial,
+        //     "date_end" => $date_final,
+        //     "hour_end" => $this->hora_final,
+        //     "total_hours" => $tempo_final,
+        //     "descontos" => $descont1,
+        //     "descricao" => $this->descricao
+        // ];
 
 
         $this->tasksTimesInterface->addTime($arrayInsertTask);
@@ -164,7 +204,7 @@ class ShowTimes extends Component
         $desconto = Carbon::parse($this->desconto_hora);
 
         
-        if($this->desconto_hora == "00:00")
+        if($this->desconto_hora == "00:00" || $this->desconto_hora == null )
         {
             $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
             $tempo_final = date("H:i",strtotime($totalDurationOfTask));
@@ -372,6 +412,8 @@ class ShowTimes extends Component
     public function render()
     {
         $this->desconto_hora = '';
+        $this->hora_final = '';
+
         if(isset($this->searchString) && $this->searchString) {
             $this->taskTimes = $this->tasksTimesInterface->getTaskTime($this->task_id,$this->searchString,$this->perPage);
         }
