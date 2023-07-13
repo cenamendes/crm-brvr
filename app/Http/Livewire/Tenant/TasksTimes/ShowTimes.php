@@ -131,12 +131,19 @@ class ShowTimes extends Component
            
             $hours = date("H:i", strtotime($desconto));
             $descont1 = global_hours_format_descontos($hours);
-    
+            $hours=substr($descont1,0,strpos($descont1,":"));
+            //dd($hours);
             $minutos=substr($descont1,-2,strpos($descont1,":"));
             $tempo_final = date("H:i",strtotime($totalDurationOfTask));
+            //dd($tempo_final);
 
             //TEMPO COM DESCONTO
+            $hours = $hours * 60;
+            $minutos = $minutos + $hours;
             $tempo_final=date("H:i", strtotime("-".$minutos." minutes", strtotime($totalDurationOfTask)));
+            //dd($tempo_final);
+            //$tempo_final=date("H:i", strtotime("-".$hours." hours", strtotime($totalDurationOfTask)));
+            //dd($tempo_final);
 
 
             $date_final = $this->date_inicial;
