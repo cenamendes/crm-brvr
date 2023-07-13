@@ -124,7 +124,7 @@
                                                 data-text="{{ __('Do you want to delete this time?') }}"
                                                 data-title="{{ __('Are you sure?') }}"
                                                 data-btn-cancel="{{ __('No, do not delete!!') }}"
-                                                data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
+                                                data-btn-ok="{{ __('Yes, delete time!!') }}" data-method="DELETE">
                                                 {{ __('Delete task Time') }}
                                                 </button>
                                             </div>
