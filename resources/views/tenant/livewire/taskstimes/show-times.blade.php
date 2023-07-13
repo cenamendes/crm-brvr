@@ -121,7 +121,7 @@
                                                 <button class="dropdown-item btn-sweet-alert" data-type="form"
                                                 data-route="{{ route('tenant.tasks-reports.destroytimetask', $item->id) }}"
                                                 data-style="warning" data-csrf="csrf"
-                                                data-text="{{ __('Do you want to delete this task?') }}"
+                                                data-text="{{ __('Do you want to delete this time?') }}"
                                                 data-title="{{ __('Are you sure?') }}"
                                                 data-btn-cancel="{{ __('No, do not delete!!') }}"
                                                 data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
