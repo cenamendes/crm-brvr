@@ -1,15 +1,21 @@
 <x-guest-layout title="{ __('Pelase login') }" :action="$action">
+    <body style="background-color:#1f4963">
     <div class="col-md-6">
-        <div class="authincation-content" style="background-color:#326c91">
+        <div class="authincation-content" style="background-color:#1f4963">
             <div class="row no-gutters">
                 <div class="col-xl-12">
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
                     <div class="auth-form">
-                        <div class="text-center mb-3">
-                            <a href="{!! url('/') !!}"><img
-                                    src="http://moto.brvr/assets/resources/images/logo-text.png" alt=""></a>
-                        </div>
-                        <h4 class="text-center mb-4 text-white">CRM BRVR</h4>
+                        <center>
+                        <img src="https://www.brvr.pt/wp-content/uploads/2017/01/logotipo.png" alt="">
+                        </center>
+                        <br>
+                        <p>
+                        <p>
+                        <font face = "Arial" color = "White">
+                            BR&VR - Support
+                        </font>
+                        <p>
                         <form method="POST" action="{{ route('tenant.verify') }}">
                             @csrf
                             <div class="form-group">
@@ -37,9 +43,10 @@
                                     <a class="text-white" href="{!! url('/forgot-password') !!}">{{ __('Perdeu a senha?') }}</a>
                                 </div>
                             </div>
-                            <div class="text-center">
+                            <div class="text-center" style="hover {color: #326c91;}
+                                                            transition:0.4s;" >
                                 <button type="submit"
-                                    class="btn bg-white text-primary btn-block" style="color:#326c91!important;">{{ __('Entrar') }}</button>
+                                    class="btn bg-white text-primary btn-block">{{ __('Entrar') }}</button>
                             </div>
                         </form>
                         {{-- <div class="new-account mt-3">

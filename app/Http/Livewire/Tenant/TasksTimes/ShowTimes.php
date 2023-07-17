@@ -261,6 +261,12 @@ class ShowTimes extends Component
     {
 
        // $services = $this->tasksTimesInterface->getAllServices();
+      $hora_I = date('H:i');
+      $date_inicial = date('Y/m/d');
+
+      $this->date_inicial = date('Y/m/d');
+      $this->hora_inicial = date('H:i');
+
 
 
         $message ="
@@ -281,7 +287,7 @@ class ShowTimes extends Component
 
         <label>".__('Date of Initial')."</label>
         <div class='input-group'>
-        <input type='text' name='data' id='date_inicial' wire:model.defer='date_inicial' class='datepicker-default form-control'>
+        <input type='text' name='data' id='date_inicial' value='".$date_inicial."' wire:model.defer='date_inicial' class='datepicker-default form-control'>
         <span class='input-group-append'><span class='input-group-text'>
         <i class='fa fa-calendar-o'></i>
         </span></span>
@@ -289,7 +295,7 @@ class ShowTimes extends Component
 
         <label>".__('Initial Hour')."</label>
         <div class='input-group'>
-        <input type='text' name='data' id='hora_inicial' wire:model.defer='hora_inicial' class='datepicker-default form-control'>
+        <input type='text' name='data' id='hora_inicial' value='".$hora_I."' wire:model.defer='hora_inicial' class='datepicker-default form-control'>
         <span class='input-group-append'><span class='input-group-text'>
         <i class='fa fa-calendar-o'></i>
         </span></span>
