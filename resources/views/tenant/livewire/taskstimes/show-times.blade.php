@@ -225,7 +225,7 @@
 
 
                      jQuery("body").on('click', '#actionsDiv #btnAddTime', function() {
-                        console.log("btnAddTime");
+    
                         @this.set('descricao', jQuery("#descricao").val(), true);
 
                         var finalHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_final').val());

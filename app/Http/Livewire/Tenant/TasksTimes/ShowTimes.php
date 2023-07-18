@@ -46,7 +46,7 @@ class ShowTimes extends Component
         $this->tasksTimesInterface = $tasksTimesInterface;
     }
 
-    public function mount($task)
+    public function mount($task = NULL)
     {
         $this->task_id = $task->id;
         $this->taskInfo = $task;
@@ -207,6 +207,7 @@ class ShowTimes extends Component
         //dd($startTime);
         $finishTime = Carbon::parse($values[3]);
         $desconto = Carbon::parse($this->desconto_hora);
+        $this->hora_final = $values[3];
 
         
         if($this->desconto_hora == "00:00" || $this->desconto_hora == null )
@@ -219,14 +220,6 @@ class ShowTimes extends Component
         {
             $totalDurationOfTask = $finishTime->diff($startTime)->format("%h.%i");
            
-            // $hours = date("H:i", strtotime($desconto));
-            // $descont1 = global_hours_format_descontos($hours);
-        
-            // $minutos=substr($descont1,-2,strpos($descont1,":"));
-            // $tempo_final = date("H:i",strtotime($totalDurationOfTask));
-
-            // //TEMPO COM DESCONTO
-            // $tempo_final=date("H:i", strtotime("-".$minutos." minutes", strtotime($totalDurationOfTask)));
 
             $hours = date("H:i", strtotime($desconto));
             $descont1 = global_hours_format_descontos($hours);
@@ -242,7 +235,7 @@ class ShowTimes extends Component
             $tempo_final=date("H:i", strtotime("-".$minutos." minutes", strtotime($totalDurationOfTask)));
         }
 
-        if ($this->hora_final == ""  || $this->hora_final == null )
+        if ($this->hora_final == "" || $this->hora_final == null )
         {
                 TasksTimes::where('id',$id)->update([
                 "service_id" => $values[0],
