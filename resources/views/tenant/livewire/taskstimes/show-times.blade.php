@@ -271,7 +271,7 @@
 
                         values.push(service,initialDate,startHour,finalHour,description);
 
-                        if(e.detail.function != "timesInsert" && jQuery('#swal2-content #selectedService').val() != "" && jQuery('#swal2-content .input-group #hora_final').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "" && finalHour > startHour)
+                        if(e.detail.function != "timesInsert" && jQuery('#swal2-content #selectedService').val() != "" && jQuery('#swal2-content .input-group #hora_inicial').val() != "" && jQuery('#swal2-content .input-group #date_inicial').val() != "")
                         {
                             console.log("teste");
                             Livewire.emit(e.detail.function,e.detail.parameter,values);

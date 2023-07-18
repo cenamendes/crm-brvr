@@ -242,17 +242,43 @@ class ShowTimes extends Component
             $tempo_final=date("H:i", strtotime("-".$minutos." minutes", strtotime($totalDurationOfTask)));
         }
 
-        TasksTimes::where('id',$id)->update([
+        if ($this->hora_final == ""  || $this->hora_final == null )
+        {
+                TasksTimes::where('id',$id)->update([
+                "service_id" => $values[0],
+                "date_begin" => $values[1],
+                "hour_begin" => $values[2],
+                ]);
+
+        }
+
+        else{
+
+            TasksTimes::where('id',$id)->update([
             
-            "service_id" => $values[0],
-            "date_begin" => $values[1],
-            "hour_begin" => $values[2],
-            "date_end" => $values[1],
-            "hour_end" => $values[3],
-            "total_hours" => $tempo_final,
-            "descontos" => $descont1,
-            "descricao" => $values[4]
-        ]);
+                "service_id" => $values[0],
+                "date_begin" => $values[1],
+                "hour_begin" => $values[2],
+                "date_end" => $values[1],
+                "hour_end" => $values[3],
+                "total_hours" => $tempo_final,
+                "descontos" => $descont1,
+                "descricao" => $values[4]
+            ]);
+        }
+
+
+        // TasksTimes::where('id',$id)->update([
+            
+        //     "service_id" => $values[0],
+        //     "date_begin" => $values[1],
+        //     "hour_begin" => $values[2],
+        //     "date_end" => $values[1],
+        //     "hour_end" => $values[3],
+        //     "total_hours" => $tempo_final,
+        //     "descontos" => $descont1,
+        //     "descricao" => $values[4]
+        // ]);
 
 
     }
@@ -264,8 +290,7 @@ class ShowTimes extends Component
       $hora_I = date('H:i');
       $date_inicial = date('Y/m/d');
 
-      $this->date_inicial = date('Y/m/d');
-      $this->hora_inicial = date('H:i');
+     
 
 
 
@@ -328,6 +353,9 @@ class ShowTimes extends Component
          &nbsp;<button type='button' id='btnremoveTime' class='btn btn-danger'>Fechar</button>
        </div>
        ";
+
+       $this->date_inicial = date('Y/m/d');
+       $this->hora_inicial = date('H:i');
 
 
         $this->dispatchBrowserEvent('swal',
@@ -417,6 +445,8 @@ class ShowTimes extends Component
        </div>
        ";
 
+    //    $this->date_inicial = date('Y/m/d');
+    //   $this->hora_inicial = date('H:i');
 
         $this->dispatchBrowserEvent('swal',
             [

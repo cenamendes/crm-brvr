@@ -1,7 +1,8 @@
 <x-guest-layout title="{ __('Pelase login') }" :action="$action">
     <body style="background-color:#1f4963">
     <div class="col-md-6">
-        <div class="authincation-content" style="background-color:#1f4963">
+        <div class="authincation-content" style="background-color:#1f4963;
+                                                box-shadow: 0 0 15px 10px rgba(150, 150, 150, 0.5);">
             <div class="row no-gutters">
                 <div class="col-xl-12">
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
@@ -13,7 +14,7 @@
                         <p>
                         <p>
                         <font face = "Arial" color = "White">
-                            BR&VR - Support
+                            BR&VR - Suporte
                         </font>
                         <p>
                         <form method="POST" action="{{ route('tenant.verify') }}">
