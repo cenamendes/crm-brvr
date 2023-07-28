@@ -32,8 +32,7 @@ class CustomersServicesFormRequest extends FormRequest
            'selectedTypeContract.required' => __("You must select a contract time"),
            'number_times.required' => __("You must select a number of times"),
            'new_date.required' => __("You must select a initialization date"),
-           'time_repeat.required' => __("You must select a time to repeat"), 
-           'memberAssociated.required' => __("You must select a member!")
+           'time_repeat.required' => __("You must select a time to repeat")
          ];
     }
 
@@ -55,8 +54,7 @@ class CustomersServicesFormRequest extends FormRequest
             'selectedTypeContract' => ['required'],
             'number_times' => ['required'],
             'new_date' =>['required'],
-            'time_repeat' => ['required'],
-            'memberAssociated' => ['required']
+            'time_repeat' => ['required']
          ];
     }
 }

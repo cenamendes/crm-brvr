@@ -207,7 +207,7 @@
                                             <option value="" selected>Selecione membro da equipa</option>
                                             @if(isset($memberList) && $memberList != '')
                                                 @forelse ($memberList as $item)
-                                                    <option value="{{ $item->id }}" @if($service->member_associated != "") @if($item->id == $service->member_associated) selected @endif @endif>
+                                                    <option value="{{ $item->id }}" @isset($service->member_associated) @if($service->member_associated != "") @if($item->id == $service->member_associated) selected @endif @endif @endif>
                                                         {{ $item->name }}
                                                     </option>
                                                 @empty
