@@ -171,7 +171,7 @@
           if(object != "[]" && view.name != 'listMonth')
           {
             jQuery.each( object, function( i, val ) {
-              if(val.descricao == "")
+              if(val.descricao == "" || val.descricao == null)
               {
                 val.descricao = "<span style='color:green;'>Em aberto</span>";
               }
