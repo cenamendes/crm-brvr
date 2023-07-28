@@ -50,7 +50,8 @@ class SendAlertEmailNotification
                         'customer_id' => $alert->customer_id,
                         'location_id' => $alert->location_id,
                         'notification_day' => $notification_day,
-                        'treated' => "1"
+                        'treated' => "1",
+                        'customer_service_id' => $alert->id
                     ]);
                 }
                 $countTimes++;

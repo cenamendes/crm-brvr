@@ -11,6 +11,8 @@
 :start_date="$start_date"
 :end_date="$end_date"
 :new_date="$new_date"
+:memberAssociated="$memberAssociated"
+:memberList="$memberList"
 :alert="$service->alert"
 buttonAction="{{ __('Yes, update service') }}"
 cancelButton="{{ __('No, cancel update service') }}"

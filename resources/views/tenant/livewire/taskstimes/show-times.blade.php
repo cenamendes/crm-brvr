@@ -21,9 +21,15 @@
                     <div class="col-xl-4 col-xs-4">
                         <label class="font-weight-bold">{{ __('Hours in Task')}}:</label><br>{{ global_hours_sum($totalHours) }}
                     </div>
-                    <div class="col-xl-8 col-xs-8">
-                        <a href="javascript:void(0)" id="taskAddTime" class="btn btn-primary" wire:click="addTime">{{ __('Add Time') }}</a>
-                    </div>
+                    @php
+                        $user = \App\Models\Tenant\TeamMember::where('id',$taskInfo->tech_id)->first();
+                    @endphp
+
+                    @if(Auth::user()->type_user == 0 || Auth::user()->id == $user->user_id)
+                        <div class="col-xl-8 col-xs-8">
+                            <a href="javascript:void(0)" id="taskAddTime" class="btn btn-primary" wire:click="addTime">{{ __('Add Time') }}</a>
+                        </div>
+                    @endif
                 @endif
             </div>
                 

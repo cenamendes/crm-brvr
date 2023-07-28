@@ -613,7 +613,12 @@
     "Time used": "Inicio do Tempo",
     "Edit Time": "Editar Tempo",
 
-    "Cannot add the same service!": "Não pode selecionar o mesmo serviço!"
+    "Cannot add the same service!": "Não pode selecionar o mesmo serviço!",
+
+
+    "You must select a member!": "Tem de selecionar um membro.",
+    "You must select a time to repeat": "Tem de selecionar um tempo a repetir.",
+    "You must select a number of times": "Tem de selecionar um número de vezes."
 
 
 

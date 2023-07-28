@@ -99,7 +99,7 @@
                                                         <b>{{__("Technical")}}: </b> {{$task->tech->name}}
                                                     </p>
                                                     <p style="font-family: Avenir, Helvetica, sans-serif; color: #74787e;">
-                                                        <b>{{__("Who asked")}}: </b> {{$task->quem_pediu}}
+                                                        <b>{{__("Who asked")}}: </b> {{$task->tasks->quem_pediu}}
                                                     </p>
                                             </div>
                                             <hr>

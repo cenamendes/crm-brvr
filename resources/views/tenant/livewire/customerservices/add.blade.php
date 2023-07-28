@@ -16,5 +16,6 @@
 :end_date="$end_date"
 :new_date="$new_date"
 :type="$type"
+:memberList="$memberList"
 buttonAction="{{ __('Create Service') }}"
 formTitle="{{ __('Create Service') }}" />

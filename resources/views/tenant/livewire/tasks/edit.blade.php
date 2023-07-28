@@ -337,21 +337,28 @@
             </div>
         </div>
     </div>
-    <div class="card">
-        <div class="card-footer justify-content-between">
-            <div class="row">
-                <div class="col text-right">
-                    <a wire:click="cancel" class="btn btn-secondary mr-2">
-                        {!! $cancelButton !!}
-                    </a>
-                    <a wire:click="saveTask" class="btn btn-primary">
-                        {{ $actionButton }}
-                        <span class="btn-icon-right"><i class="las la-check mr-2"></i></span>
-                    </a>
+    
+    @php
+        $user = \App\Models\Tenant\TeamMember::where('id',$taskToUpdate->tech_id)->first();
+    @endphp
+        <div class="card">
+            <div class="card-footer justify-content-between">
+                <div class="row">
+                    <div class="col text-right">
+                        <a wire:click="cancel" class="btn btn-secondary mr-2">
+                            {!! $cancelButton !!}
+                        </a>
+                        @if(Auth::user()->type_user == 0 || Auth::user()->id == $user->user_id)
+                            <a wire:click="saveTask" class="btn btn-primary">
+                                {{ $actionButton }}
+                                <span class="btn-icon-right"><i class="las la-check mr-2"></i></span>
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
 
     @push('custom-scripts')
     <script>

@@ -2,15 +2,16 @@
 
 namespace App\Http\Livewire\Tenant\Customerservices;
 
-use App\Models\Tenant\CustomerLocations;
 use Livewire\Component;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Validator;
-
-use App\Models\Tenant\CustomerServices;
 use App\Models\Tenant\Services;
 use App\Models\Tenant\Customers;
+use App\Models\Tenant\TeamMember;
+
+use Illuminate\Contracts\View\View;
 use SebastianBergmann\Type\VoidType;
+use App\Models\Tenant\CustomerServices;
+use App\Models\Tenant\CustomerLocations;
+use Illuminate\Support\Facades\Validator;
 
 class EditCustomerServices extends Component
 {
@@ -28,6 +29,9 @@ class EditCustomerServices extends Component
     public $customerLocations;
     public string $selectedLocation = '';
     private bool $updatedFields = false;
+
+    public int $memberAssociated;
+    public object $memberList;
 
     public string $selectedTypeContract = '';
     public int $number_times = 0;
@@ -185,6 +189,12 @@ class EditCustomerServices extends Component
         if($this->allMails != null) {
             $this->allMails = $service->allMails;
         }
+
+        if($service->memberAssociated != null) {
+            $this->memberAssociated = $service->member_associated;
+        }
+
+        $this->memberList = TeamMember::get();
 
     }
 

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Tenant\CustomerServices;
 use App\Models\Tenant\Services;
 use App\Models\Tenant\Customers;
+use App\Models\Tenant\TeamMember;
 
 class AddCustomerServices extends Component
 {
@@ -30,6 +31,9 @@ class AddCustomerServices extends Component
     public string $end_date = '';
     public string $new_date = '';
     public string $type = '';
+
+    public int $memberAssociated;
+    public object $memberList;
 
     public string $homePanel = 'show active';
     public string $servicesPanel = '';
@@ -64,6 +68,13 @@ class AddCustomerServices extends Component
             $this->selectedLocation = old('selectedLocation');
             $this->customerLocations = CustomerLocations::where('customer_id',$this->selectedCustomer)->get();
         }
+
+        // if (old('memberAssociated')) {
+        //     $this->memberAssociated = old('memberAssociated');
+        //     $this->memberList = TeamMember::get();
+        // }
+
+        $this->memberList = TeamMember::get();
        
 
         if (isset($this->perPage)) {
@@ -226,7 +237,7 @@ class AddCustomerServices extends Component
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'type' => $this->type,
-
+            'memberList' => $this->memberList
         ]);
     }
 

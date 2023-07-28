@@ -244,26 +244,35 @@
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
 
-                                                {{-- @if(Auth::user()->type_user != 2) --}}
-
+                                                @php
+                                                    $user = \App\Models\Tenant\TeamMember::where('id',$item->tech_id)->first();
+                                                @endphp
+                                                
                                                     @if($item->status == 0 || $item->status == 1)
                                                         @if (!isset($item->taskReports->reportStatus))
                                                                 <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
-                                                                <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
+                                                                @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
+                                                                    <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
+                                                                @endif
                                                         @elseif($item->taskReports->reportStatus == 0 )
                                                             <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
                                                         @endif
                                                     @endif
-                                                
-                                                    <button class="dropdown-item btn-sweet-alert" data-type="form"
-                                                        data-route="{{ route('tenant.tasks.destroy', $item->id) }}"
-                                                        data-style="warning" data-csrf="csrf"
-                                                        data-text="{{ __('Do you want to delete this task?') }}"
-                                                        data-title="{{ __('Are you sure?') }}"
-                                                        data-btn-cancel="{{ __('No, do not delete!!') }}"
-                                                        data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
-                                                        {{ __('Delete task') }}
-                                                    </button>
+
+                                                    @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
+                                                        <button class="dropdown-item btn-sweet-alert" data-type="form"
+                                                            data-route="{{ route('tenant.tasks.destroy', $item->id) }}"
+                                                            data-style="warning" data-csrf="csrf"
+                                                            data-text="{{ __('Do you want to delete this task?') }}"
+                                                            data-title="{{ __('Are you sure?') }}"
+                                                            data-btn-cancel="{{ __('No, do not delete!!') }}"
+                                                            data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
+                                                            {{ __('Delete task') }}
+                                                        </button>
+                                                    @endif
+
+                                                   
+
                                                 {{-- @else
                                                     @if (!isset($item->taskReports->reportStatus))
                                                     @else

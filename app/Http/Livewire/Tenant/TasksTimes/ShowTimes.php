@@ -474,7 +474,8 @@ class ShowTimes extends Component
         return view('tenant.livewire.taskstimes.show-times',[
             'tasksTimes' => $this->taskTimes,
             'taskHours' => $this->task_hours,
-            'totalHours' => $totalHours
+            'totalHours' => $totalHours,
+            "taskInfo" => $this->taskInfo
         ]);
     }
 }

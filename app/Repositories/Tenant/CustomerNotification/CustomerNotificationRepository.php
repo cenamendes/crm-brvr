@@ -6,6 +6,7 @@ use App\Models\Tenant\Customers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tenant\CustomerNotifications;
 use App\Interfaces\Tenant\CustomerNotification\CustomerNotificationInterface;
+use App\Models\Tenant\CustomerServices;
 use App\Models\Tenant\TeamMember;
 
 class CustomerNotificationRepository implements CustomerNotificationInterface
@@ -41,10 +42,29 @@ class CustomerNotificationRepository implements CustomerNotificationInterface
             $servicesNotifications = CustomerNotifications::where('treated',1)->with('service')->with('customer')->with('customerLocation')->get();
         }
 
+        // dd($servicesNotifications->)
+
         foreach($servicesNotifications as $count => $notification)
         {
             $tm = TeamMember::where('id',$notification->customer->account_manager)->first();
-            $notificationInfo[$count] = ["customerServicesId" => $notification->id, "service" => $notification->service->name, "date_final_service" => $notification->end_service_date, "customer" => $notification->customer->short_name, "team_member" => $tm->name, "customer_county" => $notification->customerLocation->description, "notification" => $notification->notification_day, "tratada" => $notification->treated];
+
+            if($notification->customer_service_id == null){
+                $member = $tm->name;
+            } else {
+                $personService = CustomerServices::where('id',$notification->customer_service_id)->first();
+                $member = TeamMember::where('id',$personService->member_associated)->first();
+
+                if($member != null)
+                {
+                    $member = $member->name;
+                }
+                else {
+                    $member = $tm->name;
+                }
+                
+            }
+
+            $notificationInfo[$count] = ["customerServicesId" => $notification->id, "service" => $notification->service->name, "date_final_service" => $notification->end_service_date, "customer" => $notification->customer->short_name, "team_member" => $member, "customer_county" => $notification->customerLocation->description, "notification" => $notification->notification_day, "tratada" => $notification->treated];
         }
 
         return $notificationInfo;

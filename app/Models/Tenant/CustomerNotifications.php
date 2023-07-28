@@ -13,7 +13,7 @@ class CustomerNotifications extends Model
     use HasFactory;
     use ComposhipsEagerLimit;
 
-    protected $fillable = ['service_id', 'end_service_date', 'customer_id', 'location_id', 'notification_day', 'treated'];
+    protected $fillable = ['service_id', 'end_service_date', 'customer_id', 'location_id', 'notification_day', 'treated','customer_service_id'];
 
     public function customer()
     {

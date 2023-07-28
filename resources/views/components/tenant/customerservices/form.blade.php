@@ -201,6 +201,23 @@
                                 </div>
 
                                 <div class="form-group row mt-2">
+                                    <section class="col">
+                                        <label>{{ __('Team Member') }}</label>
+                                        <select name="memberAssociated" id="memberAssociated" class="form-control">
+                                            <option value="" selected>Selecione membro da equipa</option>
+                                            @if(isset($memberList) && $memberList != '')
+                                                @forelse ($memberList as $item)
+                                                    <option value="{{ $item->id }}" @if($service->member_associated != "") @if($item->id == $service->member_associated) selected @endif @endif>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @empty
+                                                @endforelse
+                                            @endif
+                                        </select>
+                                    </section>
+                                </div>
+
+                                <div class="form-group row mt-2">
                                     <div class="custom-control custom-checkbox mb-3 checkbox-success check-lg">
                                         &nbsp;<input type="checkbox" class="custom-control-input" @isset($service->allMails) @if($service->allMails == "1") checked @endif @endisset id="customCheckBox8" name="allMails">
                                         <label class="custom-control-label pl-2" for="customCheckBox8">{{ __('Continue method') }}</label>

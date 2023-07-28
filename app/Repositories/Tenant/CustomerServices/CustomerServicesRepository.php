@@ -85,7 +85,8 @@ class CustomerServicesRepository implements CustomerServicesInterface
                 'time_repeat' => $request->time_repeat,
                 'number_times' => $request->number_times,
                 'allMails' => $allMails,
-                'new_date' => $request->new_date
+                'new_date' => $request->new_date,
+                'member_associated' => $request->memberAssociated
             ]);
 
             return $customerService;
@@ -168,6 +169,11 @@ class CustomerServicesRepository implements CustomerServicesInterface
                         $serviceRequest["allMails"] = $req["allMails"];
                         array_push($arrayCustomerServices,$serviceRequest);
                     }
+                }
+                if($req["memberAssociated"] != "")
+                {
+                    $serviceRequest["member_associated"] = $req["memberAssociated"];
+                    array_push($arrayCustomerServices, $serviceRequest);
                 }
                 else if(!isset($req["allMails"]))
                 {

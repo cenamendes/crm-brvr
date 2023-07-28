@@ -226,6 +226,9 @@
             </div>
         </div>
     </div>
+    @php
+        $user = \App\Models\Tenant\TeamMember::where('id',$task->tech_id)->first();
+    @endphp
     <div class="card">
         <div class="card-footer justify-content-between">
             <div class="row">
@@ -233,7 +236,7 @@
                     <a wire:click="cancel" class="btn btn-secondary mr-2">
                         {!! $cancelButton !!}
                     </a>
-                    @if(Auth::user()->type_user != 2)
+                    @if(Auth::user()->type_user == 0 || Auth::user()->id == $user->user_id)
                         <a wire:click="updateTaskReport" class="btn btn-primary">
                             {{ __("Update Task Report") }}
                             <span class="btn-icon-right"><i class="las la-check mr-2"></i></span>
