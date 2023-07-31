@@ -3,13 +3,16 @@
 namespace App\Http\Livewire\Tenant\Dashboard;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Tenant\Tasks;
+use App\Models\Tenant\Customers;
+use App\Models\Tenant\TasksTimes;
+use App\Models\Tenant\TasksReports;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
 use App\Interfaces\Tenant\CustomerNotification\CustomerNotificationInterface;
-use App\Models\Tenant\TasksReports;
 
 class Show extends Component
 {
@@ -24,6 +27,8 @@ class Show extends Component
 
     private ?object $teamMembersResponse = NULL;
     private ?object $tasks = NULL;
+
+    private ?array $openTimes = [];
 
     private ?array $servicesNotifications = [];
 
@@ -41,6 +46,44 @@ class Show extends Component
     {
         $this->tasks = $this->taskInterface->taskCalendar();
         $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
+
+        //PARTE EM TEMPO REAL
+
+        $users = User::all();
+
+        $taskTimes = TasksTimes::with('service')->with('task')->orderBy('id','asc')->where('date_end',null)->get();
+
+        foreach($users as $i => $user)
+        {
+            foreach($taskTimes as $count => $time)
+            {
+                if($user->id == $time->tech_id)
+                {
+                    $serviceName = $time->service->name;
+
+                    $taskReference = $time->task->reference;
+
+                    $customer_id = $time->task->customer_id;
+
+                    $customer_name = Customers::where('id',$customer_id)->first();
+
+                    $timeReport = TasksReports::where('task_id',$time->task_id)->first();
+
+                    $arrayTimes[$user->name] = [
+                        "service" => $serviceName,
+                        "reference" => $taskReference,
+                        "customer" => $customer_name->name,
+                        "date_begin" => $time->date_begin,
+                        "hour_begin" => $time->hour_begin,
+                        "task_id" => $timeReport->id,
+                        "tech" => $time->tech_id
+                    ];
+                }
+            }
+        }
+
+        $this->openTimes = $arrayTimes;
+
     }
 
 
@@ -119,6 +162,6 @@ class Show extends Component
         $perPage = 0;
         $this->teamMembersResponse = $this->TeamMember->getAllTeamMembers($perPage);
 
-        return view('tenant.livewire.dashboard.show',['teamMembers' => $this->teamMembersResponse,'tasks' => $this->tasks ,'servicesNotifications' => $this->servicesNotifications]);
+        return view('tenant.livewire.dashboard.show',['teamMembers' => $this->teamMembersResponse,'tasks' => $this->tasks ,'servicesNotifications' => $this->servicesNotifications, 'openTimes' => $this->openTimes]);
     }
 }
