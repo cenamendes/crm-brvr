@@ -27,6 +27,7 @@ use App\Http\Controllers\Tenant\FilesCustomer\FilesCustomerController;
 use App\Http\Controllers\Tenant\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Tenant\Analysis\AnalysisTasksReportsController;
 use App\Http\Controllers\Tenant\CustomerMember\CustomerMemberController;
+use App\Http\Controllers\Tenant\Analysis\CompletedTasksReportsController;
 use App\Http\Controllers\Tenant\CustomerContacts\CustomerContactsController;
 use App\Http\Controllers\Tenant\CustomerServices\CustomerServicesController;
 use App\Http\Controllers\Tenant\CustomerLocations\CustomerLocationsController;
@@ -144,6 +145,10 @@ Route::middleware(['auth', 'cmsSettings'])->group(function () {
     ]);
 
     Route::resource('analysis', AnalysisTasksReportsController::class, [
+        'as' => 'tenant'
+    ]);
+
+    Route::resource('completed', CompletedTasksReportsController::class,[
         'as' => 'tenant'
     ]);
 
