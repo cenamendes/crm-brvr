@@ -4,6 +4,8 @@ namespace App\Console;
 
 use App\Events\Alerts\AlertEvent;
 use Illuminate\Support\Facades\DB;
+use App\Console\Commands\EmailNotify;
+use App\Console\Commands\AlertsEmails;
 use App\Models\Tenant\CustomerServices;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -13,6 +15,7 @@ class Kernel extends ConsoleKernel
 
     protected $commands = [
         Commands\AlertsEmails::class,
+        Commands\EmailNotify::class
     ];
 
     /**
@@ -23,8 +26,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('alerts:cron')->everyMinute();
+        //$schedule->command('alerts:cron')->everyMinute();
+        //$schedule->command('alerts:notify')->everyMinute();
+
+        $schedule->command('alerts:cron')->dailyAt('08:30');
+
+        $schedule->command('alerts:notify')->dailyAt('15:30');
     }
 
     /**

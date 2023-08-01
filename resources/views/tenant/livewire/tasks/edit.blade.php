@@ -327,6 +327,15 @@
                                         </section>
                                     </div>
 
+                                    <div class="form-group row">
+                                        <section class="col">
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="email_alert" class="form-check-input" id="customCheckBox3" wire:model.defer="alert_email" @if($taskToUpdate->alert_email != null) @if($taskToUpdate->alert_email == "1") checked @endif @endif>
+                                                <label class="form-check-label" for="customCheckBox3">Enviar email de alerta</label>
+                                            </div>
+                                        </section>
+                                    </div>
+
 
                                     @endif
                                 </div>

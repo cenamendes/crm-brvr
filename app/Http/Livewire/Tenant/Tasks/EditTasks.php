@@ -47,6 +47,8 @@ class EditTasks extends Component
     public ?string $quem_pediu = NULL;
     public ?string $tipo_pedido = NULL;
 
+    public int $alert_email;
+
     private TasksInterface $tasksInterface;
     private TasksReportsInterface $tasksReportsInterface;
 
@@ -108,6 +110,11 @@ class EditTasks extends Component
         $this->quem_pediu = $taskToUpdate->quem_pediu;
         $this->tipo_pedido = $taskToUpdate->tipo_pedido;
 
+        if($taskToUpdate->alert_email != null)
+        {
+            $this->alert_email = $taskToUpdate->alert_email;
+        }
+        
         $this->cancelButton = __('Back') . '<span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>';;
         $this->actionButton = __('Yes, update task');
     }

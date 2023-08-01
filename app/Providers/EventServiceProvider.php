@@ -9,6 +9,7 @@ use App\Events\Tasks\TaskCreated;
 use App\Events\Tasks\TaskCustomer;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Events\Alerts\EmailNotifyEvent;
 use App\Events\ChatEmail\ChatEmailEvent;
 use App\Events\Tasks\DispatchTaskReport;
 use App\Events\Tasks\DispatchTasksToUser;
@@ -17,6 +18,7 @@ use App\Events\TeamMember\TeamMemberEvent;
 use App\Listeners\Tasks\TaskCustomerNotification;
 use App\Listeners\ChatEmail\ChatEmailNotification;
 use App\Listeners\Tasks\SendTaskReportNotification;
+use App\Listeners\AlertEmail\EmailNotifyNotification;
 use App\Listeners\Tasks\SendDispatchTasksNotification;
 use App\Listeners\AlertEmail\SendAlertEmailNotification;
 use App\Listeners\TeamMember\SendTeamMemberNotification;
@@ -57,6 +59,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         TaskCustomer::class => [
             TaskCustomerNotification::class
+        ],
+        EmailNotifyEvent::class => [
+            EmailNotifyNotification::class
         ]
     ];
 

@@ -48,7 +48,7 @@ class Show extends Component
         $this->servicesNotifications = $this->customerNotification->getNotificationTimes();
 
         //PARTE EM TEMPO REAL
-
+       
         $users = User::all();
 
         $taskTimes = TasksTimes::with('service')->with('task')->orderBy('id','asc')->where('date_end',null)->get();

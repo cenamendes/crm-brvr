@@ -55,7 +55,8 @@ class TasksRepository implements TasksInterface
                 'tech_id' => $values->selectedTechnician,
                 'origem_pedido' => $values->origem_pedido,
                 'quem_pediu' => $values->quem_pediu,
-                'tipo_pedido' => $values->tipo_pedido
+                'tipo_pedido' => $values->tipo_pedido,
+                'alert_email' => $values->alert_email
             ]);
 
             foreach ($values->selectedServiceId as $key => $service) {
@@ -92,7 +93,8 @@ class TasksRepository implements TasksInterface
                 'tech_id' => $values->selectedTechnician,
                 'origem_pedido' => $values->origem_pedido,
                 'quem_pediu' => $values->quem_pediu,
-                'tipo_pedido' => $values->tipo_pedido
+                'tipo_pedido' => $values->tipo_pedido,
+                'alert_email' => $values->alert_email
                 ]);
         
         $taskReportUpdate = TasksReports::where('task_id', $task->id)

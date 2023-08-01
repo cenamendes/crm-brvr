@@ -62,6 +62,8 @@ class AddTasks extends Component
     public ?string $taskReference = NULL;
     public int $number = 0;
 
+    public int $alert_email;
+
     private CustomerServicesInterface $customerServicesInterface;
     private TasksInterface $tasksInterface;
 
