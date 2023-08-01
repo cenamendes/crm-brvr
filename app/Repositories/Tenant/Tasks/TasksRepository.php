@@ -38,6 +38,14 @@ class TasksRepository implements TasksInterface
     public function createTask(object $values): Tasks
     {
         return DB::transaction(function () use ($values) {
+
+           if(!isset($values->alert_email))
+           {
+               $email_alert = 0;
+           }
+           else {
+               $email_alert = 1;
+           }
            
             $task = Tasks::create([
                 'number' => $values->number,
@@ -56,7 +64,7 @@ class TasksRepository implements TasksInterface
                 'origem_pedido' => $values->origem_pedido,
                 'quem_pediu' => $values->quem_pediu,
                 'tipo_pedido' => $values->tipo_pedido,
-                'alert_email' => $values->alert_email
+                'alert_email' => $email_alert
             ]);
 
             foreach ($values->selectedServiceId as $key => $service) {
