@@ -621,7 +621,9 @@
     "You must select a number of times": "Tem de selecionar um número de vezes.",
 
     "All Tasks": "Todas Tarefas",
-    "Tasks Completed": "Tarefas Completas"
+    "Tasks Completed": "Tarefas Completas",
+
+    "There are still open times!": "Tem de fechar os tempos abertos dessa tarefa!"
 
 
 

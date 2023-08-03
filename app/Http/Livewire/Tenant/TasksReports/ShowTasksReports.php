@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tenant\TasksReports;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Tenant\TasksTimes;
 use App\Models\Tenant\TasksReports;
 use App\Events\Tasks\DispatchTaskReport;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
@@ -255,6 +256,18 @@ class ShowTasksReports extends Component
             } else {
 
                 //um dispatch se for sim coloca aqui
+
+                $tasksTimes = TasksTimes::where('task_id',$taskReport->task_id)->get();
+
+
+                foreach($tasksTimes as $time)
+                {
+                    if($time->date_end == null)
+                    {
+                        $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('There are still open times!'), 'status'=>'error']);
+                        return;
+                    }
+                }
 
                 $this->dispatchBrowserEvent('swalDispatch', ['title' => __('Finish Task'), 'message' => __('Are you sure you want to finish this task?'), 'status' => 'info', 'function' => 'finishTask', 'parameter' => $reportId, 'parameterSecond' => $taskReport]);
 
