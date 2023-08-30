@@ -623,7 +623,26 @@
     "All Tasks": "Todas Tarefas",
     "Tasks Completed": "Tarefas Completas",
 
-    "There are still open times!": "Tem de fechar os tempos abertos dessa tarefa!"
+    "There are still open times!": "Tem de fechar os tempos abertos dessa tarefa!",
+
+    "Equipment": "Equipamento",
+    "Serie Number": "Número de Série",
+    "Model": "Modelo",
+
+    "Equipment?": "Equipamento?",
+
+    "Name Equipment": "Nome do Equipamento",
+    "Scratched?": "Riscado ?",
+    "Broken?": "Partido ?",
+    "Good State?": "Bom Estado ?",
+    "Normal State?": "Estado Normal ?",
+
+    "Transformer?": "Transformador ?",
+    "Bag?": "Mala ?",
+    "Toners?": "Tinteiros/Toners ?",
+    "A/C?": "A/C ?",
+
+    "Description Extra": "Descrição Extra"
 
 
 

@@ -16,6 +16,10 @@
             <a class="nav-link {{ $servicesPanel }}" data-toggle="tab" href="#servicesPanel"><i
                     class="flaticon-381-notepad mr-2"></i> {{ __('Service') }}</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{ $equipmentPanel }}" data-toggle="tab" href="#equipmentPanel" id="equipmentNav" style="display:none;">
+             <i class="flaticon-381-battery-9 mr-2"></i> {{ __('Equipment')}}</a>
+        </li>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ $techPanel }}" data-toggle="tab" href="#techPanel"><i
@@ -110,6 +114,13 @@
                                             </option>
                                         </select>
                                     </div>
+
+                                    <div class="form-check custom-checkbox checkbox-success">
+                                        <input type="checkbox" name="equipamentoServico" class="form-check-input" id="equipamentoServico" @if($serieNumber != null) checked @endif disabled>
+                                        <label class="form-check-label" for="customCheckBox3">{{ __('Equipment?') }}</label>
+                                    </div>
+
+
                                 </div>
                                 <div class="row">
                                     <div class="col">
@@ -163,6 +174,112 @@
                 </div>
             </div>
         </div>
+
+     {{-- Parte do equipamento --}}
+     <div class="tab-pane fade {{ $equipmentPanel }}" id="equipmentPanel">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-0" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+                    <div class="card-body">
+                        <div class="basic-form">
+                            <div class="row">
+                                <div class="col">
+                                  
+                                    <div class="form-group row">
+                                        <section class="col-4">
+                                            <label>{{ __('Serie Number') }}</label>
+                                            <input type="text" name="serie_number" id="serie_number" class="form-control" value="{{ $serieNumber }}" wire:model.defer="serieNumber">
+                                        </section>
+                                        <section class="col-4">
+                                            <label>{{ __('Marca') }}</label>
+                                            <input type="text" name="marca_equipment" id="marca_equipment" class="form-control" value="{{ $marcaEquipment }}" wire:model.defer="marcaEquipment">
+                                        </section>
+                                        <section class="col-4">
+                                            <label>{{ __('Model')}}</label>
+                                            <input type="text" name="model_equipment" id="model_equipment" class="form-control" value="{{ $modelEquipment }}" wire:model.defer="modelEquipment">
+                                        </section>
+                                    </div>
+
+                                    <div class="form-group row pr-2 pl-2" style="border-top: 1px solid;">
+                                        <section class="col-12 mt-2">
+                                            <label>{{ __('Name Equipment') }}</label>
+                                            <input type="text" name="name_equipment" id="name_equipment" class="form-control" value="{{ $nameEquipment }}" wire:model.defer="nameEquipment">
+                                        </section>
+                                        <section class="col-12">
+                                            <label>{{ __('Description') }}</label>
+                                            <textarea name="descriptionEquipment" class="form-control"
+                                            id="descriptionEquipment" wire:model.defer="descriptionEquipment"
+                                            rows="4"></textarea>
+                                        </section>
+                                    </div>
+
+                                    <div class="form-group row pr-2 pl-2" style="border-top: 1px solid;">
+                                       <div class="col-6">
+                                        <section class="col-12 mt-2">
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="riscado" class="form-check-input" id="riscado" wire:model.defer="riscado">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('Scratched?') }}</label>
+                                            </div>
+
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="partido" class="form-check-input" id="partido" wire:model.defer="partido">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('Broken?') }}</label>
+                                            </div>
+
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="bomestado" class="form-check-input" id="bomestado" wire:model.defer="bomestado">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('Good State?') }}</label>
+                                            </div>
+
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="normalestado" class="form-check-input" id="normalestado" wire:model.defer="normalestado">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('Normal State?') }}</label>
+                                            </div>
+                                        </section>
+                                       </div>
+                                       <div class="col-6">
+                                        <section class="col-12 mt-2">
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="transformador" class="form-check-input" id="transformador" wire:model.defer="transformador">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('Transformer?') }}</label>
+                                            </div>
+
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="mala" class="form-check-input" id="mala" wire:model.defer="mala">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('Bag?') }}</label>
+                                            </div>
+
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="tinteiro" class="form-check-input" id="tinteiro" wire:model.defer="tinteiro">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('Toners?') }}</label>
+                                            </div>
+
+                                            <div class="form-check custom-checkbox checkbox-success">
+                                                <input type="checkbox" name="ac" class="form-check-input" id="ac" wire:model.defer="ac">
+                                                <label class="form-check-label" for="customCheckBox3">{{ __('A/C?') }}</label>
+                                            </div>
+                                        </section>
+                                       </div>
+                                       <div class="col-12 mt-4">
+                                        <label>{{ __('Description Extra') }}</label>
+                                        <textarea name="descriptionExtra" class="form-control"
+                                        id="descriptionExtra" wire:model.defer="descriptionExtra"
+                                        rows="4"></textarea>
+                                       </div>
+                                       
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>   
+
+
+
     <div class="tab-pane fade {{ $techPanel }}" id="techPanel">
         <div class="row">
             <div class="col-12">
@@ -402,6 +519,17 @@
 
         function restartObjects()
         {
+
+            if(jQuery("#equipamentoServico").is(":checked")){
+
+            jQuery("#equipmentNav").css("display","block");
+            }
+            else {
+            jQuery("#equipmentNav").css("display","none");
+            }
+
+
+
             jQuery('#selectedLocation').select2();
             jQuery('#selectedTechnician').select2();
             jQuery("#selectedTechnician").on("select2:select", function (e) {

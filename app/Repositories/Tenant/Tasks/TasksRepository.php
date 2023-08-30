@@ -46,7 +46,7 @@ class TasksRepository implements TasksInterface
            else {
                $email_alert = 1;
            }
-           
+    
             $task = Tasks::create([
                 'number' => $values->number,
                 'reference' => $values->taskReference,
@@ -64,7 +64,21 @@ class TasksRepository implements TasksInterface
                 'origem_pedido' => $values->origem_pedido,
                 'quem_pediu' => $values->quem_pediu,
                 'tipo_pedido' => $values->tipo_pedido,
-                'alert_email' => $email_alert
+                'alert_email' => $email_alert,
+                'nr_serie' => $values->serieNumber,
+                'marca' => $values->marcaEquipment,
+                'modelo' => $values->modelEquipment,
+                'nome_equipamento' => $values->nameEquipment,
+                'descricao_equipamento' => $values->descriptionEquipment,
+                'riscado' => $values->riscado,
+                'partido' => $values->partido,
+                'bom_estado' => $values->bomestado,
+                'estado_normal' => $values->normalestado,
+                'transformador' => $values->transformador,
+                'mala' => $values->mala,
+                'tinteiro' => $values->tinteiro,
+                'ac' => $values->ac,
+                'descricao_extra' => $values->descriptionExtra
             ]);
 
             foreach ($values->selectedServiceId as $key => $service) {
@@ -102,7 +116,21 @@ class TasksRepository implements TasksInterface
                 'origem_pedido' => $values->origem_pedido,
                 'quem_pediu' => $values->quem_pediu,
                 'tipo_pedido' => $values->tipo_pedido,
-                'alert_email' => $values->alert_email
+                'alert_email' => $values->alert_email,
+                'nr_serie' => $values->serieNumber,
+                'marca' => $values->marcaEquipment,
+                'modelo' => $values->modelEquipment,
+                'nome_equipamento' => $values->nameEquipment,
+                'descricao_equipamento' => $values->descriptionEquipment,
+                'riscado' => $values->riscado,
+                'partido' => $values->partido,
+                'bom_estado' => $values->bomestado,
+                'estado_normal' => $values->normalestado,
+                'transformador' => $values->transformador,
+                'mala' => $values->mala,
+                'tinteiro' => $values->tinteiro,
+                'ac' => $values->ac,
+                'descricao_extra' => $values->descriptionExtra
                 ]);
         
         $taskReportUpdate = TasksReports::where('task_id', $task->id)
