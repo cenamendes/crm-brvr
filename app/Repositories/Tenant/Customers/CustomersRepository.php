@@ -77,7 +77,7 @@ class CustomersRepository implements CustomersInterface
             $manager_name = $memberInfo->name;
             $manager_contact = $memberInfo->mobile_phone;
 
-            CustomerLocations::create([
+           $location_customer = CustomerLocations::create([
                 'description' => __('Main address'),
                 'customer_id' => $Customer->id,
                 'main' => 1,
@@ -89,6 +89,25 @@ class CustomersRepository implements CustomersInterface
                 'manager_name' => $manager_name,
                 'manager_contact' => $manager_contact,
             ]);
+
+            CustomerServices::create([
+                'customer_id' => $Customer->id,
+                'service_id' => 4,
+                'location_id' => $location_customer->id,
+                'start_date' => date('Y-m-d'),
+                'end_date' => date('Y-m-d', strtotime('+1 year')),
+                'type' => 'Anual',
+                'alert' => '0',
+                'selectedTypeContract' => 'anualmente',
+                'time_repeat' => '1',
+                'number_times' => '999999',
+                'allMails' => '0',
+                'new_date' => date('Y-m-d'),
+                'member_associated' => $request->memberAssociated
+            ]);
+
+
+
             return $Customer;
         });
     }

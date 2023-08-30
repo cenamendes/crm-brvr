@@ -632,15 +632,15 @@
     "Equipment?": "Equipamento?",
 
     "Name Equipment": "Nome do Equipamento",
-    "Scratched?": "Riscado ?",
-    "Broken?": "Partido ?",
-    "Good State?": "Bom Estado ?",
-    "Normal State?": "Estado Normal ?",
+    "Scratched": "Riscado",
+    "Broken": "Partido",
+    "Good State": "Bom Estado",
+    "Normal State": "Estado Normal",
 
-    "Transformer?": "Transformador ?",
-    "Bag?": "Mala ?",
-    "Toners?": "Tinteiros/Toners ?",
-    "A/C?": "A/C ?",
+    "Transformer": "Transformador",
+    "Bag": "Mala",
+    "Toners": "Tinteiros/Toners",
+    "Mouse/Pen": "Rato/Pen",
 
     "Description Extra": "Descrição Extra"
 

@@ -128,7 +128,7 @@
 
                                         <div class="form-check custom-checkbox checkbox-success">
                                             <input type="checkbox" name="equipamentoServico" class="form-check-input" id="equipamentoServico">
-                                            <label class="form-check-label" for="customCheckBox3">{{ __('Equipment?') }}</label>
+                                            <label class="form-check-label" for="customCheckBox3" style="font-size:18px;margin-top:0px;!important">{{ __('Equipment?') }}</label>
                                         </div>
 
                                     </div>
@@ -231,22 +231,22 @@
                                             <section class="col-12 mt-2">
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="riscado" class="form-check-input" id="riscado" wire:model.defer="riscado">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Scratched?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Scratched') }}</label>
                                                 </div>
 
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="partido" class="form-check-input" id="partido" wire:model.defer="partido">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Broken?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Broken') }}</label>
                                                 </div>
 
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="bomestado" class="form-check-input" id="bomestado" wire:model.defer="bomestado">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Good State?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Good State') }}</label>
                                                 </div>
 
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="normalestado" class="form-check-input" id="normalestado" wire:model.defer="normalestado">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Normal State?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Normal State') }}</label>
                                                 </div>
                                             </section>
                                            </div>
@@ -254,22 +254,22 @@
                                             <section class="col-12 mt-2">
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="transformador" class="form-check-input" id="transformador" wire:model.defer="transformador">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Transformer?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Transformer') }}</label>
                                                 </div>
 
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="mala" class="form-check-input" id="mala" wire:model.defer="mala">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Bag?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Bag') }}</label>
                                                 </div>
 
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="tinteiro" class="form-check-input" id="tinteiro" wire:model.defer="tinteiro">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Toners?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Toners') }}</label>
                                                 </div>
 
                                                 <div class="form-check custom-checkbox checkbox-success">
                                                     <input type="checkbox" name="ac" class="form-check-input" id="ac" wire:model.defer="ac">
-                                                    <label class="form-check-label" for="customCheckBox3">{{ __('A/C?') }}</label>
+                                                    <label class="form-check-label" for="customCheckBox3">{{ __('Mouse/Pen') }}</label>
                                                 </div>
                                             </section>
                                            </div>
