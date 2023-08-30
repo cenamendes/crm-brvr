@@ -16,6 +16,7 @@ class EditTasks extends Component
 {
     public string $homePanel = 'show active';
     public string $servicesPanel = '';
+    public string $equipmentPanel = '';
     public string $techPanel = '';
     public string $cancelButton = '';
     public string $actionButton = '';
@@ -47,7 +48,28 @@ class EditTasks extends Component
     public ?string $quem_pediu = NULL;
     public ?string $tipo_pedido = NULL;
 
-    public int $alert_email;
+    public ?int $alert_email = 0;
+
+    //Vem do Equipamento
+
+    public ?string $serieNumber = '';
+    public ?string $marcaEquipment = '';
+    public ?string $modelEquipment = '';
+
+    public ?string $nameEquipment = '';
+    public ?string $descriptionEquipment = '';
+
+    public ?int $riscado = 0;
+    public ?int $partido = 0;
+    public ?int $bomestado = 0;
+    public ?int $normalestado = 0;
+
+    public ?int $transformador = 0;
+    public ?int $mala = 0;
+    public ?int $tinteiro = 0;
+    public ?int $ac = 0;
+
+    public ?string $descriptionExtra = '';
 
     private TasksInterface $tasksInterface;
     private TasksReportsInterface $tasksReportsInterface;
@@ -114,6 +136,27 @@ class EditTasks extends Component
         {
             $this->alert_email = $taskToUpdate->alert_email;
         }
+
+        $this->serieNumber = $taskToUpdate->nr_serie;
+        $this->marcaEquipment = $taskToUpdate->marca;
+        $this->modelEquipment = $taskToUpdate->modelo;
+
+        $this->nameEquipment = $taskToUpdate->nome_equipamento;
+        $this->descriptionEquipment = $taskToUpdate->descricao_equipamento;
+
+        $this->riscado = $taskToUpdate->riscado;
+        $this->partido = $taskToUpdate->partido;
+        $this->bomestado = $taskToUpdate->bom_estado;
+        $this->normalestado = $taskToUpdate->estado_normal;
+
+        $this->transformador = $taskToUpdate->transformador;
+        $this->mala = $taskToUpdate->mala;
+        $this->tinteiro = $taskToUpdate->tinteiro;
+        $this->ac = $taskToUpdate->ac;
+
+        $this->descriptionExtra = $taskToUpdate->descricao_extra;
+
+
         
         $this->cancelButton = __('Back') . '<span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>';;
         $this->actionButton = __('Yes, update task');

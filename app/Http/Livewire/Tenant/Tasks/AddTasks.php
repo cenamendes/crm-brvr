@@ -29,6 +29,7 @@ class AddTasks extends Component
 
     public string $homePanel = 'show active';
     public string $servicesPanel = '';
+    public string $equipmentPanel = '';
     public string $techPanel = '';
     public string $cancelButton = '';
     public string $actionButton = '';
@@ -63,6 +64,27 @@ class AddTasks extends Component
     public int $number = 0;
 
     public int $alert_email;
+
+
+    //PARTE DO EQUIPAMENTO
+    public ?string $serieNumber = '';
+    public ?string $marcaEquipment = '';
+    public ?string $modelEquipment = '';
+
+    public ?string $nameEquipment = '';
+    public ?string $descriptionEquipment = '';
+    
+    public ?int $riscado = 0;
+    public ?int $partido = 0;
+    public ?int $bomestado = 0;
+    public ?int $normalestado = 0;
+
+    public ?int $transformador = 0;
+    public ?int $mala = 0;
+    public ?int $tinteiro = 0;
+    public ?int $ac = 0;
+
+    public ?string $descriptionExtra = '';
 
     private CustomerServicesInterface $customerServicesInterface;
     private TasksInterface $tasksInterface;
@@ -290,6 +312,7 @@ class AddTasks extends Component
             $this->number = $latest->number + 1;
         }
         $this->taskReference = $this->taskReference($this->number);
+
 
         $this->taskToUpdate = $this->tasksInterface->createTask($this);
 
