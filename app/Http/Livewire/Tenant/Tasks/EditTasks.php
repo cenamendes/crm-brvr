@@ -168,6 +168,7 @@ class EditTasks extends Component
 
     public function downloadEtiqueta()
     {
+        $this->dispatchBrowserEvent('contentChanged');
         return response()->download('cl/'.tenant('id') . '/app/impressoes/impressao'.$this->taskToUpdate->reference.'.pdf');
     }
 
