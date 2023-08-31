@@ -184,7 +184,17 @@
                         <div class="basic-form">
                             <div class="row">
                                 <div class="col">
-                                  
+
+                                    @if($imagem != '')
+                                        <div class="form-group row" style="text-align:end;">
+                                            <section class="col-12">
+                                                <button type="button" id="badge-click" wire:click="downloadEtiqueta" class="btn-xs" style="border-radius:50px;border:1px;cursor:auto;pointer-events:none;">Etiqueta
+                                                    &nbsp;&nbsp;<span class="badge badge-sm light badge-primary" style="cursor:pointer;pointer-events:auto;"><i class="fa-lg fa fa-download"></i></span>
+                                                </button>&nbsp;
+                                            </section>
+                                        </div>
+                                    @endif
+
                                     <div class="form-group row">
                                         <section class="col-4">
                                             <label>{{ __('Serie Number') }}</label>

@@ -202,6 +202,8 @@ return [
         App\Providers\ZonesRepositoryProvider::class,
         App\Providers\TeamMemberRepositoryProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        \Barryvdh\DomPDF\ServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
     ],
 
     /*
@@ -219,6 +221,8 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Excel' => Excel::class,
         'Visitor' => Shetabit\Visitor\Facade\Visitor::class,
+        'PDF' => \Barryvdh\DomPDF\Facade::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ])->toArray(),
 
 ];

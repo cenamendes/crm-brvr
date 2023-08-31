@@ -4,24 +4,31 @@ namespace App\Http\Livewire\Tenant\Tasks;
 
 use App\Models\User;
 use Livewire\Component;
+
 use Livewire\Redirector;
+
 use App\Models\Tenant\Tasks;
 use App\Models\Tenant\Services;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Tenant\Customers;
 use App\Events\Tasks\TaskCreated;
 use App\Models\Tenant\TeamMember;
 use App\Events\Tasks\TaskCustomer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use SebastianBergmann\Type\VoidType;
 use App\Models\Tenant\CustomerServices;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Tenant\CustomerLocations;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Traits\GenerateTaskReference;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
+
+
 
 class AddTasks extends Component
 {
@@ -85,6 +92,8 @@ class AddTasks extends Component
     public ?int $ac = 0;
 
     public ?string $descriptionExtra = '';
+
+    public ?string $imagem = '';
 
     private CustomerServicesInterface $customerServicesInterface;
     private TasksInterface $tasksInterface;
@@ -203,7 +212,14 @@ class AddTasks extends Component
 
     public function saveTask()
     {
-    
+
+        // $customPaper = array(0, 0, 504.00, 216.00);
+        // $pdf = PDF::loadView('tenant.livewire.tasks.impressaopdf')->setPaper($customPaper);
+
+        // return response()->streamDownload(function () use($pdf) {
+        //     echo  $pdf->stream();
+        // }, 'report.pdf');
+       
         $customer = Customers::where('id', $this->selectedCustomer)->with('customerCounty')->with('customerDistrict')->first();
         
         if($customer != null)
@@ -313,10 +329,33 @@ class AddTasks extends Component
         }
         $this->taskReference = $this->taskReference($this->number);
 
+      
 
+        //fazer a criacao do PDF
+        if($this->riscado != 0 || $this->partido != 0 || $this->bomestado != 0 || $this->normalestado != 0 || $this->transformador != 0 || $this->mala != 0 || $this->tinteiro != 0 || $this->ac != 0)
+        {
+            $qrcode = base64_encode(QrCode::size(50)->generate('https://hihello.me/pt/p/adc8b89e-a3de-4033-beeb-43384aafa1c3?f=email'));
+       
+            $customPaper = array(0, 0, 400.00, 216.00);
+            $pdf = PDF::loadView('tenant.livewire.tasks.impressaopdf',["impressao" => $this, "qrcode" => $qrcode])->setPaper($customPaper);
+    
+            if(!Storage::exists(tenant('id') . '/app/impressoes'))
+            {
+                File::makeDirectory(storage_path('app/impressoes'), 0755, true, true);
+            }
+    
+            $content = $pdf->download()->getOriginalContent();
+
+            $this->imagem = 'impressao'.$this->taskReference.'.pdf';
+
+    
+            Storage::put(tenant('id') . '/app/impressoes/impressao'.$this->taskReference.'.pdf',$content);
+        }
+       
         $this->taskToUpdate = $this->tasksInterface->createTask($this);
 
-        
+        /********************** */
+              
         $techUser = TeamMember::where('id',$this->taskToUpdate->tech_id)->first();
 
         $user = User::where('id',$techUser->user_id)->first();
@@ -339,6 +378,13 @@ class AddTasks extends Component
         $message .= "</div>";
 
         $this->dispatchBrowserEvent('SendEmailTech', ['title' => __('Quer enviar email para o cliente?'), 'message' => $message, 'status' => 'info', 'parameter_function' => $task]);
+
+        if($this->riscado != 0 || $this->partido != 0 || $this->bomestado != 0 || $this->normalestado != 0 || $this->transformador != 0 || $this->mala != 0 || $this->tinteiro != 0 || $this->ac != 0)
+        {
+            return response()->streamDownload(function () use($pdf) {
+                echo  $pdf->stream();
+            }, 'etiqueta.pdf');
+        }
 
     
     }

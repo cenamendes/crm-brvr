@@ -46,7 +46,8 @@ class TasksRepository implements TasksInterface
            else {
                $email_alert = 1;
            }
-    
+
+          
             $task = Tasks::create([
                 'number' => $values->number,
                 'reference' => $values->taskReference,
@@ -78,7 +79,8 @@ class TasksRepository implements TasksInterface
                 'mala' => $values->mala,
                 'tinteiro' => $values->tinteiro,
                 'ac' => $values->ac,
-                'descricao_extra' => $values->descriptionExtra
+                'descricao_extra' => $values->descriptionExtra,
+                'imagem' => $values->imagem
             ]);
 
             foreach ($values->selectedServiceId as $key => $service) {

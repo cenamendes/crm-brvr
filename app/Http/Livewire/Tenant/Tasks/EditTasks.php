@@ -70,6 +70,7 @@ class EditTasks extends Component
     public ?int $ac = 0;
 
     public ?string $descriptionExtra = '';
+    public ?string $imagem = '';
 
     private TasksInterface $tasksInterface;
     private TasksReportsInterface $tasksReportsInterface;
@@ -156,10 +157,18 @@ class EditTasks extends Component
 
         $this->descriptionExtra = $taskToUpdate->descricao_extra;
 
+        $this->imagem = $taskToUpdate->imagem;
+
 
         
         $this->cancelButton = __('Back') . '<span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>';;
         $this->actionButton = __('Yes, update task');
+    }
+
+
+    public function downloadEtiqueta()
+    {
+        return response()->download(storage_path().tenant('id') . '/app/impressoes/impressao'.$this->taskToUpdate->reference.'.pdf');
     }
 
     /**
