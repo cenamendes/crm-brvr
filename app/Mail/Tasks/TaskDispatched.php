@@ -70,7 +70,6 @@ class TaskDispatched extends Mailable
 
     public function build()
     {
-       
         $subject = 'Tarefa #' . $this->task->reference . ' agendada com sucesso.';
 
         $email = $this

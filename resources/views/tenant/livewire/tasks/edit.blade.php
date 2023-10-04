@@ -298,6 +298,22 @@
                         <div class="basic-form">
                             <div class="row">
                                 <div class="col">
+
+                                    <div class="form-group row">
+                                        <section class="col">
+                                            <label>{{ __('Nível de prioridade') }}</label>
+                                            <select name="prioridadeColors" id="prioridadeColors" wire:model.defer="selectPrioridade" class="form-control">
+                                                @foreach ($coresObject as $cor)
+                                                    <option style="background:{{$cor->cor}};" value="{{$cor->id}}">
+                                                        <span class="badge badge-primary rounded-circle" style="background:{{$cor->cor}}; padding:10px 10px!important;">
+                                                        </span>
+                                                        <span>{{$cor->nivel}}</span>
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </section>
+                                    </div>
+
                                     @if(isset($numberOfSelectedServices) && $numberOfSelectedServices > 0)
                                     <div class="form-group row">
                                         <section class="col">
@@ -538,6 +554,28 @@
             jQuery("#equipmentNav").css("display","none");
             }
 
+            function formatState (state) {
+
+                var base_url = "http://br.brvr/cl/8d9eeb55-30bb-435e-8179-4d77b6db8c0e/tasks_colors";
+
+                if (!state.id) {
+                    return state.text;
+                }
+        
+                var $state = $(
+                    '<span><img src="' + base_url + '/' + state.id + '.png" class="img-flag" style="width:30px;" /> ' + state.text + '</span>'
+                );
+                return $state;
+                };
+
+                jQuery('#prioridadeColors').select2({
+                templateResult: formatState,
+                templateSelection: formatState
+            });
+
+            jQuery("#prioridadeColors").on("select2:select", function (e) {
+                @this.set('selectPrioridade', jQuery('#prioridadeColors').find(':selected').val(), true)
+            });
 
 
             jQuery('#selectedLocation').select2();

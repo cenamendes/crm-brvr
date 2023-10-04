@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Tenant\Tasks;
 
+use App\Events\ChatMessage;
 use App\Models\User;
 use Livewire\Component;
 
@@ -27,8 +28,8 @@ use App\Http\Traits\GenerateTaskReference;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
-
-
+use App\Models\Tenant\Prioridades;
+use App\Models\Tenant\SerieNumbers;
 
 class AddTasks extends Component
 {
@@ -95,10 +96,18 @@ class AddTasks extends Component
 
     public ?string $imagem = '';
 
+    //PARTE DE IR BUSCAR AS CORES
+
+    public ?object $coresObject = NULL;
+
+    public ?int $selectPrioridade;
+
+    /**********/
+
     private CustomerServicesInterface $customerServicesInterface;
     private TasksInterface $tasksInterface;
 
-    protected $listeners = ['resetChanges' => 'resetChanges', 'responseEmailCustomer' => 'responseEmailCustomer'];
+    protected $listeners = ['resetChanges' => 'resetChanges', 'responseEmailCustomer' => 'responseEmailCustomer', 'FormAddClient' => 'FormAddClient', 'createCustomerFormResponse' => 'createCustomerFormResponse'];
 
     /**
      * Livewire construct function
@@ -117,6 +126,8 @@ class AddTasks extends Component
         $this->customerList = $customerList;
         $this->cancelButton = '<i class="las la-angle-double-left mr-2"></i>' . __('Back');
         $this->actionButton = __('Create Task');
+
+        $this->coresObject = Prioridades::all();
     }
 
     public function updatedSelectedCustomer(): Void
@@ -146,6 +157,7 @@ class AddTasks extends Component
         }
         $this->homePanel = '';
         $this->servicesPanel = 'show active';
+        $this->equipmentPanel = '';
         $this->techPanel = '';
         $this->customerServicesList = CustomerServices::where('customer_id', $this->selectedCustomer)
             ->where('location_id', $this->selectedLocation)
@@ -161,6 +173,7 @@ class AddTasks extends Component
         if(!$this->customerServicesList) {
             $this->homePanel = '';
             $this->servicesPanel = 'show active';
+            $this->equipmentPanel = '';
             $this->techPanel = '';
             $this->dispatchBrowserEvent('swal', ['title' => __('Task Services'), 'message' => __('You must select the location!'), 'status'=>'error']);
             return;
@@ -170,6 +183,7 @@ class AddTasks extends Component
             $this->numberOfSelectedServices++;
             $this->homePanel = '';
             $this->servicesPanel = 'show active';
+            $this->equipmentPanel = '';
             $this->techPanel = '';
             $this->dispatchBrowserEvent('newService');
             $this->dispatchBrowserEvent('contentChanged');
@@ -184,6 +198,7 @@ class AddTasks extends Component
         $this->homePanel = '';
         $this->servicesPanel = 'show active';
         $this->techPanel = '';
+        $this->equipmentPanel = '';
         $this->changed = true;
 
         $tempArray = [];
@@ -210,16 +225,153 @@ class AddTasks extends Component
         $this->dispatchBrowserEvent('contentChanged');
     }
 
+    public function FormAddClient()
+    {
+        $message = "";
+
+        $message = "<div class='swalBox'>";
+            $message .= "<div class='row mt-4' style='justify-content:center;'>";
+                $message .= "<section class='col-xl-12'>";
+                  $message .= "<label>Nome Cliente</label>";
+                  $message .= "<input type='text' name='customer_name' id='customer_name' class='form-control'>";
+                $message .= "</section>";
+                $message .= "<section class='col-xl-12'>";
+                    $message .= "<label>NIF</label>";
+                    $message .= "<input type='text' name='nif' id='nif' class='form-control'>";
+                $message .= "</section>";
+                $message .= "<section class='col-xl-12'>";
+                    $message .= "<label>Contacto</label>";
+                    $message .= "<input type='text' name='contact' id='contact' class='form-control'>";
+                $message .= "</section>";
+                $message .= "<section class='col-xl-12' style='margin-bottom:20px;'>";
+                    $message .= "<label>Email</label>";
+                    $message .= "<input type='text' name='email' id='email' class='form-control'>";
+                $message .= "</section>";
+                $message .= "<button type='button' id='buttonresponseCustomer' data-anwser='ok' class='btn btn-primary'>Enviar</button>";
+                $message .= "&nbsp;<button type='button' class='btn btn-secondary' id='buttonresponseCustomer' data-anwser='close'>Fechar</button>";
+            $message .= "</div>";
+        $message .= "</div>";
+
+        $this->dispatchBrowserEvent('createCustomer', ['title' => __('Formulário Cliente'), 'message' => $message, 'status' => 'info']);
+    }
+
+    public function createCustomerFormResponse($name,$nif,$contact,$email)
+    {
+       $allLower = strtolower($name);
+       
+       $slug = str_replace(" ","-",$allLower);
+
+       $validator = Validator::make(
+            [
+                'name' => $name,
+                'nif'  => $nif,
+                'contact' => $contact,
+                'email' => $email
+            ],
+            [
+                'name'  => 'required',
+                'nif'  => 'required|min:9|max:9',
+                'contact'  => 'required',
+                'email' => 'required'
+            ],
+            [
+                'name'  => "Tem de inserir um nome!",
+                'nif' => "Tem de inserir um nif com 9 digitos!",
+                'contact' => "Tem de inserir um contacto!",
+                'email' => "Tem de inserir um email!"
+            ]
+        );
+
+        if ($validator->fails()) {
+            $errorMessage = '';
+            foreach($validator->errors()->all() as $message) {
+                $errorMessage .= '<p>' . $message . '</p>';
+            }
+            $this->dispatchBrowserEvent('swal', ['title' => __('Inserir Cliente'), 'message' => $errorMessage, 'status'=>'error', 'whatfunction'=>"add"]);
+            return;
+        }
+
+        $checkBefore = Customers::where('vat', $nif)->first();
+
+        if($checkBefore != null)
+        {
+            $this->dispatchBrowserEvent('swal', ['title' => __('Inserir Cliente'), 'message' => "Esse cliente já se encontra registado", 'status'=>'error', 'whatfunction'=>"add"]);
+            return;
+        }
+
+        $response = Customers::Create([
+            "name" => $name,
+            "slug" => $slug,
+            "short_name" => $slug,
+            "vat" => $nif,
+            "contact" => $contact,
+            "email" => $email,
+            "address" => "Rua de Regufe, 33",
+            "zipcode" => "4480-246",
+            "district" => '13',
+            "county" => '16',
+            "account_manager" => '9'
+        ]);
+
+        $location = CustomerLocations::Create([
+            "description" => "Sede",
+            "customer_id" => $response->id,
+            "main" => "1",
+            "address" => "Rua de Regufe, 33",
+            "zipcode" => "4480-246",
+            "contact" => $contact,
+            "district_id" => '13',
+            "county_id" => '16',
+            "manager_name" => "Vitor Oliveira",
+            "manager_contact" => $contact
+        ]);
+
+        CustomerServices::Create([
+            "customer_id" => $response->id,
+            "service_id" => "4",
+            "location_id" => $location->id,
+            "start_date" => date('Y-m-d')
+        ]);
+
+
+
+        $this->dispatchBrowserEvent('swal', ['title' => "Cliente", 'message' => 'Cliente criado com sucesso!', 'status'=>'sucess', 'whatfunction'=>"finishInsert"]);
+
+    }
+
+    public function searchSerieNumber()
+    {
+        $response = $this->tasksInterface->searchSerialNumber($this->serieNumber);
+
+        if(!isset($response[0]->marca)){
+            $this->marcaEquipment = '';
+        }
+        else {
+            $this->marcaEquipment = $response[0]->marca;
+        }
+
+        if(!isset($response[0]->modelo)){
+            $this->modelEquipment = '';
+        }
+        else {
+            $this->modelEquipment = $response[0]->modelo;
+        }
+
+        if($this->serieNumber == "")
+        {
+            $this->marcaEquipment = '';
+            $this->modelEquipment = '';
+        }
+
+        
+        $this->homePanel = '';
+        $this->servicesPanel = '';
+        $this->equipmentPanel = 'show active';
+        $this->dispatchBrowserEvent('contentChanged');
+    }
+
     public function saveTask()
     {
-
-        // $customPaper = array(0, 0, 504.00, 216.00);
-        // $pdf = PDF::loadView('tenant.livewire.tasks.impressaopdf')->setPaper($customPaper);
-
-        // return response()->streamDownload(function () use($pdf) {
-        //     echo  $pdf->stream();
-        // }, 'report.pdf');
-       
         $customer = Customers::where('id', $this->selectedCustomer)->with('customerCounty')->with('customerDistrict')->first();
         
         if($customer != null)
@@ -327,6 +479,21 @@ class AddTasks extends Component
             // $this->number = $latest('number') + 1;
             $this->number = $latest->number + 1;
         }
+
+        //Pesquisa se esse numero de serie existe na base de dados
+
+        $serieNumberSearch = SerieNumbers::where('nr_serie',$this->serieNumber)->first();
+
+        if($serieNumberSearch == null)
+        {
+            SerieNumbers::Create([
+                "nr_serie" => $this->serieNumber,
+                "marca" => $this->marcaEquipment,
+                "modelo" => $this->modelEquipment
+            ]);
+        }
+
+
         $this->taskReference = $this->taskReference($this->number);
 
       
@@ -334,7 +501,7 @@ class AddTasks extends Component
         //fazer a criacao do PDF
         if($this->riscado != 0 || $this->partido != 0 || $this->bomestado != 0 || $this->normalestado != 0 || $this->transformador != 0 || $this->mala != 0 || $this->tinteiro != 0 || $this->ac != 0)
         {
-            $qrcode = base64_encode(QrCode::size(50)->generate('https://hihello.me/pt/p/adc8b89e-a3de-4033-beeb-43384aafa1c3?f=email'));
+            $qrcode = base64_encode(QrCode::size(150)->generate('https://hihello.me/pt/p/adc8b89e-a3de-4033-beeb-43384aafa1c3?f=email'));
        
             $customPaper = array(0, 0, 400.00, 216.00);
             $pdf = PDF::loadView('tenant.livewire.tasks.impressaopdf',["impressao" => $this, "qrcode" => $qrcode])->setPaper($customPaper);
@@ -363,10 +530,10 @@ class AddTasks extends Component
         $task = Tasks::where('id',$this->taskToUpdate->id)->with('servicesToDo')->first();
 
 
-        if(Auth::user()->id != $user->id && $user != null)
-        {
-            event(new TaskCreated($task));
-        }
+        // if(Auth::user()->id != $user->id && $user != null)
+        // {
+        //     event(new TaskCreated($task));
+        // }
 
         $message = "";
 
@@ -386,6 +553,7 @@ class AddTasks extends Component
             }, 'etiqueta.pdf');
         }
 
+        event(new ChatMessage());
     
     }
 

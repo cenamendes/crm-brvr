@@ -8,6 +8,7 @@ use App\Models\Tenant\Tasks;
 use App\Models\Tenant\Customers;
 use App\Models\Tenant\TeamMember;
 use Illuminate\Support\Facades\DB;
+use App\Models\Tenant\SerieNumbers;
 use App\Models\Tenant\TaskServices;
 use App\Models\Tenant\TasksReports;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,7 @@ class TasksRepository implements TasksInterface
 
     public function createTask(object $values): Tasks
     {
+
         return DB::transaction(function () use ($values) {
 
            if(!isset($values->alert_email))
@@ -47,6 +49,10 @@ class TasksRepository implements TasksInterface
                $email_alert = 1;
            }
 
+        //    if(!isset($values->selectPrioridade))
+        //    {
+        //       $values->selectPrioridade = 1;
+        //    }
           
             $task = Tasks::create([
                 'number' => $values->number,
@@ -80,7 +86,8 @@ class TasksRepository implements TasksInterface
                 'tinteiro' => $values->tinteiro,
                 'ac' => $values->ac,
                 'descricao_extra' => $values->descriptionExtra,
-                'imagem' => $values->imagem
+                'imagem' => $values->imagem,
+                'prioridade' => $values->selectPrioridade
             ]);
 
             foreach ($values->selectedServiceId as $key => $service) {
@@ -132,7 +139,8 @@ class TasksRepository implements TasksInterface
                 'mala' => $values->mala,
                 'tinteiro' => $values->tinteiro,
                 'ac' => $values->ac,
-                'descricao_extra' => $values->descriptionExtra
+                'descricao_extra' => $values->descriptionExtra,
+                'prioridade' => $values->selectPrioridade
                 ]);
         
         $taskReportUpdate = TasksReports::where('task_id', $task->id)
@@ -827,6 +835,15 @@ class TasksRepository implements TasksInterface
 
 
     /**FIM FILTRO */
+
+    public function searchSerialNumber($serialNumber): LengthAwarePaginator
+    {
+        //Fazer sempre uma pesquisa com where e vou retornar os 2 valores
+        $collection = SerieNumbers::where('nr_serie','like', '%'.$serialNumber.'%')->paginate(1);
+
+        return $collection;
+
+    }
 
 
 }

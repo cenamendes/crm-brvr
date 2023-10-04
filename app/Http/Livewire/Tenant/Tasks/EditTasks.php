@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tenant\Tasks;
 
 use Livewire\Component;
 use Livewire\Redirector;
+use App\Models\Tenant\Prioridades;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -71,6 +72,14 @@ class EditTasks extends Component
 
     public ?string $descriptionExtra = '';
     public ?string $imagem = '';
+
+    //PARTE DE IR BUSCAR AS CORES
+
+    public ?object $coresObject = NULL;
+
+    public int $selectPrioridade;
+
+    /**********/
 
     private TasksInterface $tasksInterface;
     private TasksReportsInterface $tasksReportsInterface;
@@ -159,6 +168,9 @@ class EditTasks extends Component
 
         $this->imagem = $taskToUpdate->imagem;
 
+
+        $this->selectPrioridade = $taskToUpdate->prioridade;
+        $this->coresObject = Prioridades::all();
 
         
         $this->cancelButton = __('Back') . '<span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>';;
@@ -334,6 +346,7 @@ class EditTasks extends Component
      */
     public function saveTask(): Null|Redirector
     {
+
         $validator = Validator::make(
             [
                 'selectedLocation'  => $this->selectedLocation,

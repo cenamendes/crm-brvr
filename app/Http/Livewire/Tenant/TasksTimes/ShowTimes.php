@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tenant\TasksTimes;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Events\ChatMessage;
 use Livewire\WithPagination;
 use App\Models\Tenant\TasksTimes;
 use App\Models\Tenant\TasksReports;
@@ -199,6 +200,8 @@ class ShowTimes extends Component
             
         }
 
+        event(new ChatMessage());
+
     }
 
     public function EditTimes($id,$values)
@@ -273,6 +276,7 @@ class ShowTimes extends Component
         //     "descricao" => $values[4]
         // ]);
 
+        event(new ChatMessage());
 
     }
 

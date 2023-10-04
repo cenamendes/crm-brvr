@@ -53,10 +53,10 @@ class ExportTasksExcel implements FromCollection, WithHeadings, WithEvents,Shoul
 
         $resultado_soma = global_hours_format($sumTime);
 
-        $sheet->setCellValue("H{$totalRow}","SOMA DAS HORAS");
-        $sheet->setCellValue("I{$totalRow}", "$resultado_soma min");
+        $sheet->setCellValue("I{$totalRow}","SOMA DAS HORAS");
+        $sheet->setCellValue("J{$totalRow}", "$resultado_soma min");
 
-        $sheet->getStyle("H{$totalRow}:I{$totalRow}")->applyFromArray(
+        $sheet->getStyle("I{$totalRow}:J{$totalRow}")->applyFromArray(
             array(
                 'fill' => array(
                     'fillType' => Fill::FILL_SOLID,
@@ -71,7 +71,7 @@ class ExportTasksExcel implements FromCollection, WithHeadings, WithEvents,Shoul
 
        
 
-        $sheet->getStyle("A1:I1")->applyFromArray(
+        $sheet->getStyle("A1:J1")->applyFromArray(
             array(
                'fill' => array(
                   'fillType' => Fill::FILL_SOLID,
@@ -119,6 +119,7 @@ class ExportTasksExcel implements FromCollection, WithHeadings, WithEvents,Shoul
                 'hourEnd' => $analysis["hour_end"],
                 'shortName' => $analysis["tasks_reports"]["task_customer"]["short_name"],
                 'serviceName' => $analysis["service"]["name"],
+                'descricao' => $analysis["descricao"],
                 'totalHours' => $analysis["total_hours"]
             ];
         });
@@ -128,14 +129,14 @@ class ExportTasksExcel implements FromCollection, WithHeadings, WithEvents,Shoul
 
     public function headings(): array
     {
-        return ["Referência", "Estado da Tarefa","Técnico", "Data", "Hora inicial", "Hora final", "Cliente", "Serviço", "Tempo Gasto"];
+        return ["Referência", "Estado da Tarefa","Técnico", "Data", "Hora inicial", "Hora final", "Cliente", "Serviço", "Descrição", "Tempo Gasto"];
     }
 
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle('A1:I1')
+                $event->sheet->getDelegate()->getStyle('A1:J1')
                 ->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()

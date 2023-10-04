@@ -4,6 +4,7 @@ namespace App\Interfaces\Tenant\Tasks;
 
 use Livewire\Request;
 use App\Models\Tenant\Tasks;
+use App\Models\Tenant\SerieNumbers;
 use App\Models\Tenant\TasksReports;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -36,5 +37,11 @@ interface TasksInterface
     public function getTasksFilter(string $searchString,int $tech,int $client,int $typeReport,int $work,string $ordenation,string $dateBegin,string $dateEnd,$perPage): LengthAwarePaginator;
 
     /**FIM FILTRO */
+
+    /** Search Serie Number */
+
+    public function searchSerialNumber($serialNumber): LengthAwarePaginator;
+
+    /********* */
 
 }

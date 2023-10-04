@@ -40,7 +40,12 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="row form-group">
-                                            <section class="col" wire:ignore>
+                                            <section class="col-12" style="text-align:end;">
+                                                <a class="btn btn-primary" id="addClientForm">
+                                                    <i class="fa fa-user"></i> Criar Cliente
+                                                </a>
+                                            </section>
+                                            <section class="col" style="margin-top:20px;" wire:ignore>
                                                 <label>{{ __('Customer Name') }}</label>
                                                 <select name="selectedCustomer" id="selectedCustomer">
                                                     <option value="">{{ __('Select customer') }}</option>
@@ -200,8 +205,19 @@
                                       
                                         <div class="form-group row">
                                             <section class="col-4">
-                                                <label>{{ __('Serie Number') }}</label>
-                                                <input type="text" name="serie_number" id="serie_number" class="form-control" value="{{ $serieNumber }}" wire:model.defer="serieNumber">
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <label>{{ __('Serie Number') }}</label>
+                                                        <input type="text" name="serie_number" id="serie_number" class="form-control" value="{{ $serieNumber }}" wire:model.defer="serieNumber">
+                                                    </div>
+                                                    <div class="col-3" style="padding-left:0px;">
+                                                        <label style="visibility:hidden;">Acesso</label>
+                                                        <a class="btn btn-primary" wire:click="searchSerieNumber">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
                                             </section>
                                             <section class="col-4">
                                                 <label>{{ __('Marca') }}</label>
@@ -305,6 +321,21 @@
                         <div class="basic-form">
                             <div class="row">
                                 <div class="col">
+                                    <div class="form-group row">
+                                        <section class="col">
+                                            <label>{{ __('Nível de prioridade') }}</label>
+                                            <select name="prioridadeColors" id="prioridadeColors" wire:model.defer="selectPrioridade" class="form-control">
+                                                @foreach ($coresObject as $cor)
+                                                    <option style="background:{{$cor->cor}};" value="{{$cor->id}}">
+                                                        {{-- <span class="badge badge-primary rounded-circle" style="background:{{$cor->cor}}; padding:10px 10px!important;">
+                                                        </span> --}}
+                                                        {{ $cor->nivel}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </section>
+                                    </div>
+
                                     @if(isset($numberOfSelectedServices) && $numberOfSelectedServices > 0)
                                     <div class="form-group row">
                                         <section class="col">
@@ -508,6 +539,11 @@
 
         });
 
+        jQuery("body").on('click',"#addClientForm", function(){
+
+            Livewire.emit("FormAddClient");
+        });
+       
         
 
         jQuery("body").on('click','#equipamentoServico', function(){
@@ -545,6 +581,55 @@
             }
 
         })
+
+        //Criação email Tasks
+
+        window.addEventListener('createCustomer', function (e) {
+
+        swal.fire({
+            title: e.detail.title,
+            html: e.detail.message,
+            type: e.detail.status,
+            showCancelButton: false,
+            showconfirmButton: false,
+
+        });
+
+
+        jQuery(".swal2-confirm").css("display","none");
+
+          jQuery(".swalBox .row").on("click", "#buttonresponseCustomer",function(){
+
+                if(jQuery(this).attr("data-anwser") == "ok")
+                {
+                    var customer_name = jQuery("#customer_name").val();
+                    var nif = jQuery("#nif").val();
+                    var contact = jQuery("#contact").val();
+                    var email = jQuery("#email").val();
+
+                    window.livewire.emit("createCustomerFormResponse",customer_name,nif,contact,email);
+
+                    jQuery(this).remove();
+                    jQuery(".swalBox").remove();
+                    jQuery(".swal2-container").remove();
+
+                    Swal.close();
+                }
+                else {
+                    Swal.close();
+                }
+
+           });
+
+        });
+
+
+
+        //Fim email Tasks
+
+
+
+
 
         window.addEventListener('SendEmailTech', function (e) {
 
@@ -605,6 +690,25 @@
                     }                
                 })
             }
+           else if(e.detail.whatfunction == "finishInsert")
+            {
+                swal.fire({
+                title: e.detail.title,
+                html: e.detail.message,
+                type: "success",
+
+                }).then((result) => {  
+                    if(result.value){
+
+                        restartObjects();
+                        if(e.detail.function == 'client')
+                        {
+                            location.reload();
+                        }
+                    }                
+                })
+            }
+            
             else {
 
                 if(typeof e.detail.function === "undefined"){
@@ -673,6 +777,32 @@
             jQuery('#origem_pedido').select2();
             jQuery("#origem_pedido").on("select2:select", function (e) {
                 @this.set('origem_pedido', jQuery('#origem_pedido').find(':selected').val(),true);
+            });
+          
+            function formatState (state) {
+
+                var base_url = "http://br.brvr/cl/8d9eeb55-30bb-435e-8179-4d77b6db8c0e/tasks_colors";
+    
+                if (!state.id) {
+                    return state.text;
+                }
+            
+                var $state = $(
+                    '<span><img src="' + base_url + '/' + state.id + '.png" class="img-flag" style="width:30px;" /> ' + state.text + '</span>'
+                );
+                return $state;
+            };
+
+            @this.set('selectPrioridade',1,true);
+
+            jQuery('#prioridadeColors').select2({
+                templateResult: formatState,
+                templateSelection: formatState
+            });
+
+
+            jQuery("#prioridadeColors").on("select2:select", function (e) {
+                @this.set('selectPrioridade', jQuery('#prioridadeColors').find(':selected').val(), true)
             });
       
             jQuery('#selectedTechnician').select2();

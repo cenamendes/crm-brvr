@@ -55,6 +55,7 @@
                     <span class="nav-text">{{ __('Analysis') }}</span>
                 </a>
                 <ul aria-expanded="false">
+                    <li><a href="{{ route('tenant.analysis-dashboard.index')}}">Dashboard</a></li>
                     <li><a href="{{ route('tenant.completed.index')}}">{{ __('Completed Tasks') }}</a></li>
                     <li><a href="{{ route('tenant.analysis.index') }}">{{ __('All Tasks') }}</a></li>
                     <li><a href="{{ route('tenant.open-times.index')}}">{{ __('Open Times') }}</a></li>
