@@ -51,6 +51,8 @@ class Show extends Component
        
         $users = User::all();
 
+        $arrayTimes = [];
+
         $taskTimes = TasksTimes::with('service')->with('task')->orderBy('id','asc')->where('date_end',null)->get();
 
         foreach($users as $i => $user)
