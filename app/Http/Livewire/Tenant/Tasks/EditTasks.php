@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tenant\Tasks;
 
 use Livewire\Component;
 use Livewire\Redirector;
+use App\Events\ChatMessage;
 use App\Models\Tenant\Prioridades;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -418,6 +419,8 @@ class EditTasks extends Component
         #$this->taskToUpdate = $this->taskToUpdate;
         $this->changed = false;
         //$this->dispatchBrowserEvent('loading');
+
+        event(new ChatMessage());
 
         return redirect()->route('tenant.tasks.index')
             ->with('message', __('Task updated with success!'))
