@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tenant\TasksReports;
 
 use Livewire\Component;
+use App\Events\ChatMessage;
 use Livewire\WithPagination;
 use App\Models\Tenant\TasksTimes;
 use App\Models\Tenant\TasksReports;
@@ -281,6 +282,8 @@ class ShowTasksReports extends Component
                 // $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('Task report closed with sucess!'), 'status'=>'info']);
             }
         }
+
+        event(new ChatMessage());
     }
 
     /**
