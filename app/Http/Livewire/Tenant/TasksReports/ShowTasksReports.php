@@ -282,7 +282,6 @@ class ShowTasksReports extends Component
                 // $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('Task report closed with sucess!'), 'status'=>'info']);
             }
         }
-
         event(new ChatMessage());
     }
 

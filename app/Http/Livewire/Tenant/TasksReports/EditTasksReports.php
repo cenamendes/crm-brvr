@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tenant\TasksReports;
 
 use Livewire\Component;
 use Livewire\Redirector;
+use App\Events\ChatMessage;
 use Illuminate\Support\Facades\Validator;
 use App\Interfaces\Tenant\TasksTimes\TasksTimesInterface;
 use App\Interfaces\Tenant\TasksReports\TasksReportsInterface;
@@ -198,6 +199,8 @@ class EditTasksReports extends Component
         ];
 
         $this->reportInfo = $this->tasksReportsInterface->updateReport($this->taskReport->id, $save);
+
+        event(new ChatMessage());
 
         if($this->reportInfo == 0)
         {
