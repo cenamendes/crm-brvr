@@ -254,9 +254,10 @@
                                                                 @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
                                                                     <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
                                                                 @endif
-                                                        @elseif($item->taskReports->reportStatus == 0 )
-                                                            <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
+                                                        {{-- @elseif($item->taskReports->reportStatus == 0 ) --}}
+                                                            {{-- <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a> --}}
                                                         @endif
+                                                        <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
                                                     @endif
 
                                                     @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
