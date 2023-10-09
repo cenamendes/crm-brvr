@@ -199,7 +199,7 @@ class ShowTimes extends Component
            ->update(['reportStatus' => '1']);
             
         }
-
+        
         event(new ChatMessage());
 
     }
