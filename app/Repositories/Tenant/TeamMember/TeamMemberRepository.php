@@ -52,7 +52,9 @@ class TeamMemberRepository implements TeamMemberInterface
                 'job' => $request->job,
                 'additional_information' => $request->additional_information,
                 'color' => $request->color,
-                'account_active' => '0'
+                'account_active' => '0',
+                'id_hierarquia' => $request->id_hierarquia,
+                'id_departamento' => $request->id_departamento
             ]);
             return $teamMember;
         });

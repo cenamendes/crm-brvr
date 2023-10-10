@@ -76,6 +76,37 @@
                                         </div>
                                     </section>
                                 </div>
+                                <div class="form-group row">
+                                    <section class="col-xl-6 col-xs-12">
+                                        <label>{{ __('Departmento') }}</label>
+                                        @php
+                                            $departamentos = \App\Models\Tenant\Departamentos::all();
+                                        @endphp
+                                         <select name="id_departamento" id="id_departamento" class="form-control">
+                                            <option value="">{{ __('Selecione Departamento') }}</option>
+
+                                            @forelse ($departamentos as $item)
+                            
+                                                <option value="{{ $item->id }}" @isset($iddepartamento) @if($iddepartamento != "") @if($item->id == $iddepartamento) selected @endif @endif @endisset >{{ $item->nome_departamento }}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                    </section>
+                                    <section class="col-xl-6 col-xs-12">
+                                        <label>{{ __('Hierarquia') }}</label>
+                                        @php
+                                            $hierarquias = \App\Models\Tenant\Hierarquia::all();
+                                        @endphp
+                                         <select name="id_hierarquia" id="id_hierarquia" class="form-control">
+                                            <option value="">{{ __('Selecione Hierarquia') }}</option>
+
+                                            @forelse ($hierarquias as $item)
+                                                <option value="{{ $item->id }}" @isset($iddepartamento) @if($idhierarquia != "") @if($item->id == $idhierarquia) selected @endif @endif @endisset >{{ $item->descricao }}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                    </section>
+                                </div>
                             </div>
                         </div>
                 </div>
