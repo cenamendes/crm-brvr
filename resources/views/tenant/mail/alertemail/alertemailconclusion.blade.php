@@ -103,7 +103,10 @@
                                                             $arrayTimes = [];
                                                             foreach($info->tasksTimes as $tsk)
                                                             {
-                                                                array_push($arrayTimes,$tsk->total_hours);
+                                                                if($tsk->date_end != "")
+                                                                {
+                                                                    array_push($arrayTimes,$tsk->total_hours);
+                                                                }
                                                             }
 
                                                            
@@ -188,7 +191,10 @@
                                                             $arrayTimesSecond = [];
                                                             foreach($info->tasksTimes as $tsk)
                                                             {
-                                                                array_push($arrayTimesSecond,$tsk->total_hours);
+                                                                if($tsk->date_end != "")
+                                                                {
+                                                                    array_push($arrayTimesSecond,$tsk->total_hours);
+                                                                }
                                                             }
 
                                                            
@@ -250,7 +256,10 @@
                                                         $arrayTimesThird = [];
                                                         foreach($info->tasksTimes as $tsk)
                                                         {
-                                                            array_push($arrayTimesThird,$tsk->total_hours);
+                                                            if($tsk->date_end != "")
+                                                            {
+                                                                array_push($arrayTimesThird,$tsk->total_hours);
+                                                            }
                                                         }
 
                                                        
