@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Listeners\EmailEvent;
 use App\Events\Alerts\AlertEvent;
+use App\Events\Alerts\EmailConclusionEvent;
 use App\Events\Tasks\TaskCreated;
 
 use App\Events\Tasks\TaskCustomer;
@@ -15,6 +16,7 @@ use App\Events\Tasks\DispatchTaskReport;
 use App\Events\Tasks\DispatchTasksToUser;
 use App\Listeners\Tasks\TaskNotification;
 use App\Events\TeamMember\TeamMemberEvent;
+use App\Listeners\AlertEmail\EmailConclusionNotification;
 use App\Listeners\Tasks\TaskCustomerNotification;
 use App\Listeners\ChatEmail\ChatEmailNotification;
 use App\Listeners\Tasks\SendTaskReportNotification;
@@ -62,6 +64,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         EmailNotifyEvent::class => [
             EmailNotifyNotification::class
+        ],
+        EmailConclusionEvent::class => [
+            EmailConclusionNotification::class
         ]
     ];
 

@@ -26,12 +26,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command('alerts:cron')->everyMinute();
-        //$schedule->command('alerts:notify')->everyMinute();
 
         $schedule->command('alerts:cron')->dailyAt('08:30');
 
         $schedule->command('alerts:notify')->dailyAt('15:30');
+
+        // $schedule->command('alerts:mail_conclusion_day')->dailyAt('19:15');
+        $schedule->command('alerts:mail_conclusion_day')->dailyAt('19:30');
     }
 
     /**
