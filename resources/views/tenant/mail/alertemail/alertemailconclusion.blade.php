@@ -88,13 +88,17 @@
                                                                 $lastTime[$countForeach] = $tsk->date_begin ."/". $tsk->hour_begin;
                                                             }
                                                             $countForeach++;
+                                                            $count = 0;
                                                         }
                                                        
                                                     @endphp
+
+                                                    @php
+                                                        $countLOOP = 0;
+                                                    @endphp
+
                                                     @foreach ($infoSendEmail["primeiro_quadro"] as $info )
-                                                     @php
-                                                         $countLOOP = 0;
-                                                     @endphp
+                                                   
                                                     <tr style="text-align:center;">                                                 
                                                         <td>{{$info->reference}}</td>
                                                         <td>{{$info->taskCustomer->name}}</td>
@@ -174,6 +178,7 @@
                                                     
                                                         foreach ($infoSendEmail["segundo_quadro"] as $info )
                                                         {
+                
                                                             foreach($info->tasksTimes as $tsk)
                                                             {
                                                                 $count++;
@@ -184,13 +189,15 @@
                                                                 $lastTimeSegundo[$countForeachSegundo] = $tsk->date_begin ."/". $tsk->hour_begin;
                                                             }
                                                             $countForeachSegundo++;
+                                                            $count = 0;
                                                         }
                                                    
                                                     @endphp
+                                                     @php
+                                                        $countLOOPSegundo = 0;
+                                                    @endphp
                                                     @foreach ($infoSendEmail["segundo_quadro"] as $info )
-                                                    @php
-                                                         $countLOOPSegundo = 0;
-                                                     @endphp
+                                                   
                                                     <tr style="text-align:center;">
                                                         <td>{{$info->reference}}</td>
                                                         <td>{{$info->taskCustomer->name}}</td>
