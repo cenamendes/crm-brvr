@@ -88,7 +88,6 @@ class EmailConclusionNotification
     
                     $finishedTasksToday = Tasks::
                     where('tech_id',$member->id)
-                    ->where('prioridade','!=',1)
                     ->whereHas('taskReports', function ($query) {
                         $query->where('reportStatus',2)->where('end_date',date('Y-m-d'));
     
@@ -168,7 +167,6 @@ class EmailConclusionNotification
     
                     $finishedTasksToday = Tasks::
                     where('tech_id',$dept->id)
-                    ->where('prioridade','!=',1)
                     ->whereHas('taskReports', function ($query) {
                         $query->where('reportStatus',2)->where('end_date',date('Y-m-d'));
     
@@ -241,7 +239,6 @@ class EmailConclusionNotification
  
                  $finishedTasksToday = Tasks::
                  where('tech_id',$usr["teamMember_id"])
-                 ->where('prioridade','!=',1)
                  ->whereHas('taskReports', function ($query) {
                     $query->where('reportStatus',2)->where('end_date',date('Y-m-d'));
  
