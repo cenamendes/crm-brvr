@@ -90,7 +90,7 @@ class EmailConclusionNotification
                     where('tech_id',$member->id)
                     ->where('prioridade','!=',1)
                     ->whereHas('taskReports', function ($query) {
-                        $query->where('reportStatus','!=',2)->where('end_date',date('Y-m-d'));
+                        $query->where('reportStatus',2)->where('end_date',date('Y-m-d'));
     
                     })
                     ->with('tasksTimes')
@@ -170,7 +170,7 @@ class EmailConclusionNotification
                     where('tech_id',$dept->id)
                     ->where('prioridade','!=',1)
                     ->whereHas('taskReports', function ($query) {
-                        $query->where('reportStatus','!=',2)->where('end_date',date('Y-m-d'));
+                        $query->where('reportStatus',2)->where('end_date',date('Y-m-d'));
     
                     })
                     ->with('tasksTimes')
@@ -243,7 +243,7 @@ class EmailConclusionNotification
                  where('tech_id',$usr["teamMember_id"])
                  ->where('prioridade','!=',1)
                  ->whereHas('taskReports', function ($query) {
-                     $query->where('reportStatus','!=',2)->where('end_date',date('Y-m-d'));
+                    $query->where('reportStatus',2)->where('end_date',date('Y-m-d'));
  
                  })
                  ->with('tasksTimes')

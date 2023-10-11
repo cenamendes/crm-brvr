@@ -71,35 +71,42 @@
                                                 </thead>
                                                 <tbody>
                                                     @php
-                                                        $lastTime = "";
-                                                        $firstTime = "";
+                                                        $lastTime = [];
+                                                        $firstTime = [];
                                                         $count = 0;
+                                                        $countForeach = 0;
                                                         foreach ($infoSendEmail["primeiro_quadro"] as $info )
                                                         {
+                                                           
                                                             foreach($info->tasksTimes as $tsk)
                                                             {
                                                                 $count++;
                                                                 if($count == 1)
                                                                 {
-                                                                    $firstTime = $tsk->date_begin ."/". $tsk->hour_begin;
+                                                                    $firstTime[$countForeach] = $tsk->date_begin ."/". $tsk->hour_begin;
                                                                 }
-                                                                $lastTime = $tsk->date_begin ."/". $tsk->hour_begin;
+                                                                $lastTime[$countForeach] = $tsk->date_begin ."/". $tsk->hour_begin;
                                                             }
+                                                            $countForeach++;
                                                         }
                                                        
                                                     @endphp
                                                     @foreach ($infoSendEmail["primeiro_quadro"] as $info )
-                                                    <tr style="text-align:center;">
-                                                          {{\Log::info($info)}}                                                    
+                                                     @php
+                                                         $countLOOP = 0;
+                                                     @endphp
+                                                    <tr style="text-align:center;">                                                 
                                                         <td>{{$info->reference}}</td>
                                                         <td>{{$info->taskCustomer->name}}</td>
                                                         <td>{{$info->resume}}</td>
                                                         <td>{{$info->preview_date}} / {{$info->preview_hour}}</td>
                                                         @if(isset($info->tasksTimes))
-                                                         <td>{{$firstTime}}</td>
-                                                         <td>{{$lastTime}}</td>
+                                                         <td>{{$firstTime[$countLOOP]}}</td>
+                                                         <td>{{$lastTime[$countLOOP]}}</td>
 
                                                          @php
+
+                                                          $countLOOP++;
                                                             $arrayTimes = [];
                                                             foreach($info->tasksTimes as $tsk)
                                                             {
@@ -160,9 +167,10 @@
                                                 </thead>
                                                 <tbody>
                                                     @php
-                                                        $lastTime = "";
-                                                        $firstTime = "";
+                                                        $lastTimeSegundo = [];
+                                                        $firstTimeSegundo = [];
                                                         $count = 0;
+                                                        $countForeachSegundo = 0;
                                                         foreach ($infoSendEmail["segundo_quadro"] as $info )
                                                         {
                                                             foreach($info->tasksTimes as $tsk)
@@ -170,24 +178,28 @@
                                                                 $count++;
                                                                 if($count == 1)
                                                                 {
-                                                                    $firstTime = $tsk->date_begin ."/". $tsk->hour_begin;
+                                                                    $firstTimeSegundo[$countForeachSegundo] = $tsk->date_begin ."/". $tsk->hour_begin;
                                                                 }
-                                                                $lastTime = $tsk->date_begin ."/". $tsk->hour_begin;
+                                                                $lastTimeSegundo[$countForeachSegundo] = $tsk->date_begin ."/". $tsk->hour_begin;
                                                             }
                                                         }
                                                    
                                                     @endphp
                                                     @foreach ($infoSendEmail["segundo_quadro"] as $info )
+                                                    @php
+                                                         $countLOOPSegundo = 0;
+                                                     @endphp
                                                     <tr style="text-align:center;">
                                                         <td>{{$info->reference}}</td>
                                                         <td>{{$info->taskCustomer->name}}</td>
                                                         <td>{{$info->resume}}</td>
                                                         <td>{{$info->preview_date}} / {{$info->preview_hour}}</td>
                                                         @if(isset($info->tasksTimes))
-                                                         <td>{{$firstTime}}</td>
-                                                         <td>{{$lastTime}}</td>
+                                                         <td>{{$firstTimeSegundo[$countLOOPSegundo]}}</td>
+                                                         <td>{{$lastTimeSegundo[$countLOOPSegundo]}}</td>
 
                                                          @php
+                                                          $countLOOPSegundo++;
                                                             $arrayTimesSecond = [];
                                                             foreach($info->tasksTimes as $tsk)
                                                             {
@@ -246,7 +258,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                            
                                                     @foreach ($infoSendEmail["terceiro_quadro"] as $info )
                                                     <tr style="text-align:center;">
                                                         <td>{{$info->reference}}</td>
