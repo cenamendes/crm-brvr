@@ -212,19 +212,8 @@
 
                             </td>
 
-                            {{-- @if(Auth::user()->type_user !="2") --}}
+                           
                                 <td>
-                                    {{-- <div class="dropdown ml-auto text-right"> --}}
-                                        {{-- <div class="btn-link" data-toggle="dropdown">
-                                            <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <rect x="0" y="0" width="24" height="24"></rect>
-                                                    <circle fill="#000000" cx="5" cy="12" r="2"></circle>
-                                                    <circle fill="#000000" cx="12" cy="12" r="2"></circle>
-                                                    <circle fill="#000000" cx="19" cy="12" r="2"></circle>
-                                                </g>
-                                            </svg>
-                                        </div> --}}
                                         <!-- dropdown-menu dropdown-menu-right -->
 
                                     @if(Auth::user()->type_user != 2)
@@ -248,55 +237,35 @@
                                                     $user = \App\Models\Tenant\TeamMember::where('id',$item->tech_id)->first();
                                                 @endphp
                                                 
-                                                    @if($item->status == 0 || $item->status == 1)
-                                                        @if (!isset($item->taskReports->reportStatus))
-                                                                <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
-                                                                @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
-                                                                    <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
-                                                                @endif
-                                                        {{-- @elseif($item->taskReports->reportStatus == 0 ) --}}
-                                                            {{-- <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a> --}}
-                                                        @endif
-                                                        <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
-                                                    @endif
-
-                                                    @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
-                                                        <button class="dropdown-item btn-sweet-alert" data-type="form"
-                                                            data-route="{{ route('tenant.tasks.destroy', $item->id) }}"
-                                                            data-style="warning" data-csrf="csrf"
-                                                            data-text="{{ __('Do you want to delete this task?') }}"
-                                                            data-title="{{ __('Are you sure?') }}"
-                                                            data-btn-cancel="{{ __('No, do not delete!!') }}"
-                                                            data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
-                                                            {{ __('Delete task') }}
-                                                        </button>
-                                                    @endif
-
-                                                   
-
-                                                {{-- @else
+                                                @if($item->status == 0 || $item->status == 1)
                                                     @if (!isset($item->taskReports->reportStatus))
-                                                    @else
-                                                        @if($item->taskReports->reportStatus == "2")
                                                             <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
-                                                        @endif
+                                                            @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
+                                                                <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
+                                                            @endif
+                                
                                                     @endif
-                                                @endif --}}
+                                                    {{-- <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a> --}}
+                                                @endif
 
-
+                                                @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
+                                                    <button class="dropdown-item btn-sweet-alert" data-type="form"
+                                                        data-route="{{ route('tenant.tasks.destroy', $item->id) }}"
+                                                        data-style="warning" data-csrf="csrf"
+                                                        data-text="{{ __('Do you want to delete this task?') }}"
+                                                        data-title="{{ __('Are you sure?') }}"
+                                                        data-btn-cancel="{{ __('No, do not delete!!') }}"
+                                                        data-btn-ok="{{ __('Yes, delete task!!') }}" data-method="DELETE">
+                                                        {{ __('Delete task') }}
+                                                    </button>
+                                                @endif
 
                                             </div>
                                         </div>
                                    
                                     @endif
-
-
-
-
-
-                                    {{-- </div> --}}
+                                 
                                 </td>
-                            {{-- @endif --}}
                         </tr>
                     @endforeach
                 </tbody>

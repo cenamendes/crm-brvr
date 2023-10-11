@@ -37,8 +37,10 @@ class AlertEmailConclusionDay extends Mailable
      */
     public function envelope()
     {
+        $infoSendEmail = $this->infoSendEmail;
+
         $teste = Config::first();
-        $subject = 'Email de final de dia.';
+        $subject = 'Relatório de '.$infoSendEmail["nome"].' ('.date('Y-m-d').')';
         return new Envelope(
             subject: $subject,
             from: new Address($teste->email, session('sender_name')),
@@ -75,7 +77,7 @@ class AlertEmailConclusionDay extends Mailable
 
         $config = Config::first();
        
-        $subject = 'Email de final de dia.';
+        $subject = 'Relatório de '.$infoSendEmail["nome"].' ('.date('Y-m-d').')';
 
         $email = $this
             ->view('tenant.mail.alertemail.alertemailconclusion',[
