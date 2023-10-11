@@ -171,6 +171,7 @@
                                                         $firstTimeSegundo = [];
                                                         $count = 0;
                                                         $countForeachSegundo = 0;
+                                                    
                                                         foreach ($infoSendEmail["segundo_quadro"] as $info )
                                                         {
                                                             foreach($info->tasksTimes as $tsk)
@@ -182,6 +183,7 @@
                                                                 }
                                                                 $lastTimeSegundo[$countForeachSegundo] = $tsk->date_begin ."/". $tsk->hour_begin;
                                                             }
+                                                            $countForeachSegundo++;
                                                         }
                                                    
                                                     @endphp
@@ -246,7 +248,7 @@
                                               <p style="text-align:center;">
                                                 TAREFAS FECHADAS HOJE
                                             </p>
-                                            <div class="row" style="display:flex;justify-content:center;">
+                                            {{-- <div class="row"> --}}
 
                                             
                                             <table>
@@ -295,7 +297,7 @@
                                                     @endforeach
                                                 </tbody>
                                               </table>
-                                            </div>
+                                            {{-- </div> --}}
                                            
                                             <hr>
                                                 <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787e; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">
