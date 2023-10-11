@@ -238,8 +238,9 @@
                                                 @endphp
                                                 
                                                 @if($item->status == 0 || $item->status == 1)
+                                                <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
                                                     @if (!isset($item->taskReports->reportStatus))
-                                                            <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a>
+                                                            {{-- <a class="dropdown-item" href="{{ route('tenant.tasks.edit', $item->id) }}">{{ __('Update Task') }}</a> --}}
                                                             @if(Auth::user()->type_user == 0 || $user->user_id == Auth::user()->id )
                                                                 <a class="dropdown-item" wire:click="askToSchedule({{ $item->id }})">{{ __('Schedule task') }}</a>
                                                             @endif
