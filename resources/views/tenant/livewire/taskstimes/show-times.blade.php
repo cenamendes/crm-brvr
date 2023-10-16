@@ -25,11 +25,11 @@
                         $user = \App\Models\Tenant\TeamMember::where('id',$taskInfo->tech_id)->first();
                     @endphp
 
-                    @if(Auth::user()->type_user == 0 || Auth::user()->id == $user->user_id)
+                    {{-- @if(Auth::user()->type_user == 0 || Auth::user()->id == $user->user_id) --}}
                         <div class="col-xl-8 col-xs-8">
                             <a href="javascript:void(0)" id="taskAddTime" class="btn btn-primary" wire:click="addTime">{{ __('Add Time') }}</a>
                         </div>
-                    @endif
+                    {{-- @endif --}}
                 @endif
             </div>
                 
