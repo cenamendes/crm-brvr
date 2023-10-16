@@ -231,6 +231,8 @@
 
 
                      jQuery("body").on('click', '#actionsDiv #btnAddTime', function() {
+
+                        @this.set('descricao', jQuery("#descricao").val(), true);
     
                         if(jQuery("#swal2-content #numServices").val() == "1")
                         {
