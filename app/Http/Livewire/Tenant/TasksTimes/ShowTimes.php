@@ -288,17 +288,29 @@ class ShowTimes extends Component
       $date_inicial = date('Y/m/d');
 
      
+      $message = "";
+
+      if($this->taskInfo->servicesToDo->count() == "1")
+      {
+          $check = "selected";
+          $message .='<input type="hidden" id="numServices" value="1">';
+      }
+      else {
+          $check = "";
+          $message .='<input type="hidden" id="numServices" value="222">';
+      }
 
 
-
-        $message ="
+        $message .="
         <label>".__("Service")."</label>";
         $message .= "<select name='selectedService' id='selectedService' wire:model='serviceSelected' class='form-control'>
         <option value=''>". __('Select Service')."</option>";
 
+       
+
         foreach($this->taskInfo->servicesToDo as $serv)
         {
-            $message .='<option value="'. $serv->service->id.'">'. $serv->service->name.'
+            $message .='<option value="'. $serv->service->id.'" '.$check.'>'. $serv->service->name.'
             </option>';
 
         }

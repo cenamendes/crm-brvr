@@ -232,7 +232,10 @@
 
                      jQuery("body").on('click', '#actionsDiv #btnAddTime', function() {
     
-                        @this.set('descricao', jQuery("#descricao").val(), true);
+                        if(jQuery("#swal2-content #numServices").val() == "1")
+                        {
+                            @this.set('serviceSelected', jQuery("#selectedService").val(), true);
+                        }
 
                         var finalHour = new Date("November 13, 2013 " + jQuery('#swal2-content .input-group #hora_final').val());
                         finalHour = finalHour.getTime();
