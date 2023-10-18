@@ -306,6 +306,55 @@
                                                 </tbody>
                                               </table>
                                             {{-- </div> --}}
+
+                                            <hr>
+
+                                            <p style="text-align:center;">
+                                                TEMPOS FECHADOS HOJE
+                                            </p>
+                                            {{-- <div class="row"> --}}
+
+                                            
+                                            <table>
+                                                <thead>
+                                                    <tr style="text-align:center;">
+                                                        <th>Referência</th>
+                                                        <th>Estado da Tarefa</th>
+                                                        <th>Técnico</th>
+                                                        <th>Data</th>
+                                                        <th>Hora</th>
+                                                        <th>Cliente</th>
+                                                        <th>Serviço</th>
+                                                        <th>Horas</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($infoSendEmail["quarto_quadro"] as $item )
+                                                    <tr style="text-align:center;">
+                                                        <td>{{ $item->tasksReports->reference }}</td>
+                                                        <td>
+                                                            @if($item->tasksReports->reportStatus == 0)
+                                                            {{__("Agendada")}}
+                                                            @elseif($item->tasksReports->reportStatus == 1)
+                                                            {{__("Em Curso")}}
+                                                            @else
+                                                                {{__("Finalizada")}}
+                                                            @endif
+                                                        </td>                                                      
+                                                    
+                                                        @php
+                                                            $user = \App\Models\User::where('id',$item->tech_id)->first();
+                                                        @endphp
+                                                        <td>{{ $user->name}}</td>
+                                                        <td>{{ $item->date_begin }}</td>
+                                                        <td>{{ $item->hour_begin }} / {{ $item->hour_end }}</td>
+                                                        <td>{{ $item->tasksReports->taskCustomer->short_name }}</td>
+                                                        <td>{{ $item->service->name }}</td>
+                                                        <td>{{ global_hours_format($item->total_hours) }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                              </table>
                                            
                                             <hr>
                                                 <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787e; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">

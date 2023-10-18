@@ -5,6 +5,7 @@ namespace App\Listeners\AlertEmail;
 use App\Models\Tenant\Tasks;
 use App\Models\Tenant\Config;
 use App\Events\Alerts\AlertEvent;
+use App\Models\Tenant\TasksTimes;
 use App\Models\Tenant\TeamMember;
 use App\Mail\AlertEmail\AlertEmail;
 use Illuminate\Support\Facades\Mail;
@@ -17,6 +18,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Tenant\CustomerNotifications;
 use App\Mail\AlertEmail\AlertEmailConclusionDay;
 use App\Models\Tenant\TeamMember as TenantTeamMember;
+use App\Models\User;
 
 class EmailConclusionNotification
 {
@@ -104,11 +106,23 @@ class EmailConclusionNotification
     
                     /****************** */
 
+                    /*** QUARTO QUADRO ***/
+
+                  $finishedTimesToday =  TasksTimes::whereHas('tasksReports')
+                  ->with('tasksReports')
+                  ->with('service')
+                  ->where('tech_id',$member->user_id)
+                  ->where('date_end',date('Y-m-d'))
+                  ->get();   
+
+                  /******************** */
+
                     $infoSendEmail = [
                         "nome" => $member->name,
                         "primeiro_quadro" => $tasksRed,
                         "segundo_quadro" => $otherTasks,
-                        "terceiro_quadro" => $finishedTasksToday
+                        "terceiro_quadro" => $finishedTasksToday,
+                        "quarto_quadro" => $finishedTimesToday
                     ];
 
                     Mail::to($email)->queue(new AlertEmailConclusionDay(($infoSendEmail)));
@@ -183,11 +197,24 @@ class EmailConclusionNotification
     
                     /****************** */
 
+
+                    /*** QUARTO QUADRO ***/
+
+                    $finishedTimesToday =  TasksTimes::whereHas('tasksReports')
+                    ->with('tasksReports')
+                    ->with('service')
+                    ->where('tech_id',$dept->user_id)
+                    ->where('date_end',date('Y-m-d'))
+                    ->get();   
+
+                    /******************** */
+
                     $infoSendEmail = [
                         "nome" => $dept->name,
                         "primeiro_quadro" => $tasksRed,
                         "segundo_quadro" => $otherTasks,
-                        "terceiro_quadro" => $finishedTasksToday
+                        "terceiro_quadro" => $finishedTasksToday,
+                        "quarto_quadro" => $finishedTimesToday
                     ];
 
                     Mail::to($teamMembers->email)->queue(new AlertEmailConclusionDay(($infoSendEmail)));
@@ -196,7 +223,9 @@ class EmailConclusionNotification
             else if($usr["hierarquia"] == "3")
             {
                 $teamMemberIndividual = TeamMember::where('id',$usr["teamMember_id"])->first();
+
                  /** Primeiro Quadro **/
+
 
                  $tasksRed = Tasks::
                  where('tech_id',$usr["teamMember_id"])
@@ -255,11 +284,23 @@ class EmailConclusionNotification
  
                  /****************** */
 
+                  /*** QUARTO QUADRO ***/
+
+                  $finishedTimesToday =  TasksTimes::whereHas('tasksReports')
+                  ->with('tasksReports')
+                  ->with('service')
+                  ->where('tech_id',$teamMemberIndividual->user_id)
+                  ->where('date_end',date('Y-m-d'))
+                  ->get();   
+
+                  /******************** */
+
                  $infoSendEmail = [
                      "nome" => $teamMemberIndividual->name,
                      "primeiro_quadro" => $tasksRed,
                      "segundo_quadro" => $otherTasks,
-                     "terceiro_quadro" => $finishedTasksToday
+                     "terceiro_quadro" => $finishedTasksToday,
+                     "quarto_quadro" => $finishedTimesToday
                  ];
 
                  Mail::to($email)->queue(new AlertEmailConclusionDay(($infoSendEmail)));
