@@ -324,7 +324,7 @@
                                                         <th>Data</th>
                                                         <th>Hora</th>
                                                         <th>Cliente</th>
-                                                        <th>Serviço</th>
+                                                        <th>Descrição do Tempo</th>
                                                         <th>Horas</th>
                                                     </tr>
                                                 </thead>
@@ -349,7 +349,7 @@
                                                         <td>{{ $item->date_begin }}</td>
                                                         <td>{{ $item->hour_begin }} / {{ $item->hour_end }}</td>
                                                         <td>{{ $item->tasksReports->taskCustomer->short_name }}</td>
-                                                        <td>{{ $item->service->name }}</td>
+                                                        <td>{{ $item->descricao }}</td>
                                                         <td>{{ global_hours_format($item->total_hours) }}</td>
                                                     </tr>
                                                     @endforeach
