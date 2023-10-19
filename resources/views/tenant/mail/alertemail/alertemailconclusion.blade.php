@@ -204,9 +204,16 @@
                                                         <td>{{$info->resume}}</td>
                                                         <td>{{$info->preview_date}} / {{$info->preview_hour}}</td>
                                                         @if(isset($info->tasksTimes))
-                                                      
-                                                         <td>{{$firstTimeSegundo[$countLOOPSegundo]}}</td>
-                                                         <td>{{$lastTimeSegundo[$countLOOPSegundo]}}</td>
+                                                         @if(isset($firstTimeSegundo[$countLOOPSegundo]))
+                                                            <td>{{$firstTimeSegundo[$countLOOPSegundo]}}</td>
+                                                         @else
+                                                           <td></td>
+                                                         @endif
+                                                         @if(isset($lastTimeSegundo[$countLOOPSegundo]))
+                                                            <td>{{$lastTimeSegundo[$countLOOPSegundo]}}</td>
+                                                         @else
+                                                            <td></td>
+                                                         @endif
 
                                                          @php
                                                           $countLOOPSegundo++;
