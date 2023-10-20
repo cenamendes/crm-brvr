@@ -138,11 +138,10 @@
                   </thead>
                   <tbody>
                       @foreach ($secondTable as $ct => $item)
-                      @php
-                          $check = 0;
-                      @endphp
-                        
-                          <tr style="background:{{$item->prioridades->cor}};">
+                        @if(isset($item->taskReports))
+                          @if($item->taskReports->reportStatus != 2)
+
+                            <tr style="background:{{$item->prioridades->cor}};">
                               <td>{{ $item->taskCustomer->name }}</td>
                               <td>
                                   @foreach($item->servicesToDo as $ser)
@@ -152,9 +151,22 @@
                               <td>{{ $item->tech->name }}</td>                                
                               <td>{{ $item->preview_date}}</td>
                           </tr>
-                      
-                      
-                
+                          
+                          @endif
+                        @else
+                          
+                            <tr style="background:{{$item->prioridades->cor}};">
+                                <td>{{ $item->taskCustomer->name }}</td>
+                                <td>
+                                    @foreach($item->servicesToDo as $ser)
+                                        {{$ser->service->name}}<br>
+                                    @endforeach
+                                </td>
+                                <td>{{ $item->tech->name }}</td>                                
+                                <td>{{ $item->preview_date}}</td>
+                            </tr>
+                        
+                        @endif
                       @endforeach
                   </tbody>
               </table>
