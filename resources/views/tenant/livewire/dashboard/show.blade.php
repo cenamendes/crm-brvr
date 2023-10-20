@@ -43,7 +43,7 @@
           <div class="card">
             <div class="card-body">
 
-              @php
+              {{-- @php
                 $teamMemberCheck = \App\Models\Tenant\TeamMember::where('user_id',Auth::user()->id)->first();
               @endphp
 
@@ -107,7 +107,7 @@
                       </div>
                   </div>
                 </div>   
-              @endif
+              @endif --}}
 
               <div id="calendarr" class="app-fullcalendarr fc fc-unthemed fc-ltr" wire:ignore></div>
 
@@ -117,13 +117,83 @@
 
         @if(Auth::user()->type_user != 2)
 
-        <div class="col-xl-12" style="margin-top:20px; height:50%;">
+        <div class="col-xl-12" style="margin-top:20px;">
+          
+        @php
+          $teamMemberCheck = \App\Models\Tenant\TeamMember::where('user_id',Auth::user()->id)->first();
+        @endphp
+
+            @if($teamMemberCheck->id_hierarquia != "3")
+              <div id="accordion-one" class="accordion accordion-primary" wire:ignore>
+                <div class="accordion__item">
+                    <div class="accordion__header rounded-lg collapsed" data-toggle="collapse" data-target="#default_collapseOne" aria-expanded="false">
+                        <span class="accordion__header--text">{{__("Filters")}}</span>
+                        <span class="accordion__header--indicator"></span>
+                    </div>
+                    <div id="default_collapseOne" class="accordion__body collapse" data-parent="#accordion-one">
+                        <div class="accordion__body--text">
+                            <div class="col-12" style="margin-bottom:25px;padding-left:0px;">
+                              
+                                <div class="row">
+                                    
+                                    <div class="col-12">
+
+
+                                        <div class="form-group">
+                                          @foreach ($infoTeamMember as $dept => $info)
+                                          @if($info != null)
+                                            <div class="row" style="border:1px solid;justify-content:center;">
+                                              
+                                              <label>{{ $dept }}</label>
+                                                                              
+                                              <div class="col-12" style="padding-left:25px;border-top: 1px solid;">
+                                              @foreach($info as $inf)
+                                            
+                                              
+                                                  <div class="input-group">
+                                                  
+                                                      <label>{{ $inf->name }}</label>
+                                                      <input type="checkBox" id="check{{$inf->id}}" wire:model.defer="checkboxUser.{{$inf->id}}" class="form-check-input"  value="{{ $inf->id }}">
+                                                  
+                                                  </div>
+                                                
+                                        
+                                              
+                                        
+                                              @endforeach
+                                            </div>
+                                            </div>
+                                            @endif
+                                          @endforeach
+                                          
+                                        </div>
+                                    </div>
+                                  
+                                </div> 
+                    
+                                <div class="row">
+                  
+                                    <div class="col-md-12 text-right">
+                                        <button type="button" id="search" wire:click="searchPeople" class="btn-sm btn btn-primary">Pesquise</button>
+                  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>   
+            @endif
+        </div>
+
+        <div class="col-xl-12" style="height:50%;">
           {{-- <div class="row"> --}}
             <div class="card">
               <div class="card-header">
                 <h4 class="card-title">{{ __("Tarefas abertas")}}</h4>
               </div>
               <div class="card-body" style="display:flex;overflow:auto;">
+
            
             <div class="table-responsive" style="position: relative;">
               {{-- class="display dataTable no-footer" --}}
