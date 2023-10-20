@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Requests\Tenant\Tasks\TasksFormRequest;
+use App\Models\Tenant\Departamentos;
 
 class TasksRepository implements TasksInterface
 {
@@ -427,25 +428,56 @@ class TasksRepository implements TasksInterface
         }
         else if(Auth::user()->type_user == 1)
         {
-            $tech = TeamMember::where('user_id',Auth::user()->id)->first();
+        //     $tech = TeamMember::where('user_id',Auth::user()->id)->first();
 
-           $tasks = Tasks::
-           with('tech')
-           ->with('taskCustomer')
-           ->with('tasksTimes')
-           ->where(function ($query) {
-               $query->where(function ($query) {
-                           $query->whereMonth('preview_date', Carbon::now()->month)
-                                   ->whereYear('preview_date', Carbon::now()->year);
-                           })
-                   ->orWhere(function ($query) {
-                       $query->WhereMonth('scheduled_date', Carbon::now()->month)
-                               ->WhereYear('scheduled_date', Carbon::now()->year);
-               });
-           })  
-           ->where('tech_id',$tech->id)
-           ->get();
-           
+        //    $tasks = Tasks::
+        //    with('tech')
+        //    ->with('taskCustomer')
+        //    ->with('tasksTimes')
+        //    ->where(function ($query) {
+        //        $query->where(function ($query) {
+        //                    $query->whereMonth('preview_date', Carbon::now()->month)
+        //                            ->whereYear('preview_date', Carbon::now()->year);
+        //                    })
+        //            ->orWhere(function ($query) {
+        //                $query->WhereMonth('scheduled_date', Carbon::now()->month)
+        //                        ->WhereYear('scheduled_date', Carbon::now()->year);
+        //        });
+        //    })  
+        //    ->where('tech_id',$tech->id)
+        //    ->get();
+
+
+        $tech = TeamMember::where('user_id',Auth::user()->id)->first();
+
+
+            if($tech->id_hierarquia == "2")
+            {
+                $depts = Departamentos::where('id',$tech->id_departamento)->first();
+
+                $tMFromDepartment = TeamMember::where('id_departamento', $depts->id)->get();
+
+                $tasks = Tasks::
+                with('tech')
+                ->with('taskCustomer')
+                ->where(function ($query) {
+                    $query->where(function ($query) {
+                                $query->whereMonth('preview_date', Carbon::now()->month)
+                                        ->whereYear('preview_date', Carbon::now()->year);
+                                })
+                        ->orWhere(function ($query) {
+                            $query->WhereMonth('scheduled_date', Carbon::now()->month)
+                                    ->WhereYear('scheduled_date', Carbon::now()->year);
+                    });
+                });
+
+                foreach($tMFromDepartment as $dep)
+                {
+                    $tasks->orwhere('tech_id',$dep->id);
+                }
+                $tasks->where('tech_id',$tech->id);
+                $tasks = $tasks->get();
+            }
 
         }
         else {
@@ -496,21 +528,54 @@ class TasksRepository implements TasksInterface
         {
             $tech = TeamMember::where('user_id',Auth::user()->id)->first();
 
-            $tasks = Tasks::
-                     with('tech')
-                     ->with('taskCustomer')
-                     ->where(function ($query) use ($month,$year) {
-                         $query->where(function($query) use ($month,$year) {
-                             $query->whereMonth('preview_date',$month)
-                                   ->whereYear('preview_date',$year);
-                         })
-                         ->orWhere(function ($query) use ($month,$year) {
-                            $query->whereMonth('scheduled_date', $month)
-                                  ->whereYear('scheduled_date',$year);
-                         });
-                     })
-                     ->where('tech_id',$tech->id)
-                     ->get();
+
+            if($tech->id_hierarquia == "2")
+            {
+                $depts = Departamentos::where('id',$tech->id_departamento)->first();
+
+                $tMFromDepartment = TeamMember::where('id_departamento', $depts->id)->get();
+
+                $tasks = Tasks::
+                with('tech')
+                ->with('taskCustomer')
+                ->where(function ($query) use ($month,$year) {
+                    $query->where(function($query) use ($month,$year) {
+                        $query->whereMonth('preview_date',$month)
+                              ->whereYear('preview_date',$year);
+                    })
+                    ->orWhere(function ($query) use ($month,$year) {
+                       $query->whereMonth('scheduled_date', $month)
+                             ->whereYear('scheduled_date',$year);
+                    });
+                });
+
+                foreach($tMFromDepartment as $dep)
+                {
+                    $tasks->orwhere('tech_id',$dep->id);
+                }
+                $tasks->where('tech_id',$tech->id);
+                $tasks = $tasks->get();
+
+            }
+            else
+            {
+                $tasks = Tasks::
+                with('tech')
+                ->with('taskCustomer')
+                ->where(function ($query) use ($month,$year) {
+                    $query->where(function($query) use ($month,$year) {
+                        $query->whereMonth('preview_date',$month)
+                              ->whereYear('preview_date',$year);
+                    })
+                    ->orWhere(function ($query) use ($month,$year) {
+                       $query->whereMonth('scheduled_date', $month)
+                             ->whereYear('scheduled_date',$year);
+                    });
+                })
+                ->where('tech_id',$tech->id)
+                ->get();
+            }
+           
         }
         else 
         {
