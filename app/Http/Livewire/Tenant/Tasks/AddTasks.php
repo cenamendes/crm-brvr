@@ -303,6 +303,7 @@ class AddTasks extends Component
             "name" => $name,
             "slug" => $slug,
             "short_name" => $slug,
+            "username" => $email,
             "vat" => $nif,
             "contact" => $contact,
             "email" => $email,
