@@ -478,6 +478,25 @@ class TasksRepository implements TasksInterface
                 $tasks->where('tech_id',$tech->id);
                 $tasks = $tasks->get();
             }
+            else
+            {
+                $tasks = Tasks::
+                with('tech')
+                ->with('taskCustomer')
+                ->where(function ($query) {
+                    $query->where(function ($query) {
+                                $query->whereMonth('preview_date', Carbon::now()->month)
+                                        ->whereYear('preview_date', Carbon::now()->year);
+                                })
+                        ->orWhere(function ($query) {
+                            $query->WhereMonth('scheduled_date', Carbon::now()->month)
+                                    ->WhereYear('scheduled_date', Carbon::now()->year);
+                    });
+                });
+
+                $tasks->where('tech_id',$tech->id);
+                $tasks = $tasks->get();
+            }
 
         }
         else {
