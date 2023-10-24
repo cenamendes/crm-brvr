@@ -105,8 +105,8 @@
                                                         <td>{{$info->resume}}</td>
                                                         <td>{{$info->preview_date}} / {{$info->preview_hour}}</td>
                                                         @if(isset($info->tasksTimes))
-                                                         <td>{{$firstTime[$countLOOP]}}</td>
-                                                         <td>{{$lastTime[$countLOOP]}}</td>
+                                                         <td>@if(isset($firstTime[$countLOOP])) {{$firstTime[$countLOOP]}} @endif</td>
+                                                         <td>@if(isset($lastTime[$countLOOP])) {{$lastTime[$countLOOP]}} @endif</td>
 
                                                          @php
 
