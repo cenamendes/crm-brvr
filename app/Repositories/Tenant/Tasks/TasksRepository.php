@@ -149,7 +149,8 @@ class TasksRepository implements TasksInterface
                                 'preview_date' => $values->previewDate,
                                 'preview_hour' => $values->previewHour,
                                 'scheduled_date' => $values->scheduledDate,
-                                'scheduled_hour' => $values->scheduledHour
+                                'scheduled_hour' => $values->scheduledHour,
+                                'tech_id' => $values->selectedTechnician
                              ]);
         
         if($update == 0) {
