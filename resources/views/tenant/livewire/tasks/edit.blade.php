@@ -116,7 +116,7 @@
                                     </div>
 
                                     <div class="form-check custom-checkbox checkbox-success">
-                                        <input type="checkbox" name="equipamentoServico" class="form-check-input" id="equipamentoServico" @if($riscado != null || $partido != null || $bomestado != null || $normalestado != null || $transformador != null || $mala != null || $tinteiro != null || $ac != null) checked @endif disabled>
+                                        <input type="checkbox" name="equipamentoServico" class="form-check-input" id="equipamentoServico" @if($riscado != null || $partido != null || $bomestado != null || $normalestado != null || $transformador != null || $mala != null || $tinteiro != null || $ac != null) checked @endif>
                                         <label class="form-check-label" for="customCheckBox3" style="font-size:18px;margin-top:0px;!important">{{ __('Equipment?') }}</label>
                                     </div>
 
@@ -542,6 +542,42 @@
             })
            
         });
+
+        jQuery("body").on('click','#equipamentoServico', function(){
+            //checkar se esta selecionado
+            if(jQuery(this).is(":checked")){
+
+                jQuery("#equipmentNav").css("display","block");
+
+            }
+            else {
+
+                jQuery("#serie_number").val("");
+                jQuery("#marca_equipment").val("");
+                jQuery("#model_equipment").val("");
+
+                jQuery("#name_equipment").val("");
+                jQuery("#descriptionEquipment").val("");
+
+                jQuery("#riscado").prop('checked', false);
+                jQuery("#partido").prop('checked', false);
+                jQuery("#bomestado").prop('checked', false);
+                jQuery("#normalestado").prop('checked', false);
+
+                jQuery("#transformador").prop('checked', false);
+                jQuery("#mala").prop('checked', false);
+                jQuery("#tinteiro").prop('checked', false);
+                jQuery("#ac").prop('checked', false);
+
+                jQuery("#descriptionExtra").val("");
+
+
+
+                jQuery("#equipmentNav").css("display","none");
+
+            }
+
+        })
 
         function restartObjects()
         {
