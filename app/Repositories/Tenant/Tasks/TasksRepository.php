@@ -113,6 +113,15 @@ class TasksRepository implements TasksInterface
             }
         }
 
+
+        if($values->imagem != "")
+        {
+            $imagem = $values->imagem;
+        }
+        else {
+            $imagem = "";
+        }
+
         $update = Tasks::where('id', $task->id)
             ->update([
                 'location_id' => $values->selectedLocation,
@@ -141,6 +150,7 @@ class TasksRepository implements TasksInterface
                 'tinteiro' => $values->tinteiro,
                 'ac' => $values->ac,
                 'descricao_extra' => $values->descriptionExtra,
+                'imagem' => $imagem,
                 'prioridade' => $values->selectPrioridade
                 ]);
         

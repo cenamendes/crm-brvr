@@ -5,11 +5,16 @@ namespace App\Http\Livewire\Tenant\Tasks;
 use Livewire\Component;
 use Livewire\Redirector;
 use App\Events\ChatMessage;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Tenant\Prioridades;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Interfaces\Tenant\Tasks\TasksInterface;
 use App\Interfaces\Tenant\TasksReports\TasksReportsInterface;
 use App\Interfaces\Tenant\CustomerServices\CustomerServicesInterface;
@@ -345,7 +350,7 @@ class EditTasks extends Component
      *
      * @return Void
      */
-    public function saveTask(): Null|Redirector
+    public function saveTask()
     {
 
         $validator = Validator::make(
@@ -410,6 +415,27 @@ class EditTasks extends Component
             //         ->with('status', 'error');
             // }
         }
+
+          //fazer a criacao do PDF
+          if($this->riscado != 0 || $this->partido != 0 || $this->bomestado != 0 || $this->normalestado != 0 || $this->transformador != 0 || $this->mala != 0 || $this->tinteiro != 0 || $this->ac != 0)
+          {
+              $qrcode = base64_encode(QrCode::size(150)->generate('https://hihello.me/pt/p/adc8b89e-a3de-4033-beeb-43384aafa1c3?f=email'));
+         
+              $customPaper = array(0, 0, 400.00, 216.00);
+              $pdf = PDF::loadView('tenant.livewire.tasks.impressaopdf',["impressao" => $this, "qrcode" => $qrcode])->setPaper($customPaper);
+      
+              if(!Storage::exists(tenant('id') . '/app/impressoes'))
+              {
+                  File::makeDirectory(storage_path('app/impressoes'), 0755, true, true);
+              }
+      
+              $content = $pdf->download()->getOriginalContent();
+  
+              $this->imagem = 'impressao'.$this->taskToUpdate->reference.'.pdf';
+  
+      
+              Storage::put(tenant('id') . '/app/impressoes/impressao'.$this->taskToUpdate->reference.'.pdf',$content);
+          }
      
         if($this->tasksInterface->updateTask($this->taskToUpdate, $this) === false) {
             $this->dispatchBrowserEvent('swal', ['title' => __('Services'), 'message' => 'There was an error updating the task!', 'status'=>'error']);
@@ -419,6 +445,7 @@ class EditTasks extends Component
         #$this->taskToUpdate = $this->taskToUpdate;
         $this->changed = false;
         //$this->dispatchBrowserEvent('loading');
+
 
         event(new ChatMessage());
 
