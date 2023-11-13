@@ -147,6 +147,7 @@
                         <th>{{ __('Customer') }}</th>
                         <th>{{ __('Reference') }}</th>
                         <th>{{ __('Service') }}</th>
+                        <th>Resumo</th>
                         <th>{{ __('Technical')}}</th>
                         <th>{{ __('Total Hours')}}</th>
                         <th>{{ __('Date') }}</th>
@@ -155,7 +156,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                   
                     @foreach ($tasksReportsList as $item)
                         <tr>
                             <td>
@@ -173,6 +173,7 @@
                                 @empty
                                 @endforelse
                             </td>
+                            <td>{{ $item->tasks->resume }}</td>
                             <td>{{ $item->tech->name }}</td>
                             <td>
                                 @php

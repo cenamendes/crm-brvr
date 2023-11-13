@@ -157,6 +157,7 @@
                         <th>{{ __('Reference') }}</th>
                         <th>{{ __('Customer') }}</th>
                         <th>{{ __('Service') }}</th>
+                        <th>Resumo</th>
                         <th>{{ __('Technical') }}</th>
                         <th>{{ __('Date') }}</th>
                         <th>{{ __('County') }}</th>
@@ -184,6 +185,7 @@
                                 @empty
                                 @endforelse
                             </td>
+                            <td>{{ $item->resume }}</td>
                             <td>{{ $item->tech->name }}</td>
                             <td>
                                 @isset($item->scheduled_date)

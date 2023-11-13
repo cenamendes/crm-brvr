@@ -20,15 +20,15 @@ class TasksReportsRepository implements TasksReportsInterface
         if(Auth::user()->type_user == 2)
         {
             $customer = Customers::where('user_id',Auth::user()->id)->first();
-            $tasksReports = TasksReports::where('customer_id',$customer->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->orderBy('created_at','desc')->paginate($perPage);
+            $tasksReports = TasksReports::where('customer_id',$customer->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->with('tasks')->orderBy('created_at','desc')->paginate($perPage);
         }
         else if(Auth::user()->type_user == 1)
         {
             $teammember = TeamMember::where('user_id',Auth::user()->id)->first();
-            $tasksReports = TasksReports::where('tech_id',$teammember->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->orderBy('created_at','desc')->paginate($perPage);
+            $tasksReports = TasksReports::where('tech_id',$teammember->id)->with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->with('tasks')->orderBy('created_at','desc')->paginate($perPage);
         }
         else {
-            $tasksReports = TasksReports::with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->orderBy('created_at','desc')->paginate($perPage);
+            $tasksReports = TasksReports::with('servicesToDo')->with('taskCustomer')->with('tech')->with('getHoursTask')->with('tasks')->orderBy('created_at','desc')->paginate($perPage);
         }
 
         return $tasksReports;
@@ -48,6 +48,7 @@ class TasksReportsRepository implements TasksReportsInterface
                 $queryyy->Where('short_name', 'like', '%' . $searchString . '%');
             })
             ->with('tech')
+            ->with('tasks')
             ->with('getHoursTask')
             ->orderBy('created_at','desc')
             ->paginate($perPage);
@@ -64,6 +65,7 @@ class TasksReportsRepository implements TasksReportsInterface
                 $queryyy->Where('short_name', 'like', '%' . $searchString . '%');
             })
             ->with('tech')
+            ->with('tasks')
             ->with('getHoursTask')
             ->orderBy('created_at','desc')
             ->paginate($perPage);
@@ -78,6 +80,7 @@ class TasksReportsRepository implements TasksReportsInterface
                 $queryyy->Where('short_name', 'like', '%' . $searchString . '%');
             })
             ->with('tech')
+            ->with('tasks')
             ->with('getHoursTask')
             ->orderBy('created_at','desc')
             ->paginate($perPage);
@@ -197,7 +200,7 @@ class TasksReportsRepository implements TasksReportsInterface
            {
                 $query->where('short_name', 'like', '%' . $searchString . '%');
            }
-        });
+        })->with('tasks');
 
         if(Auth::user()->type_user == 2)
         {
