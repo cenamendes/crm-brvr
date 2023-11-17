@@ -194,7 +194,6 @@
               </div>
               <div class="card-body" style="display:flex;overflow:auto;">
 
-           
             <div class="table-responsive" style="position: relative;">
               {{-- class="display dataTable no-footer" --}}
               <table id="dataTables-data" class="table table-responsive-lg mb-0 table-striped">
@@ -202,6 +201,7 @@
                       <tr>
                           <th>Nome Cliente</th>
                           <th>Serviço</th>
+                          <th>Resumo</th>
                           <th>Técnico</th>
                           <th>Data</th>
                       </tr>
@@ -218,6 +218,11 @@
                                       {{$ser->service->name}}<br>
                                   @endforeach
                               </td>
+                              @if($item->resume == null || !isset($item->resume) || $item->resume == "")
+                                <td>Sem resumo</td>
+                              @else
+                                <td>{{ $item->resume }}</td>
+                              @endif
                               <td>{{ $item->tech->name }}</td>                                
                               <td>{{ $item->preview_date}}</td>
                           </tr>
@@ -232,6 +237,11 @@
                                         {{$ser->service->name}}<br>
                                     @endforeach
                                 </td>
+                                @if($item->resume == null || !isset($item->resume) || $item->resume == "")
+                                  <td>Sem resumo</td>
+                                @else
+                                  <td>{{ $item->resume }}</td>
+                                @endif
                                 <td>{{ $item->tech->name }}</td>                                
                                 <td>{{ $item->preview_date}}</td>
                             </tr>
