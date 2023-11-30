@@ -15,8 +15,18 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group row">
-                                    <section class="col-xl-7 col-xs-12">
+                                    <section class="col-xl-12 col-xs-12">
                                         
+                                        <label  for="checkStatus">Estado</label>
+                                        <div class="form-check custom-checkbox mb-3 checkbox-info">
+                                    
+                                            <input type="checkbox" class="form-check-input" name="checkstatus" id="checkstatus" @isset($checkstatus) @if($checkstatus == 1) checked @endif @endisset>
+                                            <label class="form-check-label" for="customCheckBox2">Ativado</label>
+                                        </div>
+                                       
+                                    </section>
+                                    <section class="col-xl-7 col-xs-12">
+                                       
                                         <input style="display:none" type="text" name="idTeamMember" id="idTeamMember" class="form-control"
                                             @isset($idTeamMember) value="{{ $idTeamMember }}" @endisset
                                             @if(null !== old('idTeamMember'))value="{{ old('idTeamMember') }}"@endisset

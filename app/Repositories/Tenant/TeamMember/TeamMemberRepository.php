@@ -44,7 +44,19 @@ class TeamMemberRepository implements TeamMemberInterface
     public function add(TeamMemberFormRequest $request): TeamMember
     {
         return DB::transaction(function () use ($request) {
+
+            if(!isset($request->checkstatus) || $request->checkstatus == "off")
+            {
+                $checkstatus = 0;
+            }
+            else
+            {
+                $checkstatus = 1;
+            }
+
+
             $teamMember = TeamMember::create([
+                'checkstatus' => $checkstatus,
                 'name' => $request->name,
                 'username' => $request->username,
                 'email' => $request->email,
@@ -62,10 +74,27 @@ class TeamMemberRepository implements TeamMemberInterface
 
     public function update(TeamMember $teamMember, TeamMemberFormRequest $request) : TeamMember
     {
+
         return DB::transaction(function () use ($teamMember,$request) {
+           
+    
+            if(!isset($request->checkstatus) || $request->checkstatus == "off")
+            {
+                $request["checkstatus"] = 0;
+            }
+            elseif($request->checkstatus == "on")
+            {
+                $request["checkstatus"] = 1;
+            }
+
+            
 
             $teamMember->fill($request->all());
             $teamMember->save();
+
+           
+
+           
 
            User::where('id',$teamMember->user_id)->update([
                 "username" => $request->username,

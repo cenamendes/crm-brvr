@@ -21,7 +21,7 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="home" role="tabpanel">
                     <div class="pt-0">
-                        <x-tenant.teammembers.form :action="route('tenant.team-member.update', $teamMember->id)" :name="$teamMember->name" :idTeamMember="$teamMember->id" :email="$teamMember->email" :mphone="$teamMember->mobile_phone" :username="$teamMember->username" :job="$teamMember->job" :addinfo="$teamMember->additional_information" :color="$teamMember->color" :iddepartamento="$teamMember->id_departamento" :idhierarquia="$teamMember->id_hierarquia" :update="true" buttonAction="{{ __('Update Team Member') }}" formTitle="{{ __('Update Team Member') }}"/>
+                        <x-tenant.teammembers.form :action="route('tenant.team-member.update', $teamMember->id)" :checkstatus="$teamMember->checkstatus" :name="$teamMember->name" :idTeamMember="$teamMember->id" :email="$teamMember->email" :mphone="$teamMember->mobile_phone" :username="$teamMember->username" :job="$teamMember->job" :addinfo="$teamMember->additional_information" :color="$teamMember->color" :iddepartamento="$teamMember->id_departamento" :idhierarquia="$teamMember->id_hierarquia" :update="true" buttonAction="{{ __('Update Team Member') }}" formTitle="{{ __('Update Team Member') }}"/>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="profile">

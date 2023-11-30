@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class TeamMember extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','username', 'email', 'mobile_phone', 'job', 'additional_information','user_id','color','account_active','id_hierarquia','id_departamento'];
+    protected $fillable = ['checkstatus','name','username', 'email', 'mobile_phone', 'job', 'additional_information','user_id','color','account_active','id_hierarquia','id_departamento'];
 
     protected static function booted()
     {
