@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Redirector;
 use App\Events\ChatMessage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Tenant\TeamMember;
 use App\Models\Tenant\Prioridades;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\File;
@@ -177,6 +178,8 @@ class EditTasks extends Component
 
         $this->selectPrioridade = $taskToUpdate->prioridade;
         $this->coresObject = Prioridades::all();
+
+        $this->teamMembers = TeamMember::where('checkstatus',1)->get();
 
         
         $this->cancelButton = __('Back') . '<span class="btn-icon-right"><i class="las la-angle-double-left"></i></span>';;

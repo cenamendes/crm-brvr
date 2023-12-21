@@ -781,7 +781,7 @@
           
             function formatState (state) {
 
-                var base_url = "http://br.brvr/cl/8d9eeb55-30bb-435e-8179-4d77b6db8c0e/tasks_colors";
+                var base_url = "https://suporte.brvr.pt/cl/7f3a1b73-d8ae-464f-b91e-2a3f8163bdfb/app/public/tasks_colors";
     
                 if (!state.id) {
                     return state.text;

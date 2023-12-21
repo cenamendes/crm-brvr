@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Events\ChatMessage;
 use App\Events\LoginStatus;
 use Illuminate\Http\Request;
+use App\Models\Tenant\TeamMember;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
@@ -33,6 +34,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        $user = User::where('username',$request->username)->first();
+
+        if($user != null)
+        {
+            $tm = TeamMember::where('user_id',$user->id)->first();
+
+            if($tm->checkstatus == "0")
+            {
+                return redirect('/login');
+            }
+        }
+    
+        
         $request->authenticate();
 
         $request->session()->regenerate();

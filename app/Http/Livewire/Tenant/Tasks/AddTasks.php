@@ -163,7 +163,7 @@ class AddTasks extends Component
             ->where('location_id', $this->selectedLocation)
             ->with('service')
             ->get();
-        $this->teamMembers = TeamMember::get();
+        $this->teamMembers = TeamMember::where('checkstatus',1)->get();
 
         $this->dispatchBrowserEvent('contentChanged');
     }
