@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tenant\TasksTimes;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Livewire\Component;
 use App\Events\ChatMessage;
 use Livewire\WithPagination;
@@ -199,8 +200,10 @@ class ShowTimes extends Component
            ->update(['reportStatus' => '1']);
             
         }
+
+        $usr = User::where('id',Auth::user()->id)->first();
         
-        event(new ChatMessage());
+        event(new ChatMessage($usr->name));
 
     }
 
@@ -276,7 +279,9 @@ class ShowTimes extends Component
         //     "descricao" => $values[4]
         // ]);
 
-        event(new ChatMessage());
+        $usr = User::where('id',Auth::user()->id)->first();
+
+        event(new ChatMessage($usr->name));
 
     }
 

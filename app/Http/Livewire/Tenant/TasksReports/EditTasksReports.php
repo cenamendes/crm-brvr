@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Tenant\TasksReports;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Redirector;
 use App\Events\ChatMessage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Interfaces\Tenant\TasksTimes\TasksTimesInterface;
 use App\Interfaces\Tenant\TasksReports\TasksReportsInterface;
@@ -200,7 +202,9 @@ class EditTasksReports extends Component
 
         $this->reportInfo = $this->tasksReportsInterface->updateReport($this->taskReport->id, $save);
 
-        event(new ChatMessage());
+        $usr = User::where('id',Auth::user()->id)->first();
+
+        event(new ChatMessage($usr->name));
 
         if($this->reportInfo == 0)
         {

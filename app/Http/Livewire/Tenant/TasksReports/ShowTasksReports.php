@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire\Tenant\TasksReports;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Events\ChatMessage;
 use Livewire\WithPagination;
 use App\Models\Tenant\TasksTimes;
 use App\Models\Tenant\TasksReports;
+use Illuminate\Support\Facades\Auth;
 use App\Events\Tasks\DispatchTaskReport;
 use App\Interfaces\Tenant\Customers\CustomersInterface;
 use App\Interfaces\Tenant\TeamMember\TeamMemberInterface;
@@ -282,7 +284,9 @@ class ShowTasksReports extends Component
                 // $this->dispatchBrowserEvent('swal', ['title' => __('Task Report'), 'message' => __('Task report closed with sucess!'), 'status'=>'info']);
             }
         }
-        event(new ChatMessage());
+        $usr = User::where('id',Auth::user()->id)->first();
+        
+        event(new ChatMessage($usr->name));
     }
 
     /**

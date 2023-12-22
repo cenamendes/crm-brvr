@@ -554,7 +554,8 @@ class AddTasks extends Component
             }, 'etiqueta.pdf');
         }
 
-        event(new ChatMessage());
+        $usr = User::where('id',Auth::user()->id)->first();
+        event(new ChatMessage($usr->name));
     
     }
 

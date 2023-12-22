@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Tenant\Tasks;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Redirector;
 use App\Events\ChatMessage;
@@ -9,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Tenant\TeamMember;
 use App\Models\Tenant\Prioridades;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -449,8 +451,9 @@ class EditTasks extends Component
         $this->changed = false;
         //$this->dispatchBrowserEvent('loading');
 
+        $usr = User::where('id',Auth::user()->id)->first();
 
-        event(new ChatMessage());
+        event(new ChatMessage($usr->name));
 
         return redirect()->route('tenant.tasks.index')
             ->with('message', __('Task updated with success!'))
