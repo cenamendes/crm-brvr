@@ -204,7 +204,7 @@ class EditTasksReports extends Component
 
         $usr = User::where('id',Auth::user()->id)->first();
 
-        $message = "fechou uma tarefa";
+        $message = "atualizou uma tarefa";
         event(new ChatMessage($usr->name, $message));
 
         if($this->reportInfo == 0)
