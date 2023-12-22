@@ -16,14 +16,18 @@ class ChatMessage implements ShouldBroadcast
 
     public $name;
 
+    public $message;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(string $name = null)
+    public function __construct(string $name = null, string $message = null)
     {
         $this->name = $name;
+
+        $this->message = $message;
     }
 
     /**

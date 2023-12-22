@@ -202,8 +202,10 @@ class ShowTimes extends Component
         }
 
         $usr = User::where('id',Auth::user()->id)->first();
+
+        $message = "abriu um tempo";
         
-        event(new ChatMessage($usr->name));
+        event(new ChatMessage($usr->name, $message));
 
     }
 
@@ -281,7 +283,9 @@ class ShowTimes extends Component
 
         $usr = User::where('id',Auth::user()->id)->first();
 
-        event(new ChatMessage($usr->name));
+        $message = "fechou um tempo";
+        
+        event(new ChatMessage($usr->name, $message));
 
     }
 

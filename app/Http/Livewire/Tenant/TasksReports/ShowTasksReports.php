@@ -285,8 +285,10 @@ class ShowTasksReports extends Component
             }
         }
         $usr = User::where('id',Auth::user()->id)->first();
+
+        $message = "fechou uma tarefa";
         
-        event(new ChatMessage($usr->name));
+        event(new ChatMessage($usr->name, $message));
     }
 
     /**

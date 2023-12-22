@@ -451,9 +451,10 @@ class EditTasks extends Component
         $this->changed = false;
         //$this->dispatchBrowserEvent('loading');
 
+        $message = "atualizou uma tarefa";
         $usr = User::where('id',Auth::user()->id)->first();
 
-        event(new ChatMessage($usr->name));
+        event(new ChatMessage($usr->name, $message));
 
         return redirect()->route('tenant.tasks.index')
             ->with('message', __('Task updated with success!'))
