@@ -413,13 +413,7 @@ class TasksRepository implements TasksInterface
         {
             $customer = Customers::where('user_id',Auth::user()->id)->first();
           
-            // $tasks = Tasks::
-            //  with('tech')
-            // ->with('taskCustomer')
-            // ->WhereMonth('scheduled_date', Carbon::now()->month)
-            // ->WhereYear('scheduled_date', Carbon::now()->year)
-            // ->where('customer_id',$customer->id)
-            // ->get();
+          
 
             $tasks = Tasks::with('tech')
                      ->with('taskCustomer')
@@ -427,11 +421,13 @@ class TasksRepository implements TasksInterface
                      ->where(function ($query) {
                         $query->where(function ($query) {
                             $query->whereMonth('preview_date', Carbon::now()->month)
-                                    ->whereYear('preview_date', Carbon::now()->year);
+                                    ->whereYear('preview_date', Carbon::now()->year)
+                                    ->orWhereYear('preview_date', Carbon::now()->subYear()->year);
                         })
                         ->orWhere(function ($query) {
                             $query->whereMonth('scheduled_date', Carbon::now()->month)
-                                  ->whereYear('scheduled_date', Carbon::now()->year);
+                                  ->whereYear('scheduled_date', Carbon::now()->year)
+                                  ->orWhereYear('scheduled_date', Carbon::now()->subYear()->year);
                         });
                      })
                      ->where('customer_id',$customer->id)
@@ -439,27 +435,8 @@ class TasksRepository implements TasksInterface
         }
         else if(Auth::user()->type_user == 1)
         {
-        //     $tech = TeamMember::where('user_id',Auth::user()->id)->first();
-
-        //    $tasks = Tasks::
-        //    with('tech')
-        //    ->with('taskCustomer')
-        //    ->with('tasksTimes')
-        //    ->where(function ($query) {
-        //        $query->where(function ($query) {
-        //                    $query->whereMonth('preview_date', Carbon::now()->month)
-        //                            ->whereYear('preview_date', Carbon::now()->year);
-        //                    })
-        //            ->orWhere(function ($query) {
-        //                $query->WhereMonth('scheduled_date', Carbon::now()->month)
-        //                        ->WhereYear('scheduled_date', Carbon::now()->year);
-        //        });
-        //    })  
-        //    ->where('tech_id',$tech->id)
-        //    ->get();
-
-
-        $tech = TeamMember::where('user_id',Auth::user()->id)->first();
+       
+            $tech = TeamMember::where('user_id',Auth::user()->id)->first();
 
 
             if($tech->id_hierarquia == "2")
@@ -474,11 +451,13 @@ class TasksRepository implements TasksInterface
                 ->where(function ($query) {
                     $query->where(function ($query) {
                                 $query->whereMonth('preview_date', Carbon::now()->month)
-                                        ->whereYear('preview_date', Carbon::now()->year);
+                                        ->whereYear('preview_date', Carbon::now()->year)
+                                        ->orWhereYear('preview_date', Carbon::now()->subYear()->year);
                                 })
                         ->orWhere(function ($query) {
                             $query->WhereMonth('scheduled_date', Carbon::now()->month)
-                                    ->WhereYear('scheduled_date', Carbon::now()->year);
+                                    ->WhereYear('scheduled_date', Carbon::now()->year)
+                                    ->orWhereYear('scheduled_date', Carbon::now()->subYear()->year);
                     });
                 });
 
@@ -497,11 +476,13 @@ class TasksRepository implements TasksInterface
                 ->where(function ($query) {
                     $query->where(function ($query) {
                                 $query->whereMonth('preview_date', Carbon::now()->month)
-                                        ->whereYear('preview_date', Carbon::now()->year);
+                                        ->whereYear('preview_date', Carbon::now()->year)
+                                        ->orWhereYear('preview_date', Carbon::now()->subYear()->year);
                                 })
                         ->orWhere(function ($query) {
                             $query->WhereMonth('scheduled_date', Carbon::now()->month)
-                                    ->WhereYear('scheduled_date', Carbon::now()->year);
+                                    ->WhereYear('scheduled_date', Carbon::now()->year)
+                                    ->orWhereYear('scheduled_date', Carbon::now()->subYear()->year);
                     });
                 });
 
@@ -515,8 +496,10 @@ class TasksRepository implements TasksInterface
             ->with('tasksTimes')
             ->whereMonth('preview_date', Carbon::now()->month)
             ->whereYear('preview_date', Carbon::now()->year)
+            ->orWhereYear('preview_date', Carbon::now()->subYear()->year)
             ->orWhereMonth('scheduled_date', Carbon::now()->month)
             ->orWhereYear('scheduled_date', Carbon::now()->year)
+            ->orWhereYear('scheduled_date', Carbon::now()->subYear()->year)
             ->get();
 
         }
