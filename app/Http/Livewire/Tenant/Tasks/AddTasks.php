@@ -554,9 +554,16 @@ class AddTasks extends Component
             }, 'etiqueta.pdf');
         }
 
-        $message = "adicionou uma tarefa nova";
-
+        
         $usr = User::where('id',Auth::user()->id)->first();
+
+        if(Auth::user()->id != $techUser->user_id){
+            $message = "adicionou uma tarefa nova";
+        } else {
+            $message = "adicionou uma tarefa nova para ".$user->name."";
+        }
+
+        
         event(new ChatMessage($usr->name, $message));
     
     }
