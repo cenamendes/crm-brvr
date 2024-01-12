@@ -557,7 +557,7 @@ class AddTasks extends Component
         
         $usr = User::where('id',Auth::user()->id)->first();
 
-        if(Auth::user()->id != $techUser->user_id){
+        if(Auth::user()->id == $techUser->user_id){
             $message = "adicionou uma tarefa nova";
         } else {
             $message = "adicionou uma tarefa nova para ".$user->name."";
