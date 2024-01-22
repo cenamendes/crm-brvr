@@ -12,3 +12,8 @@
         </div>
     </div>
 </x-tenant-layout>
+<script>
+
+
+
+</script>

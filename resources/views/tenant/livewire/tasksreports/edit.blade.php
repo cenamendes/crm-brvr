@@ -1,3 +1,4 @@
+
 <div>
     <div id="ajaxLoading" wire:loading.flex class="w-100 h-100 flex "
         style="background:rgba(255, 255, 255, 0.8);z-index:999;position:fixed;top:0;left:0;align-items: center;justify-content: center;">
@@ -177,12 +178,15 @@
                                                 <label>{{ __('Confidential Information') }}</label>
                                                 <textarea class="form-control" rows="4" cols="50" name="confidential_information" id="confidential_information" wire:model.defer="confidential_information" @if(Auth::user()->type_user == 2) disabled @endif></textarea>
                                             </section>
+                                         
                                             <section class="col-12 form-group">
                                                 <input type="text" id="concluded" wire:model.defer="concluded" style="display:none;">
                                                 <p class="informationConclusion"  style="display:none;">
                                                     <label>{{ __('Information Conclusion') }}</label>
                                                     <textarea  class="form-control" rows="4" cols="50" name="infoConcluded" id="infoConcluded" wire:model.defer="infoConcluded" @if(Auth::user()->type_user == 2) disabled @endif></textarea>
                                                 </p>
+                                                  
+                                                
                                                 <p>
                                                     <label>{{ __('State of Task') }}</label>
                                                     {{-- <div class="btn-group">
@@ -205,6 +209,33 @@
                                                     </div>
                                                 </p>
                                             </section>
+
+                                            <section class="col-12 form-group">
+                                                <label>Técnico</label>
+                                                                                           
+                                                <div class="flex-row">
+                                                    <div class="wrapper">
+                                                        <canvas id="signature-pad" width="800" height="100"></canvas>
+                                                    </div>
+                                                    <div class="clear-btn">
+                                                        <button id="clear"><span> &nbsp; <i class="fa fa-trash"></i>&nbsp;&nbsp; </span></button>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <section class="col-12 form-group">
+                                                <label>Cliente</label>
+                                                <div class="flex-row">
+                                                    <div class="wrapper">
+                                                        <canvas id="signature-pad2" width="800" height="100"></canvas>
+                                                    </div>
+                                                    <div class="clear-btn">
+                                                        <button id="clear2"><span>&nbsp; <i class="fa fa-trash"></i>&nbsp;&nbsp;</span></button>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                                                                         
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -248,6 +279,7 @@
     </div>
 
     @push('custom-scripts')
+  
     <script>
         var services = [];
         document.addEventListener('livewire:load', function () {
@@ -347,6 +379,8 @@
                 @this.set('concluded',0,true);
             
         });
+
+
 
       
 
